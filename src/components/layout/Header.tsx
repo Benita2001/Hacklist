@@ -1,0 +1,165 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
+import { siteConfig } from '@/config/site';
+import { GetAccessButton } from '@/components/ui/GetAccessButton';
+
+function SunIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <circle cx="10" cy="10" r="3.5" stroke="currentColor" strokeWidth="1.5" />
+      <line x1="10" y1="1.5"  x2="10" y2="4"    stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="10" y1="16"   x2="10" y2="18.5"  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="1.5" y1="10"  x2="4"   y2="10"   stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="16"  y1="10"  x2="18.5" y2="10"  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3.9"  y1="3.9"  x2="5.7"  y2="5.7"  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14.3" y1="14.3" x2="16.1" y2="16.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3.9"  y1="16.1" x2="5.7"  y2="14.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14.3" y1="5.7"  x2="16.1" y2="3.9"  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path
+        d="M16.5 12.5A7 7 0 0 1 7.5 3.5a7.002 7.002 0 0 0 9 9z"
+        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function Header() {
+  const pathname = usePathname();
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
+
+  const isDark = mounted ? resolvedTheme === 'dark' : false;
+
+  return (
+    <header
+      style={{
+        height: 'var(--header-height)',
+        backgroundColor: 'var(--color-bg-base)',
+        borderBottom: '1px solid var(--color-border-default)',
+      }}
+    >
+      <div
+        className="h-full flex items-center justify-between"
+        style={{
+          maxWidth: 'var(--max-width-site)',
+          margin: '0 auto',
+          paddingLeft: 'var(--space-6)',
+          paddingRight: 'var(--space-6)',
+        }}
+      >
+
+        {/* Wordmark */}
+        <Link href="/" className="flex items-center gap-[var(--space-2)] shrink-0">
+          {/* Pulsing green dot */}
+          <span
+            className="dot-pulse"
+            style={{
+              display: 'inline-block',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-olive)',
+              flexShrink: 0,
+            }}
+          />
+          <span
+            className="font-serif"
+            style={{
+              fontSize: 'var(--text-xl)',
+              color: 'var(--color-text-primary)',
+              letterSpacing: '-0.01em',
+            }}
+          >
+            {siteConfig.name}
+          </span>
+        </Link>
+
+        {/* Right side */}
+        <div className="flex items-center" style={{ gap: 'var(--space-2)' }}>
+
+          {/* About link */}
+          <Link
+            href="/about"
+            className="hidden md:block"
+            style={{
+              fontSize: 'var(--text-sm)',
+              color: pathname === '/about'
+                ? 'var(--color-text-primary)'
+                : 'var(--color-text-secondary)',
+              padding: '6px 12px',
+              transition: 'color var(--duration-base) var(--ease-default)',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-primary)')}
+            onMouseLeave={e => (e.currentTarget.style.color = pathname === '/about' ? 'var(--color-text-primary)' : 'var(--color-text-secondary)')}
+          >
+            About
+          </Link>
+
+          {/* List My Opportunity — ghost outlined pill */}
+          <Link
+            href="/submit"
+            className="hidden sm:inline-flex items-center"
+            style={{
+              height: '32px',
+              padding: '0 var(--space-4)',
+              borderRadius: 'var(--radius-pill)',
+              border: '1px solid var(--color-border-default)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--color-text-secondary)',
+              transition: 'border-color var(--duration-base), color var(--duration-base)',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.borderColor = 'var(--color-border-strong)';
+              el.style.color = 'var(--color-text-primary)';
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.borderColor = 'var(--color-border-default)';
+              el.style.color = 'var(--color-text-secondary)';
+            }}
+          >
+            List My Opportunity
+          </Link>
+
+          {/* Get Free Access — opens email modal */}
+          <GetAccessButton variant="pill" />
+
+          {/* Theme toggle */}
+          <button
+            type="button"
+            onClick={() => setTheme(isDark ? 'light' : 'dark')}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: 'var(--radius-sm)',
+              color: 'var(--color-text-muted)',
+              transition: 'color var(--duration-base)',
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)')}
+            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)')}
+          >
+            {mounted ? (isDark ? <SunIcon /> : <MoonIcon />) : <span style={{ width: 16, height: 16 }} />}
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}

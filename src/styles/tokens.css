@@ -1,0 +1,453 @@
+/* ============================================================
+   HackList — Design System Tokens  (Cream / Olive edition)
+   ============================================================ */
+
+
+/* ============================================================
+   1. COLORS — LIGHT (default :root)
+   ============================================================ */
+:root {
+
+  /* -- Backgrounds ----------------------------------------- */
+  --color-bg-base:     #F5F2EB;   /* warm cream page             */
+  --color-bg-surface:  #FFFFFF;   /* cards, panels               */
+  --color-bg-elevated: #EDE9E0;   /* inputs, dropdowns           */
+  --color-bg-overlay:  #E5E0D5;   /* hover tint                  */
+
+  /* -- Moss green palette ---------------------------------- */
+  --color-moss:        #3D4820;   /* deep moss — primary         */
+  --color-moss-light:  #566130;   /* mid moss                    */
+  --color-olive:       #8FA040;   /* olive — secondary           */
+  --color-olive-light: #B8C96A;   /* pale olive — accents        */
+  --color-olive-bg:    #E8EDD0;   /* olive surface tint          */
+
+  /* -- Main accent ----------------------------------------- */
+  --color-accent:        #3D4820;   /* moss — buttons/CTAs        */
+  --color-accent-dim:    #566130;   /* hover                      */
+  --color-accent-dark:   #2A3015;   /* pressed                    */
+  --color-accent-bg:     #E8EDD0;   /* tint background            */
+  --color-accent-border: #C0D060;   /* tint border                */
+
+  /* -- Borders --------------------------------------------- */
+  --color-border-muted:   #E8E4DC;
+  --color-border-default: #DDD8CC;
+  --color-border-strong:  #B8B0A0;
+  --color-border-focus:   #3D4820;
+
+  /* -- Text ------------------------------------------------ */
+  --color-text-primary:   #1A1E0A;
+  --color-text-secondary: #5A6040;
+  --color-text-muted:     #8A9070;
+
+  /* -- Semantic -------------------------------------------- */
+  --color-success:        #3A7A30;
+  --color-success-bg:     #E8F4E4;
+  --color-success-border: #A8D4A0;
+
+  --color-danger:         #B83020;
+  --color-danger-text:    #B83020;
+  --color-danger-bg:      #FDEEEC;
+  --color-danger-border:  #E8A8A0;
+
+  --color-warning:        #A07020;
+  --color-warning-text:   #A07020;
+  --color-warning-bg:     #FDF4DC;
+  --color-warning-border: #E0C070;
+
+  /* -- Category tag palette -------------------------------- */
+  --color-tag-ai-bg:      #E8EDD0;
+  --color-tag-ai-text:    #3A5010;
+  --color-tag-ai-border:  #C0D060;
+
+  --color-tag-web3-bg:     #D8EDD8;
+  --color-tag-web3-text:   #1E5028;
+  --color-tag-web3-border: #A0CCA0;
+
+  --color-tag-both-bg:     #E4EEC8;
+  --color-tag-both-text:   #384810;
+  --color-tag-both-border: #B8CC78;
+
+  --color-tag-format-bg:     #F0EDE6;
+  --color-tag-format-text:   #6A6A5A;
+  --color-tag-format-border: #D8D4C8;
+
+
+  /* ============================================================
+     2. BORDER RADIUS
+     ============================================================ */
+  --radius-sm:   6px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-pill: 9999px;
+
+
+  /* ============================================================
+     3. SPACING — 4px grid
+     ============================================================ */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  28px;
+  --space-8:  32px;
+  --space-9:  36px;
+  --space-10: 40px;
+  --space-11: 44px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+
+  /* ============================================================
+     4. TYPOGRAPHY
+     ============================================================ */
+  --font-sans:    var(--font-dm-sans,          'DM Sans',          system-ui, sans-serif);
+  --font-serif:   var(--font-instrument-serif, 'Instrument Serif', Georgia,   serif);
+  --font-mono:    var(--font-dm-sans,          'DM Sans',          system-ui, sans-serif);
+
+  --text-2xs:  11px;
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   17px;
+  --text-lg:   18px;
+  --text-xl:   21px;
+  --text-2xl:  26px;
+  --text-3xl:  32px;
+  --text-4xl:  40px;
+  --text-5xl:  52px;
+
+  --font-regular:  400;
+  --font-medium:   500;
+  --font-semibold: 600;
+  --font-bold:     700;
+
+  --leading-none:    1;
+  --leading-tight:   1.15;
+  --leading-snug:    1.3;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.025em;
+  --tracking-wider:   0.05em;
+  --tracking-caps:    0.10em;
+
+
+  /* ============================================================
+     5. ANIMATION
+     ============================================================ */
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:   120ms;
+  --duration-base:   200ms;
+  --duration-slow:   320ms;
+  --duration-slower: 400ms;
+
+
+  /* ============================================================
+     6. LAYOUT
+     ============================================================ */
+  --max-width-site:    1280px;
+  --max-width-content: 1200px;
+  --max-width-prose:    720px;
+  --max-width-form:     560px;
+  --max-width-sm:       640px;
+  --max-width-md:       768px;
+  --max-width-lg:      1024px;
+
+  --ticker-height: 36px;
+  --header-height: 60px;
+
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+
+
+  /* ============================================================
+     7. COMPONENT TOKENS
+     ============================================================ */
+
+  /* Card */
+  --card-bg:          #FFFFFF;
+  --card-bg-featured: var(--color-moss);
+  --card-radius:      var(--radius-md);
+  --card-padding:     var(--space-6);
+
+  /* Shadows */
+  --shadow-sm:        0 1px 2px  rgba(61, 72, 32, 0.06);
+  --shadow-card:      0 1px 3px  rgba(61, 72, 32, 0.08), 0 1px 2px rgba(61, 72, 32, 0.04);
+  --shadow-card-hover:0 6px 20px rgba(61, 72, 32, 0.12), 0 2px 8px rgba(61, 72, 32, 0.06);
+  --shadow-md:        0 4px 12px rgba(61, 72, 32, 0.10);
+  --shadow-lg:        0 8px 24px rgba(61, 72, 32, 0.14);
+
+  /* Button */
+  --btn-height-sm: 30px;
+  --btn-height-md: 36px;
+  --btn-height-lg: 44px;
+  --btn-radius:    var(--radius-pill);
+  --btn-px:        var(--space-5);
+  --btn-px-sm:     var(--space-3);
+  --btn-px-lg:     var(--space-6);
+  --btn-font-size:   var(--text-sm);
+  --btn-font-weight: var(--font-medium);
+
+  --btn-primary-bg:       var(--color-moss);
+  --btn-primary-bg-hover: var(--color-moss-light);
+  --btn-primary-text:     #FFFFFF;
+
+  --btn-ghost-bg:         transparent;
+  --btn-ghost-bg-hover:   var(--color-bg-elevated);
+  --btn-ghost-text:       var(--color-text-secondary);
+  --btn-ghost-border:     var(--color-border-default);
+
+  /* Input */
+  --input-bg:           #FFFFFF;
+  --input-border:       var(--color-border-default);
+  --input-border-focus: var(--color-accent);
+  --input-text:         var(--color-text-primary);
+  --input-placeholder:  var(--color-text-muted);
+  --input-radius:       var(--radius-pill);
+  --input-height:       44px;
+  --input-px:           var(--space-4);
+  --input-font-size:    var(--text-base);
+
+  /* Badge */
+  --badge-radius:          var(--radius-sm);
+  --badge-px:              var(--space-2);
+  --badge-py:              var(--space-1);
+  --badge-font-size:       var(--text-xs);
+  --badge-font-weight:     var(--font-medium);
+  --badge-tracking:        var(--tracking-wide);
+  --badge-verified-bg:     rgba(58, 122, 48, 0.10);
+  --badge-verified-text:   var(--color-success);
+  --badge-verified-border: var(--color-success-border);
+
+  /* Tag */
+  --tag-font-size:   var(--text-xs);
+  --tag-font-weight: var(--font-medium);
+  --tag-tracking:    var(--tracking-wide);
+  --tag-px:          var(--space-2);
+  --tag-py:          3px;
+
+  /* Filter pill */
+  --pill-bg:          transparent;
+  --pill-bg-active:   var(--color-moss);
+  --pill-text:        var(--color-text-secondary);
+  --pill-text-active: #FFFFFF;
+  --pill-border:      var(--color-border-default);
+  --pill-radius:      var(--radius-pill);
+  --pill-height:      34px;
+  --pill-px:          var(--space-4);
+}
+
+
+/* ============================================================
+   DARK MODE
+   ============================================================ */
+[data-theme="dark"] {
+  --color-bg-base:     #0F100A;
+  --color-bg-surface:  #181A10;
+  --color-bg-elevated: #222518;
+  --color-bg-overlay:  #2A2E1C;
+
+  --color-border-muted:   #222518;
+  --color-border-default: #2E3220;
+  --color-border-strong:  #404828;
+  --color-border-focus:   #B8C96A;
+
+  --color-text-primary:   #F0EEE0;
+  --color-text-secondary: #A0A888;
+  --color-text-muted:     #606848;
+
+  --color-accent:        #B8C96A;
+  --color-accent-dim:    #8FA040;
+  --color-accent-dark:   #566130;
+  --color-accent-bg:     #1A1E0A;
+  --color-accent-border: #3A4418;
+
+  --color-moss:        #B8C96A;
+  --color-moss-light:  #8FA040;
+
+  --color-success:        #5AA850;
+  --color-success-bg:     #0A1808;
+  --color-success-border: #204818;
+
+  --color-danger:         #E05040;
+  --color-danger-text:    #E05040;
+  --color-danger-bg:      #200808;
+  --color-danger-border:  #501010;
+
+  --color-tag-ai-bg:      #1A1E0A;
+  --color-tag-ai-text:    #A0C040;
+  --color-tag-ai-border:  #3A4418;
+
+  --color-tag-web3-bg:     #0C1808;
+  --color-tag-web3-text:   #5AAA68;
+  --color-tag-web3-border: #1A3018;
+
+  --color-tag-both-bg:     #181C08;
+  --color-tag-both-text:   #90AA28;
+  --color-tag-both-border: #303C10;
+
+  --color-tag-format-bg:     #1A1A18;
+  --color-tag-format-text:   #585850;
+  --color-tag-format-border: #2E2E28;
+
+  --card-bg:          #181A10;
+  --card-bg-featured: #262E14;
+
+  --shadow-card:       0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --shadow-md:         0 4px 12px rgba(0, 0, 0, 0.3);
+
+  --btn-primary-bg:       #B8C96A;
+  --btn-primary-bg-hover: #8FA040;
+  --btn-primary-text:     #1A1E0A;
+
+  --input-bg:  #181A10;
+  --pill-bg-active:   #B8C96A;
+  --pill-text-active: #1A1E0A;
+}
+
+
+/* ============================================================
+   GLOBAL RESETS & BASE
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+[data-scroll-behavior="smooth"] {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  min-height: 100dvh;
+}
+
+img, video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background-color: rgba(184, 201, 106, 0.30);
+  color: var(--color-text-primary);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg-base); }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-display {
+  font-family: var(--font-serif);
+}
+
+/* Prize — Instrument Serif, large, accent */
+.prize-display {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  color: var(--color-accent);
+  line-height: var(--leading-tight);
+}
+
+.countdown-normal {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-regular);
+  color: var(--color-text-muted);
+}
+
+.countdown-warning {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: #D97706;
+}
+
+.countdown-urgent {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-danger-text);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border-default);
+  border: none;
+}
