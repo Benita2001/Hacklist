@@ -21,7 +21,7 @@ const divider = 'h-px bg-[var(--color-border-default)] border-none my-[var(--spa
 
 const whatYouGet = [
   'New hackathons added that week',
-  'Closing soon alerts — never miss a deadline',
+  'Closing soon alerts · never miss a deadline',
   'Prize pool highlights',
 ];
 

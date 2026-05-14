@@ -52,12 +52,63 @@ export function FilterBar({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
 
-      {/* ── Search ─────────────────────────────────────────── */}
-      <Input
-        value={filters.searchQuery}
-        onChange={handleSearchChange}
-        placeholder="Search hackathons…"
-      />
+      {/* ── Count + Search + Sort ──────────────────────────── */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+
+        <span style={{ flexShrink: 0, fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
+          {filteredCount} of {totalCount} hackathon{totalCount === 1 ? '' : 's'}
+        </span>
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <Input
+            value={filters.searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search hackathons…"
+          />
+        </div>
+
+        <div style={{ position: 'relative', flexShrink: 0 }}>
+          <select
+            value={filters.sortBy}
+            onChange={handleSortChange}
+            aria-label="Sort hackathons"
+            style={{
+              appearance: 'none',
+              height: 'var(--pill-height)',
+              paddingLeft: 'var(--space-3)',
+              paddingRight: 'var(--space-8)',
+              backgroundColor: 'var(--color-bg-surface)',
+              border: '1px solid var(--color-border-default)',
+              borderRadius: 'var(--radius-pill)',
+              color: 'var(--color-text-primary)',
+              fontSize: 'var(--text-sm)',
+              cursor: 'pointer',
+              outline: 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <option value="deadline">Deadline soonest</option>
+            <option value="prize">Prize largest</option>
+            <option value="recent">Recently added</option>
+          </select>
+          <span
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              pointerEvents: 'none',
+              color: 'var(--color-text-secondary)',
+            }}
+            aria-hidden="true"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+        </div>
+
+      </div>
 
       {/* ── Filter pills ───────────────────────────────────── */}
       <div
@@ -98,47 +149,6 @@ export function FilterBar({
             </button>
           );
         })}
-      </div>
-
-      {/* ── Count + Sort ───────────────────────────────────── */}
-      <div className="flex items-center justify-between" style={{ gap: 'var(--space-4)' }}>
-        <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
-          {filteredCount} of {totalCount} hackathon{totalCount === 1 ? '' : 's'}
-        </span>
-
-        <div className="relative shrink-0">
-          <select
-            value={filters.sortBy}
-            onChange={handleSortChange}
-            aria-label="Sort hackathons"
-            style={{
-              appearance: 'none',
-              height: 'var(--pill-height)',
-              paddingLeft: 'var(--space-3)',
-              paddingRight: 'var(--space-8)',
-              backgroundColor: 'var(--color-bg-surface)',
-              border: '1px solid var(--color-border-default)',
-              borderRadius: 'var(--radius-pill)',
-              color: 'var(--color-text-primary)',
-              fontSize: 'var(--text-sm)',
-              cursor: 'pointer',
-              outline: 'none',
-            }}
-          >
-            <option value="deadline">Deadline soonest</option>
-            <option value="prize">Prize largest</option>
-            <option value="recent">Recently added</option>
-          </select>
-          <span
-            className="absolute right-[12px] top-1/2 -translate-y-1/2 pointer-events-none"
-            style={{ color: 'var(--color-text-secondary)' }}
-            aria-hidden="true"
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        </div>
       </div>
 
     </div>

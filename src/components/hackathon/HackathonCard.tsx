@@ -43,7 +43,7 @@ export function HackathonCard({
         onClick={handleCardClick}
         onKeyDown={(e) => { if (e.key === 'Enter') handleCardClick(); }}
         tabIndex={0}
-        aria-label={`${hackathon.name} — ${hackathon.prizeDisplay}. Spotlight. View details.`}
+        aria-label={`${hackathon.name}, ${hackathon.prizeDisplay}. Spotlight. View details.`}
         className={`animate-fade-up flex flex-col md:flex-row cursor-pointer outline-none${isClosingSoon ? ' closing-soon-pulse' : ''}`}
         style={{
           animationDelay: animDelay,
@@ -83,7 +83,7 @@ export function HackathonCard({
               pointerEvents: 'none',
             }}
           >
-            🔥 Closing Soon
+            Closing Soon
           </span>
         )}
         {/* Left: organizer + name + tags */}
@@ -221,7 +221,7 @@ export function HackathonCard({
       onClick={handleCardClick}
       onKeyDown={(e) => { if (e.key === 'Enter') handleCardClick(); }}
       tabIndex={0}
-      aria-label={`${hackathon.name} — ${hackathon.prizeDisplay}. View details.`}
+      aria-label={`${hackathon.name}, ${hackathon.prizeDisplay}. View details.`}
       className={`animate-fade-up flex flex-col cursor-pointer outline-none${isClosingSoon ? ' closing-soon-pulse' : ''}`}
       style={{
         animationDelay: animDelay,

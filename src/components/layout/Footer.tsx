@@ -19,9 +19,9 @@ export function Footer() {
     >
       <div
         style={{
-          maxWidth: 'var(--max-width-site)',
+          maxWidth: '1200px',
           margin: '0 auto',
-          padding: 'var(--space-10) var(--space-6)',
+          padding: '40px clamp(24px, 4vw, 48px)',
         }}
       >
         {/* Main row */}

@@ -59,11 +59,11 @@ export default function AboutPage() {
           }}
         >
           HackList exists because finding a good hackathon shouldn&apos;t be hard. Devpost,
-          DoraHacks, and Lablab are built for organizers — they&apos;re tools for hosting, not
+          DoraHacks, and Lablab are built for organizers. They&apos;re tools for hosting, not
           discovering. Builders were left hunting across five different sites, missing deadlines,
           and losing track of prize pools. HackList fixes that: one clean list, every active AI
           and Web3 hackathon, sorted by deadline, prize front and center. We are an aggregator,
-          not a platform — every Apply button takes you directly to the original listing.
+          not a platform. Every Apply button takes you directly to the original listing.
         </p>
 
         {/* Value boxes */}

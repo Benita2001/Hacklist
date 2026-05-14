@@ -38,7 +38,7 @@ function AllExpiredState() {
           lineHeight: 'var(--leading-relaxed)',
         }}
       >
-        No active hackathons right now. Check back soon — we update weekly.
+        No active hackathons right now. Check back soon. We update weekly.
       </p>
     </div>
   );
@@ -85,7 +85,7 @@ export function HackathonGrid({ hackathons, spotlight, noActiveHackathons }: Hac
       {spotlight && (
         <section>
           <SectionHeader color="var(--color-moss)">
-            ✦ Hackathon Spotlight
+            Hackathon Spotlight
           </SectionHeader>
           <HackathonCard hackathon={spotlight} spotlight index={0} />
         </section>

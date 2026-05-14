@@ -54,10 +54,10 @@ export function Header() {
       <div
         className="h-full flex items-center justify-between"
         style={{
-          maxWidth: 'var(--max-width-site)',
+          maxWidth: '1200px',
           margin: '0 auto',
-          paddingLeft: 'var(--space-6)',
-          paddingRight: 'var(--space-6)',
+          paddingLeft: 'clamp(24px, 4vw, 48px)',
+          paddingRight: 'clamp(24px, 4vw, 48px)',
         }}
       >
 

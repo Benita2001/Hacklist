@@ -31,7 +31,7 @@ export default function SubmitPage() {
         style={{
           paddingTop: 'var(--space-16)',
           paddingBottom: 'var(--space-24)',
-          maxWidth: '800px',
+          maxWidth: 'var(--max-width-prose)',
           margin: '0 auto',
         }}
       >

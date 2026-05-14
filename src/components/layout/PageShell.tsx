@@ -8,14 +8,15 @@ interface PageShellProps {
 export function PageShell({ children, className = '' }: PageShellProps) {
   return (
     <main
-      className={[
-        'w-full mx-auto',
-        'max-w-[var(--max-width-site)]',
-        'px-[var(--space-6)] md:px-[var(--space-8)]',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      className={className || undefined}
+      style={{
+        width: '100%',
+        maxWidth: '1200px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        paddingLeft: 'clamp(24px, 4vw, 48px)',
+        paddingRight: 'clamp(24px, 4vw, 48px)',
+      }}
     >
       {children}
     </main>

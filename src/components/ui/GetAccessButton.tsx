@@ -161,7 +161,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                   You&apos;re in.
                 </h3>
                 <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
-                  Every Monday morning: new hackathons, closing-soon alerts, and prize highlights — straight to your inbox.
+                  Every Monday morning: new hackathons, closing-soon alerts, and prize highlights · straight to your inbox.
                 </p>
               </div>
             ) : (
