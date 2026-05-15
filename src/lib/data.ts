@@ -31,7 +31,14 @@ export function filterHackathons(hackathons: Hackathon[], state: FilterState): H
   }
 
   if (activeFilters.length > 0) {
-    results = results.filter(h => activeFilters.every(f => matchesFilter(h, f)));
+    const categoryFilters = activeFilters.filter(f => f === 'ai' || f === 'web3');
+    const formatFilters   = activeFilters.filter(f => f === 'online' || f === 'offline');
+    const attrFilters     = activeFilters.filter(f => f === 'closing-soon' || f === 'free');
+    results = results.filter(h =>
+      (categoryFilters.length === 0 || categoryFilters.some(f => matchesFilter(h, f))) &&
+      (formatFilters.length   === 0 || formatFilters.some(f => matchesFilter(h, f)))   &&
+      attrFilters.every(f => matchesFilter(h, f))
+    );
   }
 
   return sortHackathons(results, sortBy);

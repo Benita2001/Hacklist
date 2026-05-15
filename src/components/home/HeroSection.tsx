@@ -81,7 +81,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
             AI &amp; Web3 hackathons
           </span>
           <em style={{ display: 'block', fontWeight: 400, fontStyle: 'italic', color: 'var(--color-moss)' }}>
-            worth your time.
+            worth your time
           </em>
         </h1>
 
@@ -154,31 +154,12 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
               {/* Body */}
               <p
                 style={{
-                  fontSize:     'var(--text-sm)',
-                  color:        'var(--color-text-muted)',
-                  lineHeight:   'var(--leading-relaxed)',
-                  marginBottom: 'var(--space-5)',
+                  fontSize:   'var(--text-sm)',
+                  color:      'var(--color-text-muted)',
+                  lineHeight: 'var(--leading-relaxed)',
                 }}
               >
-                Check your inbox every Monday for new hackathons, closing-soon alerts and opportunities.
-              </p>
-
-              {/* Divider */}
-              <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)', marginBottom: 'var(--space-4)' }} />
-
-              {/* Telegram */}
-              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
-                Join the conversation on{' '}
-                <a
-                  href="https://t.me/hacklistwithbeni"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: 'var(--color-moss)', fontWeight: 500, textDecoration: 'none' }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'underline')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'none')}
-                >
-                  Telegram
-                </a>
+                Check your inbox🎉<br />Your welcome email is on its way.
               </p>
             </div>
           ) : status === 'already_subscribed' ? (

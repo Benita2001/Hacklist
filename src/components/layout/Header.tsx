@@ -56,8 +56,9 @@ export function Header() {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          paddingLeft: 'clamp(24px, 4vw, 48px)',
-          paddingRight: 'clamp(24px, 4vw, 48px)',
+          paddingLeft: 'clamp(16px, 4vw, 48px)',
+          paddingRight: 'clamp(16px, 4vw, 48px)',
+          gap: 'var(--space-4)',
         }}
       >
 
