@@ -127,3 +127,4 @@ async function handleSubscribe(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ success: false, error: 'brevo_error', detail: data }, { status: 500 });
 }
 // redeploy
+// redeploy
