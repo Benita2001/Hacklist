@@ -3,11 +3,13 @@
 import { getDaysRemaining, getCountdownUrgency } from '@/lib/utils';
 
 interface CountdownProps {
-  submissionDeadline: string;
+  deadline: string | null;
 }
 
-export function Countdown({ submissionDeadline }: CountdownProps) {
-  const days    = getDaysRemaining(submissionDeadline);
+export function Countdown({ deadline }: CountdownProps) {
+  if (!deadline) return null;
+
+  const days    = getDaysRemaining(deadline);
   const urgency = getCountdownUrgency(days);
 
   if (urgency === 'hidden') return null;

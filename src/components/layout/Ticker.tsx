@@ -1,11 +1,11 @@
-import { getAllHackathons } from '@/lib/data';
-import { formatPrize } from '@/lib/utils';
+import { getHackathons } from '@/lib/data';
+import { parsePrizeToNumber, formatPrize } from '@/lib/utils';
 
-export function Ticker() {
-  const hackathons = getAllHackathons();
-  const totalPrize = hackathons.reduce((sum, h) => sum + h.prizePool, 0);
-  const aiCount   = hackathons.filter(h => h.category === 'AI'   || h.category === 'Both').length;
-  const web3Count = hackathons.filter(h => h.category === 'Web3' || h.category === 'Both').length;
+export async function Ticker() {
+  const hackathons = await getHackathons();
+  const totalPrize = hackathons.reduce((sum, h) => sum + parsePrizeToNumber(h.prize_pool), 0);
+  const aiCount    = hackathons.filter(h => h.category === 'AI'   || h.category === 'Both').length;
+  const web3Count  = hackathons.filter(h => h.category === 'Web3' || h.category === 'Both').length;
 
   const items = [
     `${hackathons.length} Active Hackathons`,
@@ -16,10 +16,8 @@ export function Ticker() {
     `Find yours on HackList`,
   ];
 
-  /* Duplicate for seamless infinite scroll */
   const doubled = [...items, ...items];
 
-  /* Background hardcoded to always dark moss — must not change with theme */
   return (
     <div
       className="overflow-hidden"

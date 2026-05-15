@@ -20,22 +20,15 @@ const pills: Array<{ label: string; key: FilterKey | 'all' }> = [
   { label: 'Free to Enter',     key: 'free' },
 ];
 
-export function FilterBar({
-  filters,
-  onChange,
-  totalCount,
-  filteredCount,
-}: FilterBarProps) {
+export function FilterBar({ filters, onChange, totalCount, filteredCount }: FilterBarProps) {
   function handlePillClick(key: FilterKey | 'all') {
     if (key === 'all') {
       onChange({ ...filters, activeFilters: [] });
       return;
     }
-    const current = filters.activeFilters;
-    const isActive = current.includes(key as FilterKey);
-    const next = isActive
-      ? current.filter((k) => k !== key)
-      : [...current, key as FilterKey];
+    const current   = filters.activeFilters;
+    const isActive  = current.includes(key);
+    const next      = isActive ? current.filter(k => k !== key) : [...current, key];
     onChange({ ...filters, activeFilters: next });
   }
 
@@ -107,7 +100,6 @@ export function FilterBar({
             </svg>
           </span>
         </div>
-
       </div>
 
       {/* ── Filter pills ───────────────────────────────────── */}
@@ -116,11 +108,7 @@ export function FilterBar({
         style={{ gap: 'var(--space-2)' }}
       >
         {pills.map(({ label, key }) => {
-          const isActive =
-            key === 'all'
-              ? isAllActive
-              : filters.activeFilters.includes(key as FilterKey);
-
+          const isActive = key === 'all' ? isAllActive : filters.activeFilters.includes(key as FilterKey);
           return (
             <button
               key={key}

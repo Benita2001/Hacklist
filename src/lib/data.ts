@@ -1,100 +1,73 @@
-import Fuse from "fuse.js";
-import { Hackathon, FilterKey, FilterState } from "@/lib/types";
-import { isExpired } from "@/lib/utils";
-import hackathonsJson from "../../data/hackathons.json";
+import Fuse from 'fuse.js';
+import { supabase } from './supabase';
+import { Hackathon, FilterKey, FilterState, SortKey } from './types';
+import { parsePrizeToNumber } from './utils';
 
-const raw = hackathonsJson as Hackathon[];
-
-export function getAllHackathons(): Hackathon[] {
-  return raw
-    .filter((h) => !isExpired(h.submissionDeadline))
-    .sort(
-      (a, b) =>
-        new Date(a.submissionDeadline).getTime() -
-        new Date(b.submissionDeadline).getTime()
-    );
+export async function getHackathons(): Promise<Hackathon[]> {
+  const today = new Date().toISOString().split('T')[0];
+  const { data, error } = await supabase
+    .from('hackathons')
+    .select('*')
+    .or(`deadline.gte.${today},deadline.is.null`)
+    .order('deadline', { ascending: true, nullsFirst: false });
+  if (error) {
+    console.error('Supabase error:', error);
+    return [];
+  }
+  return (data ?? []) as Hackathon[];
 }
 
-export function filterHackathons(
-  hackathons: Hackathon[],
-  state: FilterState
-): Hackathon[] {
+export function filterHackathons(hackathons: Hackathon[], state: FilterState): Hackathon[] {
   const { activeFilters, sortBy, searchQuery } = state;
-
   let results = [...hackathons];
 
-  // Apply search first (Fuse.js fuzzy)
   if (searchQuery.trim()) {
     const fuse = new Fuse(results, {
-      keys: ["name", "description"],
+      keys: ['name', 'description'],
       threshold: 0.35,
       ignoreLocation: true,
     });
-    results = fuse.search(searchQuery).map((r) => r.item);
+    results = fuse.search(searchQuery).map(r => r.item);
   }
 
-  // Apply stackable filters (skip "all")
-  const active = activeFilters.filter((f) => f !== "all");
-  if (active.length > 0) {
-    results = results.filter((h) => {
-      return active.every((filter) => matchesFilter(h, filter));
-    });
+  if (activeFilters.length > 0) {
+    results = results.filter(h => activeFilters.every(f => matchesFilter(h, f)));
   }
 
-  // Apply sort
-  results = sortHackathons(results, sortBy);
-
-  return results;
+  return sortHackathons(results, sortBy);
 }
 
 function matchesFilter(h: Hackathon, filter: FilterKey): boolean {
   switch (filter) {
-    case "ai":
-      return h.category === "AI";
-    case "web3":
-      return h.category === "Web3";
-    case "both":
-      return h.category === "Both";
-    case "online":
-      return h.format === "Online";
-    case "offline":
-      return h.format === "In-Person";
-    case "closing-soon": {
-      const days =
-        (new Date(h.submissionDeadline).getTime() - Date.now()) /
-        (1000 * 60 * 60 * 24);
-      return days <= 7;
+    case 'ai':      return h.category === 'AI';
+    case 'web3':    return h.category === 'Web3';
+    case 'online':  return h.format === 'Online';
+    case 'offline': return h.format === 'In-Person';
+    case 'closing-soon': {
+      if (!h.deadline) return false;
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const d = new Date(h.deadline); d.setHours(0, 0, 0, 0);
+      const days = Math.ceil((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      return days >= 0 && days <= 7;
     }
-    case "free":
-      return h.isFree === true;
-    default:
-      return true;
+    case 'free':    return h.free_to_enter === true;
+    default:        return true;
   }
 }
 
-function sortHackathons(hackathons: Hackathon[], sortBy: FilterState["sortBy"]): Hackathon[] {
+function sortHackathons(hackathons: Hackathon[], sortBy: SortKey): Hackathon[] {
   const sorted = [...hackathons];
   switch (sortBy) {
-    case "deadline":
-      return sorted.sort(
-        (a, b) =>
-          new Date(a.submissionDeadline).getTime() -
-          new Date(b.submissionDeadline).getTime()
-      );
-    case "prize":
-      return sorted.sort((a, b) => b.prizePool - a.prizePool);
-    case "recent":
-      return sorted.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+    case 'deadline':
+      return sorted.sort((a, b) => {
+        if (!a.deadline && !b.deadline) return 0;
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+      });
+    case 'prize':
+      return sorted.sort((a, b) => parsePrizeToNumber(b.prize_pool) - parsePrizeToNumber(a.prize_pool));
+    case 'recent':
+      return sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
   }
-}
-
-export function getFeaturedHackathons(hackathons: Hackathon[]): Hackathon[] {
-  return hackathons.filter((h) => h.isFeatured);
-}
-
-export function getHackathonBySlug(slug: string): Hackathon | undefined {
-  return raw.find((h) => h.slug === slug);
 }

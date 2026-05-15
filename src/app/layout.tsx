@@ -22,6 +22,7 @@ const dmSans = DM_Sans({
   display: 'swap',
 });
 
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
