@@ -1,3 +1,5 @@
+export const revalidate = 300; // rebuild from Supabase at most every 5 minutes
+
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';

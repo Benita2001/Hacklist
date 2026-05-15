@@ -12,7 +12,15 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
   const [email, setEmail]               = useState('');
   const [emailFocused, setEmailFocused] = useState(false);
   const [status, setStatus]             = useState<'idle' | 'loading' | 'success' | 'already_subscribed' | 'error'>('idle');
+  const [isMobile, setIsMobile]         = useState(false);
   const prizeRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const totalPrize = hackathons.reduce((sum, h) => sum + parsePrizeToNumber(h.prize_pool), 0);
 
@@ -81,11 +89,9 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
         <div style={{ margin: '0 auto var(--space-8)', paddingTop: 'var(--space-3)' }}>
           <span
             ref={prizeRef}
-            className="font-serif"
+            className="font-serif hero-prize-number"
             style={{
-              fontSize: '64px',
               fontWeight: 400,
-              color: 'var(--color-moss)',
               lineHeight: 1,
               letterSpacing: '-0.03em',
               display: 'block',
@@ -102,9 +108,79 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
         {/* Email capture */}
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           {status === 'success' ? (
-            <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-moss)', padding: 'var(--space-4) 0' }}>
-              You&apos;re in. See you Monday.
-            </p>
+            <div
+              className="animate-fade-in"
+              style={{
+                textAlign:       'center',
+                padding:         'var(--space-6)',
+                backgroundColor: 'var(--color-bg-surface)',
+                border:          '1px solid var(--color-border-default)',
+                borderRadius:    'var(--radius-lg)',
+              }}
+            >
+              {/* Checkmark */}
+              <div
+                style={{
+                  width:           '44px',
+                  height:          '44px',
+                  borderRadius:    '50%',
+                  backgroundColor: 'var(--color-accent-bg)',
+                  border:          '1px solid var(--color-accent-border)',
+                  display:         'flex',
+                  alignItems:      'center',
+                  justifyContent:  'center',
+                  margin:          '0 auto var(--space-4)',
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 10L8 14L16 6" stroke="var(--color-moss)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+
+              {/* Headline */}
+              <p
+                className="font-serif"
+                style={{
+                  fontSize:      '24px',
+                  fontWeight:    400,
+                  color:         'var(--color-text-primary)',
+                  letterSpacing: '-0.01em',
+                  marginBottom:  'var(--space-3)',
+                }}
+              >
+                You&apos;re in🎉
+              </p>
+
+              {/* Body */}
+              <p
+                style={{
+                  fontSize:     'var(--text-sm)',
+                  color:        'var(--color-text-muted)',
+                  lineHeight:   'var(--leading-relaxed)',
+                  marginBottom: 'var(--space-5)',
+                }}
+              >
+                Check your inbox every Monday for new hackathons, closing-soon alerts and opportunities.
+              </p>
+
+              {/* Divider */}
+              <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)', marginBottom: 'var(--space-4)' }} />
+
+              {/* Telegram */}
+              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
+                Join the conversation on{' '}
+                <a
+                  href="https://t.me/hacklistwithbeni"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--color-moss)', fontWeight: 500, textDecoration: 'none' }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'underline')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.textDecoration = 'none')}
+                >
+                  Telegram
+                </a>
+              </p>
+            </div>
           ) : status === 'already_subscribed' ? (
             <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-moss)', padding: 'var(--space-4) 0' }}>
               You&apos;re already on the list.
@@ -128,7 +204,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
                   onChange={e => setEmail(e.target.value)}
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
-                  placeholder="Enter your email to access hackathon opportunities"
+                  placeholder={isMobile ? 'Your email' : 'Enter your email to access hackathon opportunities'}
                   required
                   style={{
                     flex: 1,

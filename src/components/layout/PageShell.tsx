@@ -14,8 +14,8 @@ export function PageShell({ children, className = '' }: PageShellProps) {
         maxWidth: '1200px',
         marginLeft: 'auto',
         marginRight: 'auto',
-        paddingLeft: 'clamp(24px, 4vw, 48px)',
-        paddingRight: 'clamp(24px, 4vw, 48px)',
+        paddingLeft: 'clamp(16px, 4vw, 48px)',
+        paddingRight: 'clamp(16px, 4vw, 48px)',
       }}
     >
       {children}

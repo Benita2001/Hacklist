@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/app/providers';
 import { siteConfig } from '@/config/site';
 import { GetAccessButton } from '@/components/ui/GetAccessButton';
 
@@ -62,19 +62,9 @@ export function Header() {
       >
 
         {/* Wordmark */}
-        <Link href="/" className="flex items-center gap-[var(--space-2)] shrink-0">
-          {/* Pulsing green dot */}
-          <span
-            className="dot-pulse"
-            style={{
-              display: 'inline-block',
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--color-olive)',
-              flexShrink: 0,
-            }}
-          />
+        <Link href="/" className="flex items-center shrink-0" style={{ gap: '8px' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/hacklist-logo.png" alt="HackList" style={{ height: '28px', width: 'auto' }} />
           <span
             className="font-serif"
             style={{
@@ -87,19 +77,23 @@ export function Header() {
           </span>
         </Link>
 
-        {/* Right side */}
-        <div className="flex items-center" style={{ gap: 'var(--space-2)' }}>
+        {/* Right side — scrollable on mobile so all links stay visible */}
+        <div
+          className="header-nav-right flex items-center"
+          style={{ gap: '2px', overflowX: 'auto', flex: '1', minWidth: 0, justifyContent: 'flex-end', paddingLeft: '8px' }}
+        >
 
           {/* About link */}
           <Link
             href="/about"
-            className="hidden md:block"
             style={{
               fontSize: 'var(--text-sm)',
               color: pathname === '/about'
                 ? 'var(--color-text-primary)'
                 : 'var(--color-text-secondary)',
-              padding: '6px 12px',
+              padding: '6px 10px',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
               transition: 'color var(--duration-base) var(--ease-default)',
             }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-primary)')}
@@ -108,17 +102,38 @@ export function Header() {
             About
           </Link>
 
+          {/* Telegram link */}
+          <a
+            href="https://t.me/hacklistwithbeni"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontSize: 'var(--text-sm)',
+              color: 'var(--color-text-secondary)',
+              padding: '6px 10px',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              transition: 'color var(--duration-base) var(--ease-default)',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text-primary)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text-secondary)')}
+          >
+            Telegram
+          </a>
+
           {/* List My Opportunity — ghost outlined pill */}
           <Link
             href="/submit"
-            className="hidden sm:inline-flex items-center"
+            className="inline-flex items-center"
             style={{
               height: '32px',
-              padding: '0 var(--space-4)',
+              padding: '0 var(--space-3)',
               borderRadius: 'var(--radius-pill)',
               border: '1px solid var(--color-border-default)',
               fontSize: 'var(--text-sm)',
               color: 'var(--color-text-secondary)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
               transition: 'border-color var(--duration-base), color var(--duration-base)',
             }}
             onMouseEnter={e => {
@@ -135,8 +150,10 @@ export function Header() {
             List My Opportunity
           </Link>
 
-          {/* Get Free Access — opens email modal */}
-          <GetAccessButton variant="pill" />
+          {/* Get Free Access */}
+          <span style={{ flexShrink: 0 }}>
+            <GetAccessButton variant="pill" />
+          </span>
 
           {/* Theme toggle */}
           <button

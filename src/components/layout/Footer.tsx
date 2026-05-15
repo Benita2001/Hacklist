@@ -30,16 +30,9 @@ export function Footer() {
           style={{ gap: 'var(--space-6)' }}
         >
           {/* Brand */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-            <span
-              style={{
-                display: 'inline-block',
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-olive)',
-              }}
-            />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/hacklist-logo.png" alt="HackList" style={{ height: '24px', width: 'auto' }} />
             <span
               className="font-serif"
               style={{ fontSize: 'var(--text-md)', color: 'var(--color-text-primary)' }}

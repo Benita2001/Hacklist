@@ -26,6 +26,15 @@
   50%       { opacity: 0.3; }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s var(--ease-default) both;
+}
+
 /* ============================================================
    ANIMATION UTILITIES
    ============================================================ */
@@ -55,6 +64,33 @@
 
 .moss-btn:hover {
   background-color: var(--color-moss-light) !important;
+}
+
+/* Prize number — responsive size + theme-aware color */
+.hero-prize-number {
+  font-size: 52px;
+  color: var(--color-moss);
+}
+@media (max-width: 767px) {
+  .hero-prize-number {
+    font-size: 38px;
+  }
+}
+
+/* Header nav right — scrollable on mobile, no scrollbar */
+.header-nav-right {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.header-nav-right::-webkit-scrollbar { display: none; }
+
+/* Filter pills — hide scrollbar cross-browser */
+.filter-pills {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.filter-pills::-webkit-scrollbar {
+  display: none;
 }
 
 /* ============================================================

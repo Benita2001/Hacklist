@@ -46,13 +46,14 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
 
       {/* ── Count + Search + Sort ──────────────────────────── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+      {/* Mobile: [count  sort↑] then [search] — Desktop: [count] [search] [sort] */}
+      <div className="flex flex-wrap sm:flex-nowrap items-center" style={{ gap: 'var(--space-3)' }}>
 
-        <span style={{ flexShrink: 0, fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
+        <span className="order-1 shrink-0" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
           {filteredCount} of {totalCount} hackathon{totalCount === 1 ? '' : 's'}
         </span>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="order-3 sm:order-2 w-full sm:w-auto sm:flex-1" style={{ minWidth: 0 }}>
           <Input
             value={filters.searchQuery}
             onChange={handleSearchChange}
@@ -60,7 +61,7 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
           />
         </div>
 
-        <div style={{ position: 'relative', flexShrink: 0 }}>
+        <div className="order-2 sm:order-3 ml-auto sm:ml-0 relative shrink-0">
           <select
             value={filters.sortBy}
             onChange={handleSortChange}
@@ -104,8 +105,8 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
 
       {/* ── Filter pills ───────────────────────────────────── */}
       <div
-        className="flex flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        style={{ gap: 'var(--space-2)' }}
+        className="filter-pills"
+        style={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'auto', gap: 'var(--space-2)' }}
       >
         {pills.map(({ label, key }) => {
           const isActive = key === 'all' ? isAllActive : filters.activeFilters.includes(key as FilterKey);

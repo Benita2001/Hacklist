@@ -1,3 +1,5 @@
+export const revalidate = 300; // rebuild from Supabase at most every 5 minutes
+
 import { getHackathons } from '@/lib/data';
 import { PageShell } from '@/components/layout/PageShell';
 import { HeroSection } from '@/components/home/HeroSection';

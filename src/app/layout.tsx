@@ -26,10 +26,13 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
-    template: `%s — ${siteConfig.name}`,
+    template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
+  icons: {
+    icon: '/hacklist-logo.png',
+  },
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
