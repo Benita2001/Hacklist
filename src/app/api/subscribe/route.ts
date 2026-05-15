@@ -88,6 +88,28 @@ async function handleSubscribe(req: NextRequest): Promise<NextResponse> {
   console.log('[subscribe] Brevo status:', brevoRes.status, '| body:', rawText);
 
   if (brevoRes.status === 201) {
+    console.log('[welcome email] attempting to send to:', email);
+    try {
+      const welcomeRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept':       'application/json',
+          'content-type': 'application/json',
+          'api-key':      process.env.BREVO_API_KEY!,
+        },
+        body: JSON.stringify({
+          to:         [{ email: email }],
+          templateId: 3,
+          sender:     { name: 'Beni from HackList', email: '0xbeni123@gmail.com' },
+        }),
+      });
+      const welcomeData = await welcomeRes.json();
+      console.log('[welcome email] status:', welcomeRes.status);
+      console.log('[welcome email] response:', JSON.stringify(welcomeData));
+    } catch (err) {
+      console.error('[welcome email] error:', err);
+    }
+
     return NextResponse.json({ success: true, message: 'subscribed' });
   }
   if (brevoRes.status === 204) {
