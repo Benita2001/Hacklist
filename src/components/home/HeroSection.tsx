@@ -10,8 +10,8 @@ interface HeroSectionProps {
 
 export function HeroSection({ hackathons }: HeroSectionProps) {
   const [email, setEmail]               = useState('');
-  const [submitted, setSubmitted]       = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
+  const [status, setStatus]             = useState<'idle' | 'loading' | 'success' | 'already_subscribed' | 'error'>('idle');
   const prizeRef = useRef<HTMLSpanElement>(null);
 
   const totalPrize = hackathons.reduce((sum, h) => sum + parsePrizeToNumber(h.prize_pool), 0);
@@ -33,10 +33,23 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
     requestAnimationFrame(update);
   }, [totalPrize]);
 
-  function handleEmailSubmit(e: React.FormEvent) {
+  async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
-    setSubmitted(true);
+    if (!email.trim() || status === 'loading') return;
+    setStatus('loading');
+    try {
+      const res  = await fetch('/api/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json() as { success: boolean; message?: string };
+      if (data.success && data.message === 'already_subscribed') setStatus('already_subscribed');
+      else if (data.success)                                       setStatus('success');
+      else                                                         setStatus('error');
+    } catch {
+      setStatus('error');
+    }
   }
 
   return (
@@ -88,63 +101,76 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
 
         {/* Email capture */}
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
-          {submitted ? (
+          {status === 'success' ? (
             <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-moss)', padding: 'var(--space-4) 0' }}>
-              You&apos;re in. Hackathons every Monday, straight to your inbox.
+              You&apos;re in. See you Monday.
+            </p>
+          ) : status === 'already_subscribed' ? (
+            <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-moss)', padding: 'var(--space-4) 0' }}>
+              You&apos;re already on the list.
             </p>
           ) : (
-            <form
-              onSubmit={handleEmailSubmit}
-              style={{
-                display: 'flex',
-                border: `1.5px solid ${emailFocused ? 'var(--color-moss)' : 'var(--color-border-default)'}`,
-                borderRadius: 'var(--radius-pill)',
-                overflow: 'hidden',
-                backgroundColor: 'var(--color-bg-surface)',
-                transition: 'border-color var(--duration-base)',
-              }}
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
-                placeholder="Enter your email to access hackathon opportunities"
-                required
+            <>
+              <form
+                onSubmit={handleEmailSubmit}
                 style={{
-                  flex: 1,
-                  minWidth: 0,
-                  border: 'none',
-                  outline: 'none',
-                  padding: '0 var(--space-5)',
-                  height: '48px',
-                  backgroundColor: 'transparent',
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--color-text-primary)',
+                  display: 'flex',
+                  border: `1.5px solid ${emailFocused ? 'var(--color-moss)' : 'var(--color-border-default)'}`,
+                  borderRadius: 'var(--radius-pill)',
+                  overflow: 'hidden',
+                  backgroundColor: 'var(--color-bg-surface)',
+                  transition: 'border-color var(--duration-base)',
                 }}
-              />
-              <button
-                type="submit"
-                style={{
-                  flexShrink: 0,
-                  height: '48px',
-                  padding: '0 var(--space-5)',
-                  backgroundColor: 'var(--color-moss)',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  fontWeight: 500,
-                  fontSize: 'var(--text-sm)',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'background-color var(--duration-base)',
-                }}
-                onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)')}
               >
-                Get Free Access →
-              </button>
-            </form>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => setEmailFocused(false)}
+                  placeholder="Enter your email to access hackathon opportunities"
+                  required
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    border: 'none',
+                    outline: 'none',
+                    padding: '0 var(--space-5)',
+                    height: '48px',
+                    backgroundColor: 'transparent',
+                    fontSize: 'var(--text-sm)',
+                    color: 'var(--color-text-primary)',
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  style={{
+                    flexShrink: 0,
+                    height: '48px',
+                    padding: '0 var(--space-5)',
+                    backgroundColor: 'var(--color-moss)',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    fontWeight: 500,
+                    fontSize: 'var(--text-sm)',
+                    cursor: status === 'loading' ? 'not-allowed' : 'pointer',
+                    whiteSpace: 'nowrap',
+                    transition: 'background-color var(--duration-base)',
+                    opacity: status === 'loading' ? 0.7 : 1,
+                  }}
+                  onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)'; }}
+                  onMouseLeave={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)'; }}
+                >
+                  {status === 'loading' ? 'Subscribing...' : 'Get Free Access →'}
+                </button>
+              </form>
+              {status === 'error' && (
+                <p style={{ textAlign: 'center', fontSize: 'var(--text-xs)', color: 'var(--color-danger-text)', marginTop: 'var(--space-2)' }}>
+                  Something went wrong. Please try again.
+                </p>
+              )}
+            </>
           )}
         </div>
 

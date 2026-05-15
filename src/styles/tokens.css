@@ -55,21 +55,21 @@
   --color-warning-border: #E0C070;
 
   /* -- Category tag palette -------------------------------- */
-  --color-tag-ai-bg:      #E8EDD0;
-  --color-tag-ai-text:    #3A5010;
-  --color-tag-ai-border:  #C0D060;
+  --color-tag-ai-bg:      #E8F0FF;
+  --color-tag-ai-text:    #1E3A6E;
+  --color-tag-ai-border:  #C5D5F5;
 
-  --color-tag-web3-bg:     #D8EDD8;
-  --color-tag-web3-text:   #1E5028;
-  --color-tag-web3-border: #A0CCA0;
+  --color-tag-web3-bg:     #F0EBFF;
+  --color-tag-web3-text:   #3D1E8A;
+  --color-tag-web3-border: #D5C5F5;
 
-  --color-tag-both-bg:     #E4EEC8;
-  --color-tag-both-text:   #384810;
-  --color-tag-both-border: #B8CC78;
+  --color-tag-both-bg:     #FFF4E0;
+  --color-tag-both-text:   #6B4500;
+  --color-tag-both-border: #F5DFA0;
 
   --color-tag-format-bg:     #F0EDE6;
-  --color-tag-format-text:   #6A6A5A;
-  --color-tag-format-border: #D8D4C8;
+  --color-tag-format-text:   #5A6040;
+  --color-tag-format-border: rgba(92, 107, 46, 0.2);
 
 
   /* ============================================================
@@ -286,21 +286,21 @@
   --color-danger-bg:      #200808;
   --color-danger-border:  #501010;
 
-  --color-tag-ai-bg:      #1A1E0A;
-  --color-tag-ai-text:    #A0C040;
-  --color-tag-ai-border:  #3A4418;
+  --color-tag-ai-bg:      #E8F0FF;
+  --color-tag-ai-text:    #1E3A6E;
+  --color-tag-ai-border:  #C5D5F5;
 
-  --color-tag-web3-bg:     #0C1808;
-  --color-tag-web3-text:   #5AAA68;
-  --color-tag-web3-border: #1A3018;
+  --color-tag-web3-bg:     #F0EBFF;
+  --color-tag-web3-text:   #3D1E8A;
+  --color-tag-web3-border: #D5C5F5;
 
-  --color-tag-both-bg:     #181C08;
-  --color-tag-both-text:   #90AA28;
-  --color-tag-both-border: #303C10;
+  --color-tag-both-bg:     #FFF4E0;
+  --color-tag-both-text:   #6B4500;
+  --color-tag-both-border: #F5DFA0;
 
-  --color-tag-format-bg:     #1A1A18;
-  --color-tag-format-text:   #585850;
-  --color-tag-format-border: #2E2E28;
+  --color-tag-format-bg:     #F0EDE6;
+  --color-tag-format-text:   #5A6040;
+  --color-tag-format-border: rgba(92, 107, 46, 0.2);
 
   --card-bg:          #181A10;
   --card-bg-featured: #262E14;

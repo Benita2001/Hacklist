@@ -3,26 +3,47 @@ interface TagProps {
   variant: 'ai' | 'web3' | 'both' | 'format';
 }
 
-const variantClasses: Record<TagProps['variant'], string> = {
-  ai:     'bg-[var(--color-tag-ai-bg)] text-[var(--color-tag-ai-text)] border-[var(--color-tag-ai-border)]',
-  web3:   'bg-[var(--color-tag-web3-bg)] text-[var(--color-tag-web3-text)] border-[var(--color-tag-web3-border)]',
-  both:   'bg-[var(--color-tag-both-bg)] text-[var(--color-tag-both-text)] border-[var(--color-tag-both-border)]',
-  format: 'bg-[var(--color-tag-format-bg)] text-[var(--color-tag-format-text)] border-[var(--color-tag-format-border)]',
+const variantStyles: Record<TagProps['variant'], React.CSSProperties> = {
+  ai: {
+    backgroundColor: 'var(--color-tag-ai-bg)',
+    color:           'var(--color-tag-ai-text)',
+    border:          '1px solid var(--color-tag-ai-border)',
+    fontWeight:      500,
+  },
+  web3: {
+    backgroundColor: 'var(--color-tag-web3-bg)',
+    color:           'var(--color-tag-web3-text)',
+    border:          '1px solid var(--color-tag-web3-border)',
+    fontWeight:      500,
+  },
+  both: {
+    backgroundColor: 'var(--color-tag-both-bg)',
+    color:           'var(--color-tag-both-text)',
+    border:          '1px solid var(--color-tag-both-border)',
+    fontWeight:      500,
+  },
+  format: {
+    backgroundColor: 'var(--color-tag-format-bg)',
+    color:           'var(--color-tag-format-text)',
+    border:          '1px solid var(--color-tag-format-border)',
+    fontWeight:      400,
+  },
 };
 
 export function Tag({ label, variant }: TagProps) {
   return (
     <span
-      className={[
-        'inline-flex items-center',
-        'px-[var(--tag-px)] py-[var(--tag-py)]',
-        'rounded-[var(--radius-sm)]',
-        'text-[length:var(--tag-font-size)]',
-        'font-medium',
-        'tracking-[var(--tag-tracking)]',
-        'border',
-        variantClasses[variant],
-      ].join(' ')}
+      style={{
+        display:       'inline-flex',
+        alignItems:    'center',
+        padding:       '3px 10px',
+        borderRadius:  '50px',
+        fontSize:      '11px',
+        letterSpacing: '0.3px',
+        lineHeight:    1.4,
+        whiteSpace:    'nowrap',
+        ...variantStyles[variant],
+      }}
     >
       {label}
     </span>

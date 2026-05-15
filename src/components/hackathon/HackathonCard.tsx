@@ -124,7 +124,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
           >
             {hackathon.name}
           </h3>
-          <div className="flex flex-wrap" style={{ gap: 'var(--space-2)' }}>
+          <div className="flex flex-wrap" style={{ gap: '6px' }}>
             <Tag label={hackathon.category} variant={categoryVariant} />
             <Tag label={hackathon.format} variant="format" />
             {hackathon.free_to_enter && <Tag label="Free" variant="format" />}
@@ -258,7 +258,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
       </div>
 
       {/* Format tags */}
-      <div className="flex flex-wrap" style={{ gap: 'var(--space-2)', marginBottom: 'var(--space-5)' }}>
+      <div className="flex flex-wrap" style={{ gap: '6px', marginBottom: 'var(--space-5)' }}>
         <Tag label={hackathon.format} variant="format" />
         {hackathon.free_to_enter && <Tag label="Free" variant="format" />}
       </div>

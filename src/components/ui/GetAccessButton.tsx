@@ -7,9 +7,9 @@ interface GetAccessButtonProps {
 }
 
 export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
-  const [open, setOpen]       = useState(false);
-  const [email, setEmail]     = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [open, setOpen]   = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'already_subscribed' | 'error'>('idle');
   const inputRef  = useRef<HTMLInputElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -29,11 +29,23 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
-    /* TODO: wire to Brevo / ConvertKit */
-    setSubmitted(true);
+    if (!email.trim() || status === 'loading') return;
+    setStatus('loading');
+    try {
+      const res  = await fetch('/api/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json() as { success: boolean; message?: string };
+      if (data.success && data.message === 'already_subscribed') setStatus('already_subscribed');
+      else if (data.success)                                       setStatus('success');
+      else                                                         setStatus('error');
+    } catch {
+      setStatus('error');
+    }
   }
 
   const buttonContent = 'Get Free Access →';
@@ -137,7 +149,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
               </svg>
             </button>
 
-            {submitted ? (
+            {status === 'success' ? (
               /* Success state */
               <div style={{ textAlign: 'center', padding: 'var(--space-4) 0' }}>
                 <div
@@ -160,9 +172,19 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                 >
                   You&apos;re in.
                 </h3>
-                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
-                  Every Monday morning: new hackathons, closing-soon alerts, and prize highlights · straight to your inbox.
+                <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-moss)', fontWeight: 500, lineHeight: 'var(--leading-relaxed)' }}>
+                  See you Monday.
                 </p>
+              </div>
+            ) : status === 'already_subscribed' ? (
+              /* Already subscribed state */
+              <div style={{ textAlign: 'center', padding: 'var(--space-4) 0' }}>
+                <h3
+                  className="font-serif"
+                  style={{ fontSize: 'var(--text-xl)', color: 'var(--color-text-primary)', marginBottom: 'var(--space-2)' }}
+                >
+                  You&apos;re already on the list.
+                </h3>
               </div>
             ) : (
               /* Form state */
@@ -188,7 +210,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                     marginBottom: 'var(--space-6)',
                   }}
                 >
-                  New hackathons, closing-soon alerts, and prize highlights every Monday. Free, always.
+                  We share new hackathons, closing-soon alerts, opportunities, and AI updates every Monday.
                 </p>
 
                 <form onSubmit={handleSubmit}>
@@ -198,7 +220,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      placeholder="you@example.com"
+                      placeholder="Enter your email to access opportunities"
                       required
                       style={{
                         flex: 1,
@@ -216,6 +238,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                     />
                     <button
                       type="submit"
+                      disabled={status === 'loading'}
                       style={{
                         height: '40px',
                         padding: '0 var(--space-4)',
@@ -225,28 +248,24 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                         fontSize: 'var(--text-sm)',
                         fontWeight: 500,
                         border: 'none',
-                        cursor: 'pointer',
+                        cursor: status === 'loading' ? 'not-allowed' : 'pointer',
                         whiteSpace: 'nowrap',
                         transition: 'background-color var(--duration-base)',
+                        opacity: status === 'loading' ? 0.7 : 1,
                       }}
-                      onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)')}
-                      onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)')}
+                      onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)'; }}
+                      onMouseLeave={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)'; }}
                     >
-                      Get Access
+                      {status === 'loading' ? 'Subscribing...' : 'Get Access'}
                     </button>
                   </div>
+                  {status === 'error' && (
+                    <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-danger-text)', marginTop: 'var(--space-2)' }}>
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
                 </form>
 
-                <p
-                  style={{
-                    marginTop: 'var(--space-3)',
-                    fontSize: 'var(--text-xs)',
-                    color: 'var(--color-text-muted)',
-                    textAlign: 'center',
-                  }}
-                >
-                  No spam. Unsubscribe anytime.
-                </p>
               </>
             )}
           </div>

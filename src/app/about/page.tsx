@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const values = [
   {
     label: 'Updated Daily',
-    description: 'New hackathons added every day. Expired ones removed automatically.',
+    description: 'New hackathons added every day.',
   },
   {
     label: 'AI + Web3',
@@ -18,7 +18,7 @@ const values = [
   },
   {
     label: 'Prize-First',
-    description: 'Every listing leads with the prize pool. We know why you\'re here.',
+    description: 'Deadline sorted so the most urgent opportunities always surface first.',
   },
 ] as const;
 
@@ -58,12 +58,11 @@ export default function AboutPage() {
             marginBottom: 'var(--space-12)',
           }}
         >
-          HackList exists because finding a good hackathon shouldn&apos;t be hard. Devpost,
-          DoraHacks, and Lablab are built for organizers. They&apos;re tools for hosting, not
-          discovering. Builders were left hunting across five different sites, missing deadlines,
-          and losing track of prize pools. HackList fixes that: one clean list, every active AI
-          and Web3 hackathon, sorted by deadline, prize front and center. We are an aggregator,
-          not a platform. Every Apply button takes you directly to the original listing.
+          HackList exists because finding a good hackathon shouldn&apos;t be hard. Other sites
+          are built by hackathon organizers and builders are left hunting across five different
+          sites, missing deadlines and losing track of prize pools. HackList fixes that. One clean
+          list, every active AI and Web3 hackathon, sorted by deadline. Every Apply button takes
+          you directly to the original listing.
         </p>
 
         {/* Value boxes */}
@@ -105,19 +104,6 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-
-        {/* Closing line */}
-        <p
-          className="font-serif"
-          style={{
-            fontSize: 'var(--text-xl)',
-            fontStyle: 'italic',
-            color: 'var(--color-text-secondary)',
-            marginBottom: 'var(--space-10)',
-          }}
-        >
-          Built by a builder, for builders.
-        </p>
 
         {/* Back link */}
         <Link

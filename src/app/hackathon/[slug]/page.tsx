@@ -106,7 +106,7 @@ export default async function HackathonDetailPage({ params }: Props) {
             </div>
 
             {/* Tags */}
-            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
               <Tag label={hackathon.category} variant={categoryVariant} />
               <Tag label={hackathon.format} variant="format" />
               {hackathon.free_to_enter && <Tag label="Free" variant="format" />}
