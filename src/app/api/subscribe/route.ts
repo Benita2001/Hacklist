@@ -126,3 +126,4 @@ async function handleSubscribe(req: NextRequest): Promise<NextResponse> {
   console.error('[subscribe] Unexpected Brevo response:', brevoRes.status, data);
   return NextResponse.json({ success: false, error: 'brevo_error', detail: data }, { status: 500 });
 }
+// redeploy
