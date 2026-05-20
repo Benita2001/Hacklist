@@ -85,3 +85,4 @@ Join the HackList community <a href="https://t.me/hacklistchat">here</a>`;
     return NextResponse.json({ ok: false, error: 'network_error' }, { status: 500 });
   }
 }
+// webhook enabled
