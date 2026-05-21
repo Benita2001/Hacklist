@@ -127,3 +127,4 @@ setInterval(async () => {
   console.log('[announce-queue] Interval tick — processing queue...');
   await processQueue();
 }, INTERVAL_MS);
+// enable analytics
