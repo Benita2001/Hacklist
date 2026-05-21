@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Instrument_Serif, DM_Sans } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Ticker } from '@/components/layout/Ticker';
@@ -68,6 +69,7 @@ export default function RootLayout({
           <div className="flex-1">{children}</div>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
