@@ -12,15 +12,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
   const [email, setEmail]               = useState('');
   const [emailFocused, setEmailFocused] = useState(false);
   const [status, setStatus]             = useState<'idle' | 'loading' | 'success' | 'already_subscribed' | 'error'>('idle');
-  const [isMobile, setIsMobile]         = useState(false);
   const prizeRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
 
   const totalPrize = hackathons.reduce((sum, h) => sum + parsePrizeToNumber(h.prize_pool), 0);
 
@@ -185,7 +177,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
                   onChange={e => setEmail(e.target.value)}
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
-                  placeholder={isMobile ? 'Your email' : 'Enter your email to access hackathon opportunities'}
+                  placeholder="Enter your email for hackathon opportunities"
                   required
                   style={{
                     flex: 1,
