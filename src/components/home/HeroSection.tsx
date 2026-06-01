@@ -177,6 +177,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
                   onChange={e => setEmail(e.target.value)}
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
+                  className="email-input"
                   placeholder="Enter your email for hackathon opportunities"
                   required
                   style={{

@@ -205,3 +205,9 @@
 [data-theme="dark"] .submit-info-card-step {
   color: #B8C96A;
 }
+
+@media (max-width: 768px) {
+  .email-input::placeholder {
+    font-size: 11px;
+  }
+}
