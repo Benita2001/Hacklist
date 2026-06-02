@@ -26,7 +26,7 @@ export async function Ticker() {
     >
       <div
         className="ticker-track flex items-center h-full whitespace-nowrap"
-        style={{ width: 'max-content' }}
+        style={{ width: 'max-content', transform: 'translate3d(0, 0, 0)', willChange: 'transform' }}
       >
         {doubled.map((item, i) => (
           <span
@@ -47,13 +47,14 @@ export async function Ticker() {
             <span
               style={{
                 display: 'inline-block',
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                backgroundColor: '#8FA040',
+                width: '1px',
+                height: '10px',
+                backgroundColor: '#B8C96A',
                 marginLeft: '32px',
-                opacity: 0.7,
+                opacity: 0.25,
+                verticalAlign: 'middle',
               }}
+              aria-hidden="true"
             />
           </span>
         ))}

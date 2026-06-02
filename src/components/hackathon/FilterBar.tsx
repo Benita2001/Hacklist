@@ -43,42 +43,79 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
   const isAllActive = filters.activeFilters.length === 0;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
 
-      {/* ── Count + Search + Sort ──────────────────────────── */}
-      {/* Mobile: [count  sort↑] then [search] — Desktop: [count] [search] [sort] */}
-      <div className="flex flex-wrap sm:flex-nowrap items-center" style={{ gap: 'var(--space-3)' }}>
+      {/* ── Row 1: Search input ────────────────────────────── */}
+      <div style={{ maxWidth: '480px', width: '100%' }}>
+        <Input
+          value={filters.searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search hackathons…"
+        />
+      </div>
 
-        <span className="order-1 shrink-0" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
-          {filteredCount} of {totalCount} hackathon{totalCount === 1 ? '' : 's'}
-        </span>
+      {/* ── Row 2: Filter pills + sort ─────────────────────── */}
+      <div className="flex items-center" style={{ gap: 'var(--space-3)' }}>
 
-        <div className="order-3 sm:order-2 w-full sm:w-auto sm:flex-1" style={{ minWidth: 0 }}>
-          <Input
-            value={filters.searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Search hackathons…"
-          />
+        {/* Pills — scrollable, left-aligned */}
+        <div
+          className="filter-pills flex items-center"
+          style={{ flexWrap: 'nowrap', overflowX: 'auto', gap: 'var(--space-2)', flex: 1, minWidth: 0 }}
+        >
+          {pills.map(({ label, key }) => {
+            const isActive = key === 'all' ? isAllActive : filters.activeFilters.includes(key as FilterKey);
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => handlePillClick(key)}
+                aria-pressed={isActive}
+                className="whitespace-nowrap shrink-0"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px 14px',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid',
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: isActive ? 500 : 400,
+                  cursor: 'pointer',
+                  transition: 'all var(--duration-base) var(--ease-default)',
+                  backgroundColor: isActive ? 'var(--pill-bg-active)' : 'transparent',
+                  borderColor:     isActive ? 'var(--pill-bg-active)' : 'var(--pill-border)',
+                  color:           isActive ? 'var(--pill-text-active)' : 'var(--pill-text)',
+                }}
+              >
+                {label}
+              </button>
+            );
+          })}
+
+          {/* Count label */}
+          <span className="shrink-0" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap', paddingLeft: 'var(--space-2)' }}>
+            {filteredCount}/{totalCount}
+          </span>
         </div>
 
-        <div className="order-2 sm:order-3 ml-auto sm:ml-0 relative shrink-0">
+        {/* Sort — floated right */}
+        <div className="relative shrink-0">
           <select
             value={filters.sortBy}
             onChange={handleSortChange}
             aria-label="Sort hackathons"
             style={{
               appearance: 'none',
-              height: 'var(--pill-height)',
-              paddingLeft: 'var(--space-3)',
-              paddingRight: 'var(--space-8)',
+              padding: '6px var(--space-8) 6px var(--space-3)',
               backgroundColor: 'var(--color-bg-surface)',
               border: '1px solid var(--color-border-default)',
-              borderRadius: 'var(--radius-pill)',
+              borderRadius: 'var(--radius-md)',
               color: 'var(--color-text-primary)',
               fontSize: 'var(--text-sm)',
               cursor: 'pointer',
               outline: 'none',
               whiteSpace: 'nowrap',
+              transition: 'all var(--duration-base) var(--ease-default)',
             }}
           >
             <option value="deadline">Deadline soonest</option>
@@ -101,43 +138,7 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
             </svg>
           </span>
         </div>
-      </div>
 
-      {/* ── Filter pills ───────────────────────────────────── */}
-      <div
-        className="filter-pills"
-        style={{ display: 'flex', flexWrap: 'nowrap', overflowX: 'auto', gap: 'var(--space-2)' }}
-      >
-        {pills.map(({ label, key }) => {
-          const isActive = key === 'all' ? isAllActive : filters.activeFilters.includes(key as FilterKey);
-          return (
-            <button
-              key={key}
-              type="button"
-              onClick={() => handlePillClick(key)}
-              aria-pressed={isActive}
-              className="whitespace-nowrap shrink-0"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: 'var(--pill-height)',
-                padding: '0 var(--pill-px)',
-                borderRadius: 'var(--pill-radius)',
-                border: '1px solid',
-                fontSize: 'var(--text-sm)',
-                fontWeight: isActive ? 500 : 400,
-                cursor: 'pointer',
-                transition: 'background-color var(--duration-base), border-color var(--duration-base), color var(--duration-base)',
-                backgroundColor: isActive ? 'var(--pill-bg-active)' : 'transparent',
-                borderColor:     isActive ? 'var(--pill-bg-active)' : 'var(--pill-border)',
-                color:           isActive ? 'var(--pill-text-active)' : 'var(--pill-text)',
-              }}
-            >
-              {label}
-            </button>
-          );
-        })}
       </div>
 
     </div>

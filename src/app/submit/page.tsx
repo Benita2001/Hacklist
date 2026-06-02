@@ -92,8 +92,7 @@ export default function SubmitPage() {
             {whatHappensNext.map(({ step, text }) => (
               <div key={step} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-4)' }}>
                 <span
-                  className="font-serif submit-info-card-step"
-                  style={{ fontSize: 'var(--text-lg)', fontWeight: 400, lineHeight: 1, flexShrink: 0, minWidth: '24px' }}
+                  style={{ fontFamily: 'monospace', fontSize: '0.75rem', fontWeight: 600, lineHeight: 1, flexShrink: 0, minWidth: '24px', color: 'var(--color-moss)', letterSpacing: '0.04em' }}
                 >
                   {step}
                 </span>

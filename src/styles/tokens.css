@@ -105,9 +105,9 @@
   /* ============================================================
      4. TYPOGRAPHY
      ============================================================ */
-  --font-sans:    var(--font-dm-sans,          'DM Sans',          system-ui, sans-serif);
+  --font-sans:    var(--font-inter,            'Inter',            system-ui, sans-serif);
   --font-serif:   var(--font-instrument-serif, 'Instrument Serif', Georgia,   serif);
-  --font-mono:    var(--font-dm-sans,          'DM Sans',          system-ui, sans-serif);
+  --font-mono:    var(--font-inter,            'Inter',            system-ui, sans-serif);
 
   --text-2xs:  11px;
   --text-xs:   12px;
@@ -181,6 +181,7 @@
   --card-bg-featured: var(--color-moss);
   --card-radius:      var(--radius-md);
   --card-padding:     var(--space-6);
+  --color-card-border: var(--color-border-default);
 
   /* Shadows */
   --shadow-sm:        0 1px 2px  rgba(61, 72, 32, 0.06);
@@ -304,6 +305,7 @@
 
   --card-bg:          #181A10;
   --card-bg-featured: #262E14;
+  --color-card-border: rgba(255, 255, 255, 0.07);
 
   --shadow-card:       0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.5);

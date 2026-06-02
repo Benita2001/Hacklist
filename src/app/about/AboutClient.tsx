@@ -67,26 +67,26 @@ export function AboutClient() {
 
         {/* Value boxes */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-3"
-          style={{ gap: 'var(--space-4)', marginBottom: 'var(--space-12)' }}
+          className="grid grid-cols-1 md:grid-cols-3"
+          style={{ gap: 'var(--space-8)', marginBottom: 'var(--space-12)' }}
         >
           {values.map(({ label, description }) => (
             <div
               key={label}
               style={{
                 backgroundColor: 'var(--color-bg-surface)',
-                border: '1px solid var(--color-border-default)',
+                border: '1px solid var(--color-card-border)',
                 borderRadius: 'var(--radius-md)',
-                padding: 'var(--space-5)',
+                padding: 'var(--space-6)',
+                textAlign: 'left',
               }}
             >
               <p
-                className="font-serif"
                 style={{
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 400,
-                  color: 'var(--color-moss)',
-                  lineHeight: 1,
+                  fontSize: 'var(--text-base)',
+                  fontWeight: 700,
+                  color: 'var(--color-text-primary)',
+                  lineHeight: 1.3,
                   marginBottom: 'var(--space-2)',
                 }}
               >
@@ -95,7 +95,7 @@ export function AboutClient() {
               <p
                 style={{
                   fontSize: 'var(--text-sm)',
-                  color: 'var(--color-text-secondary)',
+                  color: 'var(--color-text-muted)',
                   lineHeight: 'var(--leading-relaxed)',
                 }}
               >

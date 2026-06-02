@@ -53,7 +53,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
   }
 
   return (
-    <section style={{ paddingTop: 'var(--space-16)', paddingBottom: 'var(--space-10)' }}>
+    <section style={{ paddingTop: 'var(--space-16)', paddingBottom: 'var(--space-6)' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
 
         {/* Headline */}

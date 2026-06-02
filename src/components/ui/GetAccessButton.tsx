@@ -100,7 +100,9 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
             position: 'fixed',
             inset: 0,
             zIndex: 'var(--z-modal)' as never,
-            backgroundColor: 'rgba(26, 30, 10, 0.60)',
+            backgroundColor: 'rgba(0, 0, 0, 0.60)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -140,12 +142,13 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                 backgroundColor: 'transparent',
                 cursor: 'pointer',
                 color: 'var(--color-text-muted)',
+                transition: 'color var(--duration-base) var(--ease-default)',
               }}
               onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)')}
               onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-muted)')}
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
               </svg>
             </button>
 
@@ -214,49 +217,54 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                 </p>
 
                 <form onSubmit={handleSubmit}>
-                  <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                     <input
                       ref={inputRef}
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
-                      placeholder="Enter your email to access opportunities"
+                      placeholder="Enter your email for hackathon opportunities"
                       required
                       style={{
-                        flex: 1,
-                        height: '40px',
-                        padding: '0 var(--space-3)',
-                        borderRadius: 'var(--radius-pill)',
-                        border: '1px solid var(--color-border-default)',
-                        backgroundColor: 'var(--color-bg-surface)',
+                        width: '100%',
+                        padding: '12px 16px',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.015)',
                         color: 'var(--color-text-primary)',
-                        fontSize: 'var(--text-base)',
+                        fontSize: 'var(--text-sm)',
                         outline: 'none',
+                        transition: 'all 0.2s ease-in-out',
                       }}
-                      onFocus={e => (e.currentTarget.style.borderColor = 'var(--color-border-focus)')}
-                      onBlur={e  => (e.currentTarget.style.borderColor = 'var(--color-border-default)')}
+                      onFocus={e => {
+                        e.currentTarget.style.borderColor = 'rgba(140, 170, 110, 0.4)';
+                        e.currentTarget.style.boxShadow  = '0 0 0 2px rgba(140, 170, 110, 0.1)';
+                      }}
+                      onBlur={e => {
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                        e.currentTarget.style.boxShadow  = 'none';
+                      }}
                     />
                     <button
                       type="submit"
                       disabled={status === 'loading'}
                       style={{
-                        height: '40px',
-                        padding: '0 var(--space-4)',
-                        borderRadius: 'var(--radius-pill)',
+                        width: '100%',
+                        padding: '12px var(--space-4)',
+                        borderRadius: '8px',
                         backgroundColor: 'var(--color-moss)',
                         color: '#FFFFFF',
                         fontSize: 'var(--text-sm)',
                         fontWeight: 500,
                         border: 'none',
                         cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-                        whiteSpace: 'nowrap',
-                        transition: 'background-color var(--duration-base)',
+                        transition: 'all var(--duration-base) var(--ease-default)',
                         opacity: status === 'loading' ? 0.7 : 1,
                       }}
                       onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)'; }}
                       onMouseLeave={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)'; }}
                     >
-                      {status === 'loading' ? 'Subscribing...' : 'Get Access'}
+                      {status === 'loading' ? 'Subscribing...' : 'Get Access →'}
                     </button>
                   </div>
                   {status === 'error' && (

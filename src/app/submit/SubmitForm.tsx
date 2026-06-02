@@ -23,11 +23,10 @@ type FormErrors = Partial<Record<keyof FormData, string>>;
 /* Layout-only — colors live in globals.css .form-input */
 const inputBase: React.CSSProperties = {
   width:         '100%',
-  padding:       '14px 16px',
-  borderRadius:  '10px',
+  padding:       '12px 16px',
+  borderRadius:  '8px',
   fontSize:      'var(--text-sm)',
   lineHeight:    'var(--leading-normal)',
-  transition:    'border-color var(--duration-base), background-color var(--duration-base)',
 };
 
 const labelBase: React.CSSProperties = {
