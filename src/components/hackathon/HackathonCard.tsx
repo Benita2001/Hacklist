@@ -10,6 +10,7 @@ interface HackathonCardProps {
   hackathon: Hackathon;
   spotlight?: boolean;
   index?: number;
+  onSelect?: (hackathon: Hackathon) => void;
 }
 
 type TagVariant = 'ai' | 'web3' | 'both' | 'format';
@@ -20,14 +21,17 @@ const categoryVariantMap: Record<Hackathon['category'], TagVariant> = {
   Both: 'both',
 };
 
-export function HackathonCard({ hackathon, spotlight = false, index = 0 }: HackathonCardProps) {
+export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelect }: HackathonCardProps) {
   const router = useRouter();
 
   function handleCardClick() {
-    router.push(`/hackathon/${hackathon.id}`);
+    if (onSelect) {
+      onSelect(hackathon);
+    } else {
+      router.push(`/hackathon/${hackathon.id}`);
+    }
   }
 
-  const today         = new Date().toISOString().split('T')[0];
   const endingToday   = isEndingToday(hackathon.deadline);
   const daysLeft      = hackathon.deadline ? getDaysRemaining(hackathon.deadline) : null;
   const isClosingSoon = !endingToday && daysLeft !== null && daysLeft <= 7;
@@ -51,6 +55,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
     color: 'rgb(248, 113, 113)',
     border: '1px solid rgba(239, 68, 68, 0.20)',
     pointerEvents: 'none',
+    whiteSpace: 'nowrap',
   };
 
   const UrgencyBadge = endingToday ? (
@@ -58,6 +63,22 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
   ) : isClosingSoon ? (
     <span style={urgencyBadgeStyle}>Closing Soon</span>
   ) : null;
+
+  /* ── Apply button — shared base style ── */
+  const applyButtonStyle: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '6px 16px',
+    borderRadius: 'var(--radius-sm)',
+    border: '1px solid var(--color-border-default)',
+    backgroundColor: 'var(--color-bg-elevated)',
+    color: 'var(--color-text-secondary)',
+    fontSize: 'var(--text-xs)',
+    fontWeight: 500,
+    textDecoration: 'none',
+    transition: 'border-color var(--duration-base) var(--ease-default)',
+    whiteSpace: 'nowrap',
+  };
 
   /* ── Spotlight card ── */
   if (spotlight) {
@@ -73,23 +94,16 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
           backgroundColor: 'var(--card-bg-featured)',
           borderRadius: 'var(--card-radius)',
           padding: 'var(--card-padding)',
-          ...(isClosingSoon
-            ? { borderWidth: '1px', borderStyle: 'solid' }
-            : { border: '1px solid transparent' }),
+          border: isClosingSoon ? '1px solid' : '1px solid transparent',
           gap: 'var(--space-6)',
           position: 'relative',
-          transition: 'all var(--duration-base) var(--ease-default)',
+          transition: 'border-color var(--duration-base) var(--ease-default)',
         }}
         onMouseEnter={e => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.transform = 'translateY(-2px)';
-          el.style.boxShadow = 'var(--shadow-card-hover)';
+          if (!isClosingSoon) (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)';
         }}
         onMouseLeave={e => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.transform = '';
-          el.style.boxShadow = '';
-          if (isClosingSoon) el.style.borderColor = '';
+          if (!isClosingSoon) (e.currentTarget as HTMLElement).style.borderColor = 'transparent';
         }}
       >
         {UrgencyBadge}
@@ -97,14 +111,25 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
         {/* Left: organizer + name + tags */}
         <div
           className="md:w-72"
-          style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}
+          style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}
         >
-          <p style={{ fontSize: 'var(--text-xs)', fontWeight: 500, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-olive-light)' }}>
+          <p
+            className="truncate"
+            style={{
+              fontSize: 'var(--text-xs)',
+              fontWeight: 500,
+              letterSpacing: 'var(--tracking-caps)',
+              textTransform: 'uppercase',
+              color: 'var(--color-olive-light)',
+              maxWidth: '70%',
+              display: 'block',
+            }}
+          >
             {hackathon.organizer}
           </p>
           <h3
             className="font-serif"
-            style={{ fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: 400, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.01em' }}
+            style={{ fontSize: 'clamp(22px, 2.5vw, 30px)', fontWeight: 400, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.01em', marginTop: '8px' }}
           >
             {hackathon.name}
           </h3>
@@ -160,22 +185,22 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '4px',
-                padding: '6px var(--space-4)',
-                borderRadius: 'var(--radius-md)',
+                padding: '6px 16px',
+                borderRadius: 'var(--radius-sm)',
                 backgroundColor: '#FFFFFF',
                 color: 'var(--color-moss)',
-                fontSize: 'var(--text-sm)',
+                border: '1px solid transparent',
+                fontSize: 'var(--text-xs)',
                 fontWeight: 600,
                 textDecoration: 'none',
-                transition: 'all var(--duration-base) var(--ease-default)',
+                transition: 'background-color var(--duration-base) var(--ease-default)',
                 whiteSpace: 'nowrap',
                 alignSelf: 'flex-start',
               }}
-              onMouseEnter={(e) => { e.stopPropagation(); (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.85)'; }}
+              onMouseEnter={(e) => { e.stopPropagation(); (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.88)'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#FFFFFF'; }}
             >
-              Apply ↗
+              Apply
             </a>
           )}
         </div>
@@ -197,31 +222,35 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
         backgroundColor: 'var(--card-bg)',
         borderRadius: 'var(--card-radius)',
         padding: 'var(--card-padding)',
-        ...(isClosingSoon
-          ? { borderWidth: '1px', borderStyle: 'solid' }
-          : { border: '1px solid var(--color-card-border)' }),
+        border: isClosingSoon ? '1px solid' : '1px solid var(--color-card-border)',
         boxShadow: 'var(--shadow-card)',
         position: 'relative',
-        transition: 'all var(--duration-base) var(--ease-default)',
+        transition: 'border-color var(--duration-base) var(--ease-default)',
       }}
       onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.transform = 'translateY(-2px)';
-        el.style.boxShadow = 'var(--shadow-card-hover)';
-        if (!isClosingSoon) el.style.borderColor = 'var(--color-border-strong)';
+        if (!isClosingSoon) (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-border-strong)';
       }}
       onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.transform = '';
-        el.style.boxShadow = 'var(--shadow-card)';
-        if (!isClosingSoon) el.style.borderColor = 'var(--color-border-default)';
-        else el.style.borderColor = '';
+        if (!isClosingSoon) (e.currentTarget as HTMLElement).style.borderColor = 'var(--color-card-border)';
+        else (e.currentTarget as HTMLElement).style.borderColor = '';
       }}
     >
       {UrgencyBadge}
 
-      {/* Organizer */}
-      <p style={{ fontSize: 'var(--text-xs)', fontWeight: 600, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: 'var(--space-2)' }}>
+      {/* Organizer — truncated to prevent overlap with urgency badge */}
+      <p
+        className="truncate"
+        style={{
+          fontSize: 'var(--text-xs)',
+          fontWeight: 600,
+          letterSpacing: 'var(--tracking-caps)',
+          textTransform: 'uppercase',
+          color: 'var(--color-text-muted)',
+          marginBottom: '8px',
+          display: 'block',
+          maxWidth: '70%',
+        }}
+      >
         {hackathon.organizer}
       </p>
 
@@ -280,24 +309,16 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0 }: Hacka
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '3px',
-                padding: '4px var(--space-3)',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--color-moss)',
-                color: '#FFFFFF',
-                fontSize: 'var(--text-xs)',
-                fontWeight: 500,
-                textDecoration: 'none',
-                transition: 'all var(--duration-base) var(--ease-default)',
-                whiteSpace: 'nowrap',
+              style={applyButtonStyle}
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--color-border-strong)';
               }}
-              onMouseEnter={(e) => { e.stopPropagation(); (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--color-moss-light)'; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--color-moss)'; }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--color-border-default)';
+              }}
             >
-              Apply ↗
+              Apply
             </a>
           )}
         </div>

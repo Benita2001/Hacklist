@@ -26,9 +26,9 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
       onChange({ ...filters, activeFilters: [] });
       return;
     }
-    const current   = filters.activeFilters;
-    const isActive  = current.includes(key);
-    const next      = isActive ? current.filter(k => k !== key) : [...current, key];
+    const current  = filters.activeFilters;
+    const isActive = current.includes(key);
+    const next     = isActive ? current.filter(k => k !== key) : [...current, key];
     onChange({ ...filters, activeFilters: next });
   }
 
@@ -43,10 +43,10 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
   const isAllActive = filters.activeFilters.length === 0;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
 
-      {/* ── Row 1: Search input ────────────────────────────── */}
-      <div style={{ maxWidth: '480px', width: '100%' }}>
+      {/* ── Row 1: Full-width search ───────────────────────── */}
+      <div className="w-full">
         <Input
           value={filters.searchQuery}
           onChange={handleSearchChange}
@@ -54,10 +54,10 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
         />
       </div>
 
-      {/* ── Row 2: Filter pills + sort ─────────────────────── */}
+      {/* ── Row 2: Filter pills | sort | count ─────────────── */}
       <div className="flex items-center" style={{ gap: 'var(--space-3)' }}>
 
-        {/* Pills — scrollable, left-aligned */}
+        {/* Pills — scrollable, left-aligned, flex-1 */}
         <div
           className="filter-pills flex items-center"
           style={{ flexWrap: 'nowrap', overflowX: 'auto', gap: 'var(--space-2)', flex: 1, minWidth: 0 }}
@@ -75,10 +75,10 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '6px 14px',
+                  padding: '5px 12px',
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid',
-                  fontSize: 'var(--text-sm)',
+                  fontSize: 'var(--text-xs)',
                   fontWeight: isActive ? 500 : 400,
                   cursor: 'pointer',
                   transition: 'all var(--duration-base) var(--ease-default)',
@@ -91,14 +91,9 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
               </button>
             );
           })}
-
-          {/* Count label */}
-          <span className="shrink-0" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap', paddingLeft: 'var(--space-2)' }}>
-            {filteredCount}/{totalCount}
-          </span>
         </div>
 
-        {/* Sort — floated right */}
+        {/* Sort — shrink-0 */}
         <div className="relative shrink-0">
           <select
             value={filters.sortBy}
@@ -106,16 +101,16 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
             aria-label="Sort hackathons"
             style={{
               appearance: 'none',
-              padding: '6px var(--space-8) 6px var(--space-3)',
+              padding: '5px var(--space-8) 5px var(--space-3)',
               backgroundColor: 'var(--color-bg-surface)',
               border: '1px solid var(--color-border-default)',
               borderRadius: 'var(--radius-md)',
               color: 'var(--color-text-primary)',
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               cursor: 'pointer',
               outline: 'none',
               whiteSpace: 'nowrap',
-              transition: 'all var(--duration-base) var(--ease-default)',
+              transition: 'border-color var(--duration-base) var(--ease-default)',
             }}
           >
             <option value="deadline">Deadline soonest</option>
@@ -125,19 +120,27 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
           <span
             style={{
               position: 'absolute',
-              right: '12px',
+              right: '10px',
               top: '50%',
               transform: 'translateY(-50%)',
               pointerEvents: 'none',
-              color: 'var(--color-text-secondary)',
+              color: 'var(--color-text-muted)',
             }}
             aria-hidden="true"
           >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
               <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
         </div>
+
+        {/* Result count — far right, muted */}
+        <span
+          className="shrink-0"
+          style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}
+        >
+          {filteredCount}/{totalCount}
+        </span>
 
       </div>
 

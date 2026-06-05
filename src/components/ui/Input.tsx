@@ -22,7 +22,7 @@ export function Input({
   return (
     <div
       className={[
-        'relative flex items-center w-full',
+        'flex items-center w-full',
         'h-[var(--input-height)]',
         'bg-[var(--input-bg)]',
         'border border-[var(--input-border)]',
@@ -36,12 +36,12 @@ export function Input({
     >
       {hasIcon && (
         <span
-          className="absolute left-[var(--input-px)] flex items-center pointer-events-none"
+          className="flex items-center shrink-0 pl-[var(--input-px)] pointer-events-none select-none"
           aria-hidden="true"
         >
           <svg
-            width="16"
-            height="16"
+            width="15"
+            height="15"
             viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@ export function Input({
               cx="7"
               cy="7"
               r="4.5"
-              stroke="var(--color-text-secondary)"
+              stroke="var(--color-text-muted)"
               strokeWidth="1.25"
             />
             <line
@@ -58,7 +58,7 @@ export function Input({
               y1="10.5"
               x2="13.5"
               y2="13.5"
-              stroke="var(--color-text-secondary)"
+              stroke="var(--color-text-muted)"
               strokeWidth="1.25"
               strokeLinecap="round"
             />
@@ -72,10 +72,8 @@ export function Input({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={[
-          'w-full h-full',
-          hasIcon
-            ? 'pl-[calc(var(--input-px)+var(--space-6))]'
-            : 'pl-[var(--input-px)]',
+          'flex-1 h-full',
+          hasIcon ? 'pl-2' : 'pl-[var(--input-px)]',
           'pr-[var(--input-px)]',
           'bg-transparent',
           'text-[color:var(--input-text)]',

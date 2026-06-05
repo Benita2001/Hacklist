@@ -9,7 +9,6 @@ import { PageShell } from '@/components/layout/PageShell';
 import { Tag } from '@/components/ui/Tag';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { Countdown } from '@/components/ui/Countdown';
-import { Button } from '@/components/ui/Button';
 import type { Hackathon } from '@/lib/types';
 
 type TagVariant = 'ai' | 'web3' | 'both' | 'format';
@@ -118,17 +117,25 @@ export default async function HackathonDetailPage({ params }: Props) {
           {/* Stats grid */}
           <div
             className="grid grid-cols-2 sm:grid-cols-4"
-            style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-10)', maxWidth: '680px' }}
+            style={{ gap: '16px', marginBottom: 'var(--space-10)', maxWidth: '680px' }}
           >
             {stats.map(stat => (
               <div
                 key={stat.label}
-                style={{ backgroundColor: 'var(--color-bg-surface)', border: '1px solid var(--color-border-default)', borderRadius: 'var(--radius-md)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-1)' }}
+                style={{
+                  backgroundColor: 'var(--color-bg-elevated)',
+                  border: '1px solid var(--color-border-muted)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: 'var(--space-4)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 'var(--space-2)',
+                }}
               >
-                <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)' }}>
+                <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
                   {stat.label}
                 </span>
-                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)' }}>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)' }}>
                   {stat.value}
                 </span>
               </div>
@@ -147,12 +154,35 @@ export default async function HackathonDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* Apply button */}
+          {/* Apply CTA */}
           {hackathon.apply_url && (
-            <div className="hidden md:flex">
-              <Button variant="primary" size="lg" href={hackathon.apply_url}>
-                Apply to {hackathon.name} →
-              </Button>
+            <div className="hidden md:block">
+              <a
+                href={hackathon.apply_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  maxWidth: '28rem',
+                  padding: '12px 24px',
+                  borderRadius: 'var(--radius-md)',
+                  backgroundColor: 'var(--btn-primary-bg)',
+                  color: 'var(--btn-primary-text)',
+                  border: '1px solid transparent',
+                  fontSize: 'var(--text-base)',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                  transition: 'background-color var(--duration-base) var(--ease-default)',
+                  letterSpacing: '-0.01em',
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--btn-primary-bg-hover)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--btn-primary-bg)'; }}
+              >
+                Apply to {hackathon.name}
+              </a>
             </div>
           )}
 
@@ -165,9 +195,28 @@ export default async function HackathonDetailPage({ params }: Props) {
           className="fixed bottom-0 left-0 right-0 md:hidden"
           style={{ zIndex: 'var(--z-sticky)' as never, backgroundColor: 'var(--color-bg-surface)', borderTop: '1px solid var(--color-border-default)', padding: 'var(--space-4)' }}
         >
-          <Button variant="primary" size="lg" href={hackathon.apply_url} className="w-full">
-            Apply Now →
-          </Button>
+          <a
+            href={hackathon.apply_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              padding: '12px 24px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: 'var(--btn-primary-bg)',
+              color: 'var(--btn-primary-text)',
+              border: '1px solid transparent',
+              fontSize: 'var(--text-base)',
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'background-color var(--duration-base) var(--ease-default)',
+            }}
+          >
+            Apply Now
+          </a>
         </div>
       )}
     </>

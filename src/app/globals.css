@@ -63,6 +63,63 @@
   animation: pulseCardBorder 2.8s ease-in-out infinite;
 }
 
+/* ============================================================
+   MODAL ANIMATIONS
+   ============================================================ */
+
+@keyframes modalBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalSheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes modalScaleIn {
+  from { opacity: 0; transform: scale(0.97) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+.modal-backdrop {
+  animation: modalBackdropIn 0.2s ease both;
+}
+
+/* Mobile: slide up from bottom */
+.modal-sheet {
+  animation: modalSheetUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Desktop: scale in */
+@media (min-width: 768px) {
+  .modal-sheet {
+    animation: modalScaleIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* Modal scrollable body — hide scrollbar */
+.modal-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.modal-scroll::-webkit-scrollbar { display: none; }
+
+/* Modal shell — mobile: bottom sheet, desktop: centered card */
+.modal-shell {
+  height: 92dvh;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .modal-shell {
+    height: auto;
+    max-height: 90vh;
+    border-radius: var(--radius-lg);
+  }
+}
+
 .moss-btn:hover {
   background-color: var(--color-moss-light) !important;
 }
