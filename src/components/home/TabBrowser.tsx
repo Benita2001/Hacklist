@@ -18,6 +18,7 @@ export interface Bounty {
   deadline_text: string | null;
   category: 'AI' | 'Web3' | 'Both';
   platform: string | null;
+  type?: string | null;
   apply_url: string | null;
   spotlight: boolean;
   verified: boolean;
@@ -35,6 +36,7 @@ export interface Grant {
   ecosystem: string | null;
   format: string | null;
   free_to_apply: boolean;
+  type?: string | null;
   apply_url: string | null;
   spotlight: boolean;
   verified: boolean;
@@ -68,6 +70,7 @@ export interface Job {
   category: 'AI' | 'Web3' | 'Both';
   format: string | null;
   location: string | null;
+  employment_type?: string | null;
   apply_url: string | null;
   spotlight: boolean;
   verified: boolean;
@@ -83,10 +86,11 @@ interface TabBrowserProps {
   jobs: Job[];
 }
 
-/* ── Helpers ──────────────────────────────────────────────── */
+/* ── Types ────────────────────────────────────────────────── */
 
 type TabKey = 'hackathons' | 'bounties' | 'grants' | 'programs' | 'jobs';
-type ProgramTypeFilter = 'All' | 'Fellowship' | 'Accelerator' | 'Incubator';
+
+/* ── Tag helpers ──────────────────────────────────────────── */
 
 type CategoryVariant = 'ai' | 'web3' | 'both';
 function categoryVariant(cat: 'AI' | 'Web3' | 'Both'): CategoryVariant {
@@ -96,21 +100,9 @@ function categoryVariant(cat: 'AI' | 'Web3' | 'Both'): CategoryVariant {
 }
 
 const programTypeStyles: Record<string, React.CSSProperties> = {
-  Fellowship: {
-    backgroundColor: '#EEEDFE',
-    color: '#3C3489',
-    border: '1px solid #D5D4F8',
-  },
-  Accelerator: {
-    backgroundColor: '#E6F1FB',
-    color: '#0C447C',
-    border: '1px solid #C4DCEF',
-  },
-  Incubator: {
-    backgroundColor: '#FAEEDA',
-    color: '#633806',
-    border: '1px solid #F0D6A8',
-  },
+  Fellowship:  { backgroundColor: '#EEEDFE', color: '#3C3489', border: '1px solid #D5D4F8' },
+  Accelerator: { backgroundColor: '#E6F1FB', color: '#0C447C', border: '1px solid #C4DCEF' },
+  Incubator:   { backgroundColor: '#FAEEDA', color: '#633806', border: '1px solid #F0D6A8' },
 };
 
 function buildBountyTags(b: Bounty): TagItem[] {
@@ -148,16 +140,38 @@ function buildJobTags(j: Job): TagItem[] {
   return tags;
 }
 
+/* ── Filter logic ─────────────────────────────────────────── */
+
+function filterBounties(items: Bounty[], f: string): Bounty[] {
+  if (f === 'All')  return items;
+  if (f === 'AI')   return items.filter(b => b.category === 'AI');
+  if (f === 'Web3') return items.filter(b => b.category === 'Web3');
+  return items.filter(b => b.type === f);
+}
+
+function filterGrants(items: Grant[], f: string): Grant[] {
+  if (f === 'All')  return items;
+  if (f === 'AI')   return items.filter(g => g.category === 'AI');
+  if (f === 'Web3') return items.filter(g => g.category === 'Web3');
+  return items.filter(g => g.type === f);
+}
+
+function filterJobs(items: Job[], f: string): Job[] {
+  if (f === 'All')      return items;
+  if (f === 'AI')       return items.filter(j => j.category === 'AI');
+  if (f === 'Web3')     return items.filter(j => j.category === 'Web3');
+  if (f === 'Remote')   return items.filter(j =>
+    j.format?.toLowerCase() === 'remote' ||
+    j.location?.toLowerCase().includes('remote')
+  );
+  return items.filter(j => j.employment_type === f);
+}
+
 /* ── Empty state ──────────────────────────────────────────── */
 
 function EmptyState({ label }: { label: string }) {
   return (
-    <div
-      style={{
-        padding: 'var(--space-24) 0',
-        textAlign: 'center',
-      }}
-    >
+    <div style={{ padding: 'var(--space-24) 0', textAlign: 'center' }}>
       <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>
         No {label} listed yet. Check back soon.
       </p>
@@ -165,14 +179,84 @@ function EmptyState({ label }: { label: string }) {
   );
 }
 
-/* ── Tab content grids ────────────────────────────────────── */
+/* ── Shared pill style ────────────────────────────────────── */
 
-function BountiesGrid({ bounties }: { bounties: Bounty[] }) {
+function pillStyle(isActive: boolean): React.CSSProperties {
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '5px 12px',
+    borderRadius: 'var(--radius-md)',
+    border: '1px solid',
+    fontSize: 'var(--text-xs)',
+    fontWeight: isActive ? 500 : 400,
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
+    transition: 'all var(--duration-base) var(--ease-default)',
+    backgroundColor: isActive ? 'var(--pill-bg-active)' : 'transparent',
+    borderColor:     isActive ? 'var(--pill-bg-active)' : 'var(--pill-border)',
+    color:           isActive ? 'var(--pill-text-active)' : 'var(--pill-text)',
+  };
+}
+
+/* ── Filter pill row ──────────────────────────────────────── */
+
+function FilterPills({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)', marginBottom: 'var(--space-5)' }}>
+      {options.map(opt => (
+        <button
+          key={opt}
+          type="button"
+          onClick={() => onChange(opt)}
+          aria-pressed={value === opt}
+          className="shrink-0"
+          style={pillStyle(value === opt)}
+        >
+          {opt}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ── Card grid wrapper ────────────────────────────────────── */
+
+function CardGrid({ children }: { children: React.ReactNode }) {
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
-      {bounties.length === 0 ? <EmptyState label="Bounties" /> : (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
+        {children}
+      </div>
+    </section>
+  );
+}
+
+/* ── Tab content grids ────────────────────────────────────── */
+
+function BountiesTab({ bounties }: { bounties: Bounty[] }) {
+  const [filter, setFilter] = useState('All');
+  const filtered = filterBounties(bounties, filter);
+
+  return (
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <FilterPills
+        options={['All', 'AI', 'Web3', 'Technical', 'Content', 'Design']}
+        value={filter}
+        onChange={setFilter}
+      />
+      {filtered.length === 0 ? <EmptyState label="Bounties" /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-          {bounties.map((b, i) => (
+          {filtered.map((b, i) => (
             <UniversalCard
               key={b.id}
               id={b.id}
@@ -185,6 +269,7 @@ function BountiesGrid({ bounties }: { bounties: Bounty[] }) {
               deadline_text={b.deadline_text}
               apply_url={b.apply_url}
               tags={buildBountyTags(b)}
+              href={`/bounty/${b.id}`}
               index={i}
             />
           ))}
@@ -194,12 +279,20 @@ function BountiesGrid({ bounties }: { bounties: Bounty[] }) {
   );
 }
 
-function GrantsGrid({ grants }: { grants: Grant[] }) {
+function GrantsTab({ grants }: { grants: Grant[] }) {
+  const [filter, setFilter] = useState('All');
+  const filtered = filterGrants(grants, filter);
+
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
-      {grants.length === 0 ? <EmptyState label="Grants" /> : (
+      <FilterPills
+        options={['All', 'AI', 'Web3', 'Open Source', 'Research', 'Education']}
+        value={filter}
+        onChange={setFilter}
+      />
+      {filtered.length === 0 ? <EmptyState label="Grants" /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-          {grants.map((g, i) => (
+          {filtered.map((g, i) => (
             <UniversalCard
               key={g.id}
               id={g.id}
@@ -212,6 +305,7 @@ function GrantsGrid({ grants }: { grants: Grant[] }) {
               deadline_text={g.deadline_text}
               apply_url={g.apply_url}
               tags={buildGrantTags(g)}
+              href={`/grant/${g.id}`}
               index={i}
             />
           ))}
@@ -221,12 +315,20 @@ function GrantsGrid({ grants }: { grants: Grant[] }) {
   );
 }
 
-function ProgramsGrid({ programs }: { programs: Program[] }) {
+function ProgramsTab({ programs }: { programs: Program[] }) {
+  const [filter, setFilter] = useState('All');
+  const filtered = filter === 'All' ? programs : programs.filter(p => p.type === filter);
+
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
-      {programs.length === 0 ? <EmptyState label="Programs" /> : (
+      <FilterPills
+        options={['All', 'Fellowship', 'Accelerator', 'Incubator']}
+        value={filter}
+        onChange={setFilter}
+      />
+      {filtered.length === 0 ? <EmptyState label="Programs" /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-          {programs.map((p, i) => (
+          {filtered.map((p, i) => (
             <UniversalCard
               key={p.id}
               id={p.id}
@@ -239,6 +341,7 @@ function ProgramsGrid({ programs }: { programs: Program[] }) {
               deadline_text={p.deadline_text}
               apply_url={p.apply_url}
               tags={buildProgramTags(p)}
+              href={`/program/${p.id}`}
               index={i}
             />
           ))}
@@ -248,12 +351,20 @@ function ProgramsGrid({ programs }: { programs: Program[] }) {
   );
 }
 
-function JobsGrid({ jobs }: { jobs: Job[] }) {
+function JobsTab({ jobs }: { jobs: Job[] }) {
+  const [filter, setFilter] = useState('All');
+  const filtered = filterJobs(jobs, filter);
+
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
-      {jobs.length === 0 ? <EmptyState label="Jobs" /> : (
+      <FilterPills
+        options={['All', 'AI', 'Web3', 'Remote', 'Full-Time', 'Part-Time']}
+        value={filter}
+        onChange={setFilter}
+      />
+      {filtered.length === 0 ? <EmptyState label="Jobs" /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-          {jobs.map((j, i) => (
+          {filtered.map((j, i) => (
             <UniversalCard
               key={j.id}
               id={j.id}
@@ -266,6 +377,7 @@ function JobsGrid({ jobs }: { jobs: Job[] }) {
               deadline_text={j.deadline_text}
               apply_url={j.apply_url}
               tags={buildJobTags(j)}
+              href={`/job/${j.id}`}
               index={i}
             />
           ))}
@@ -299,10 +411,9 @@ function tabPillStyle(isActive: boolean): React.CSSProperties {
 /* ── Main component ───────────────────────────────────────── */
 
 export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: TabBrowserProps) {
-  const [activeTab, setActiveTab]       = useState<TabKey>('hackathons');
-  const [programType, setProgramType]   = useState<ProgramTypeFilter>('All');
+  const [activeTab, setActiveTab] = useState<TabKey>('hackathons');
 
-  const spotlightHackathon    = hackathons.find(h => h.spotlight);
+  const spotlightHackathon     = hackathons.find(h => h.spotlight);
   const nonSpotlightHackathons = hackathons.filter(h => !h.spotlight);
 
   const tabs: Array<{ key: TabKey; label: string; count: number }> = [
@@ -312,13 +423,6 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
     { key: 'programs',   label: 'Programs',   count: programs.length   },
     { key: 'jobs',       label: 'Jobs',       count: jobs.length       },
   ];
-
-  const programTypeFilters: ProgramTypeFilter[] = ['All', 'Fellowship', 'Accelerator', 'Incubator'];
-
-  const filteredPrograms =
-    programType === 'All'
-      ? programs
-      : programs.filter(p => p.type === programType);
 
   return (
     <div>
@@ -365,54 +469,12 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
         ))}
       </div>
 
-      {/* ── Programs secondary filter ── */}
-      {activeTab === 'programs' && (
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 'var(--space-2)',
-            marginBottom: 'var(--space-5)',
-          }}
-        >
-          {programTypeFilters.map(type => {
-            const isActive = programType === type;
-            return (
-              <button
-                key={type}
-                type="button"
-                onClick={() => setProgramType(type)}
-                aria-pressed={isActive}
-                className="whitespace-nowrap shrink-0"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '5px 12px',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid',
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: isActive ? 500 : 400,
-                  cursor: 'pointer',
-                  transition: 'all var(--duration-base) var(--ease-default)',
-                  backgroundColor: isActive ? 'var(--pill-bg-active)' : 'transparent',
-                  borderColor:     isActive ? 'var(--pill-bg-active)' : 'var(--pill-border)',
-                  color:           isActive ? 'var(--pill-text-active)' : 'var(--pill-text)',
-                }}
-              >
-                {type}
-              </button>
-            );
-          })}
-        </div>
-      )}
-
       {/* ── Tab content ── */}
       {activeTab === 'hackathons' && <HackathonBrowser hackathons={nonSpotlightHackathons} />}
-      {activeTab === 'bounties'   && <BountiesGrid bounties={bounties} />}
-      {activeTab === 'grants'     && <GrantsGrid grants={grants} />}
-      {activeTab === 'programs'   && <ProgramsGrid programs={filteredPrograms} />}
-      {activeTab === 'jobs'       && <JobsGrid jobs={jobs} />}
+      {activeTab === 'bounties'   && <BountiesTab bounties={bounties} />}
+      {activeTab === 'grants'     && <GrantsTab grants={grants} />}
+      {activeTab === 'programs'   && <ProgramsTab programs={programs} />}
+      {activeTab === 'jobs'       && <JobsTab jobs={jobs} />}
 
     </div>
   );

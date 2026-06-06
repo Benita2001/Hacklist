@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { getDaysRemaining, isEndingToday } from '@/lib/utils';
 import { Tag } from '@/components/ui/Tag';
 import { Countdown } from '@/components/ui/Countdown';
@@ -21,6 +22,7 @@ interface UniversalCardProps {
   deadline_text: string | null;
   apply_url: string | null;
   tags: TagItem[];
+  href?: string;
   index?: number;
 }
 
@@ -58,8 +60,11 @@ export function UniversalCard({
   deadline_text,
   apply_url,
   tags,
+  href,
   index = 0,
 }: UniversalCardProps) {
+  const router = useRouter();
+
   const endingToday   = isEndingToday(deadline);
   const daysLeft      = deadline ? getDaysRemaining(deadline) : null;
   const isClosingSoon = !endingToday && daysLeft !== null && daysLeft <= 7;
@@ -101,14 +106,23 @@ export function UniversalCard({
     textDecoration: 'none',
     transition: 'border-color var(--duration-base) var(--ease-default)',
     whiteSpace: 'nowrap',
+    flexShrink: 0,
   };
 
-  // First tag (category) goes beside the name; remaining (format/type/location) go in the tag row
+  // First tag (category) goes beside the name; remaining go in the tag row below
   const [primaryTag, ...remainingTags] = tags;
+
+  function handleCardClick() {
+    if (href) router.push(href);
+  }
 
   return (
     <article
-      className={`animate-fade-up flex flex-col${isClosingSoon ? ' closing-soon-pulse' : ''}`}
+      onClick={href ? handleCardClick : undefined}
+      onKeyDown={href ? (e) => { if (e.key === 'Enter') handleCardClick(); } : undefined}
+      tabIndex={href ? 0 : undefined}
+      aria-label={href ? `${name}. View details.` : undefined}
+      className={`animate-fade-up flex flex-col${isClosingSoon ? ' closing-soon-pulse' : ''}${href ? ' cursor-pointer outline-none' : ''}`}
       style={{
         animationDelay: animDelay,
         height: '100%',
@@ -147,7 +161,7 @@ export function UniversalCard({
         {organizer}
       </p>
 
-      {/* Name + category tag — marginBottom matches HackathonCard exactly */}
+      {/* Name + category tag */}
       <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
         <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.01em', flex: 1 }}>
           {name}
@@ -159,26 +173,27 @@ export function UniversalCard({
         )}
       </div>
 
-      {/* Description — same structure and styles as HackathonCard */}
+      {/* Description */}
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {description}
         </p>
       </div>
 
-      {/* Format/type/location tags — always rendered, same as HackathonCard format row */}
+      {/* Format/type/location tags */}
       <div className="flex flex-wrap" style={{ gap: '6px', marginBottom: 'var(--space-5)' }}>
         {remainingTags.map((tag, i) => (
           <TagRenderer key={i} tag={tag} />
         ))}
       </div>
 
-      {/* Bottom: prize + countdown + apply — identical to HackathonCard */}
+      {/* Bottom: prize + countdown + apply */}
       <div
         className="flex items-end justify-between"
-        style={{ marginTop: 'auto', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--color-border-muted)' }}
+        style={{ marginTop: 'auto', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--color-border-muted)', gap: 'var(--space-3)' }}
       >
-        <div>
+        {/* Prize — flex: 1 + minWidth: 0 so it never pushes right column out */}
+        <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
             {prizeLabel}
           </p>
@@ -189,12 +204,14 @@ export function UniversalCard({
             {prizeValue ?? 'Undisclosed'}
           </span>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-2)' }}>
-          <div style={{ paddingBottom: '2px' }}>
+
+        {/* Deadline + apply — flexShrink: 0 prevents deadline text from collapsing into prize */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-2)', flexShrink: 0 }}>
+          <div style={{ paddingBottom: '2px', overflow: 'hidden' }}>
             {deadline ? (
               <Countdown deadline={deadline} />
             ) : (
-              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
+              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}>
                 {deadlineLabel}
               </span>
             )}
@@ -204,8 +221,10 @@ export function UniversalCard({
               href={apply_url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               style={applyButtonStyle}
               onMouseEnter={(e) => {
+                e.stopPropagation();
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = 'var(--color-border-strong)';
               }}
               onMouseLeave={(e) => {
