@@ -14,6 +14,7 @@ interface UniversalCardProps {
   id: string;
   name: string;
   organizer: string;
+  description?: string | null;
   prizeLabel: string;
   prizeValue: string | null;
   deadline: string | null;
@@ -50,6 +51,7 @@ function TagRenderer({ tag }: { tag: TagItem }) {
 export function UniversalCard({
   name,
   organizer,
+  description,
   prizeLabel,
   prizeValue,
   deadline,
@@ -101,7 +103,7 @@ export function UniversalCard({
     whiteSpace: 'nowrap',
   };
 
-  // First tag goes in the header row beside the name; rest go in the tag row below
+  // First tag (category) goes beside the name; remaining (format/type/location) go in the tag row
   const [primaryTag, ...remainingTags] = tags;
 
   return (
@@ -128,7 +130,7 @@ export function UniversalCard({
     >
       {UrgencyBadge}
 
-      {/* Organizer */}
+      {/* Organizer — same as HackathonCard */}
       <p
         className="truncate"
         style={{
@@ -145,21 +147,9 @@ export function UniversalCard({
         {organizer}
       </p>
 
-      {/* Name + primary tag */}
-      <div
-        className="flex items-start justify-between"
-        style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-3)' }}
-      >
-        <h3
-          style={{
-            fontSize: '1rem',
-            fontWeight: 600,
-            color: 'var(--color-text-primary)',
-            lineHeight: 'var(--leading-snug)',
-            letterSpacing: '-0.01em',
-            flex: 1,
-          }}
-        >
+      {/* Name + category tag — marginBottom matches HackathonCard exactly */}
+      <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.01em', flex: 1 }}>
           {name}
         </h3>
         {primaryTag && (
@@ -169,58 +159,37 @@ export function UniversalCard({
         )}
       </div>
 
-      {/* Remaining tags */}
-      {remainingTags.length > 0 && (
-        <div className="flex flex-wrap" style={{ gap: '6px', marginBottom: 'var(--space-5)' }}>
-          {remainingTags.map((tag, i) => (
-            <TagRenderer key={i} tag={tag} />
-          ))}
-        </div>
-      )}
+      {/* Description — same structure and styles as HackathonCard */}
+      <div style={{ marginBottom: 'var(--space-4)' }}>
+        <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {description}
+        </p>
+      </div>
 
-      {/* Bottom: prize + countdown + apply */}
+      {/* Format/type/location tags — always rendered, same as HackathonCard format row */}
+      <div className="flex flex-wrap" style={{ gap: '6px', marginBottom: 'var(--space-5)' }}>
+        {remainingTags.map((tag, i) => (
+          <TagRenderer key={i} tag={tag} />
+        ))}
+      </div>
+
+      {/* Bottom: prize + countdown + apply — identical to HackathonCard */}
       <div
         className="flex items-end justify-between"
-        style={{
-          marginTop: 'auto',
-          paddingTop: 'var(--space-4)',
-          borderTop: '1px solid var(--color-border-muted)',
-        }}
+        style={{ marginTop: 'auto', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--color-border-muted)' }}
       >
         <div>
-          <p
-            style={{
-              fontSize: 'var(--text-2xs)',
-              fontWeight: 500,
-              letterSpacing: 'var(--tracking-caps)',
-              textTransform: 'uppercase',
-              color: 'var(--color-text-muted)',
-              marginBottom: '4px',
-            }}
-          >
+          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
             {prizeLabel}
           </p>
           <span
             className="font-serif"
-            style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: 400,
-              color: 'var(--color-moss)',
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
-            }}
+            style={{ fontSize: 'var(--text-2xl)', fontWeight: 400, color: 'var(--color-moss)', letterSpacing: '-0.02em', lineHeight: 1 }}
           >
             {prizeValue ?? 'Undisclosed'}
           </span>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-end',
-            gap: 'var(--space-2)',
-          }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-2)' }}>
           <div style={{ paddingBottom: '2px' }}>
             {deadline ? (
               <Countdown deadline={deadline} />

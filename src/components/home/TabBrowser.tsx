@@ -11,6 +11,7 @@ export interface Bounty {
   id: string;
   name: string;
   organizer: string;
+  description?: string | null;
   reward: string | null;
   deadline: string | null;
   deadline_text: string | null;
@@ -25,6 +26,7 @@ export interface Grant {
   id: string;
   name: string;
   organizer: string;
+  description?: string | null;
   amount: string | null;
   deadline: string | null;
   deadline_text: string | null;
@@ -41,6 +43,7 @@ export interface Program {
   id: string;
   name: string;
   organizer: string;
+  description?: string | null;
   stipend: string | null;
   duration: string | null;
   deadline: string | null;
@@ -57,6 +60,7 @@ export interface Job {
   id: string;
   title: string;
   company: string;
+  description?: string | null;
   salary: string | null;
   deadline: string | null;
   deadline_text: string | null;
@@ -143,15 +147,6 @@ function buildJobTags(j: Job): TagItem[] {
   return tags;
 }
 
-/* ── Shared card grid ─────────────────────────────────────── */
-
-const cardGrid: React.CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(1, 1fr)',
-  gap: 'var(--space-5)',
-  alignItems: 'stretch',
-};
-
 /* ── Empty state ──────────────────────────────────────────── */
 
 function EmptyState({ label }: { label: string }) {
@@ -172,94 +167,110 @@ function EmptyState({ label }: { label: string }) {
 /* ── Tab content grids ────────────────────────────────────── */
 
 function BountiesGrid({ bounties }: { bounties: Bounty[] }) {
-  if (bounties.length === 0) return <EmptyState label="Bounties" />;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-      {bounties.map((b, i) => (
-        <UniversalCard
-          key={b.id}
-          id={b.id}
-          name={b.name}
-          organizer={b.organizer}
-          prizeLabel="Reward"
-          prizeValue={b.reward}
-          deadline={b.deadline}
-          deadline_text={b.deadline_text}
-          apply_url={b.apply_url}
-          tags={buildBountyTags(b)}
-          index={i}
-        />
-      ))}
-    </div>
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      {bounties.length === 0 ? <EmptyState label="Bounties" /> : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
+          {bounties.map((b, i) => (
+            <UniversalCard
+              key={b.id}
+              id={b.id}
+              name={b.name}
+              organizer={b.organizer}
+              description={b.description}
+              prizeLabel="Reward"
+              prizeValue={b.reward}
+              deadline={b.deadline}
+              deadline_text={b.deadline_text}
+              apply_url={b.apply_url}
+              tags={buildBountyTags(b)}
+              index={i}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
 function GrantsGrid({ grants }: { grants: Grant[] }) {
-  if (grants.length === 0) return <EmptyState label="Grants" />;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-      {grants.map((g, i) => (
-        <UniversalCard
-          key={g.id}
-          id={g.id}
-          name={g.name}
-          organizer={g.organizer}
-          prizeLabel="Amount"
-          prizeValue={g.amount}
-          deadline={g.deadline}
-          deadline_text={g.deadline_text}
-          apply_url={g.apply_url}
-          tags={buildGrantTags(g)}
-          index={i}
-        />
-      ))}
-    </div>
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      {grants.length === 0 ? <EmptyState label="Grants" /> : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
+          {grants.map((g, i) => (
+            <UniversalCard
+              key={g.id}
+              id={g.id}
+              name={g.name}
+              organizer={g.organizer}
+              description={g.description}
+              prizeLabel="Amount"
+              prizeValue={g.amount}
+              deadline={g.deadline}
+              deadline_text={g.deadline_text}
+              apply_url={g.apply_url}
+              tags={buildGrantTags(g)}
+              index={i}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
 function ProgramsGrid({ programs }: { programs: Program[] }) {
-  if (programs.length === 0) return <EmptyState label="Programs" />;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-      {programs.map((p, i) => (
-        <UniversalCard
-          key={p.id}
-          id={p.id}
-          name={p.name}
-          organizer={p.organizer}
-          prizeLabel="Stipend"
-          prizeValue={p.stipend}
-          deadline={p.deadline}
-          deadline_text={p.deadline_text}
-          apply_url={p.apply_url}
-          tags={buildProgramTags(p)}
-          index={i}
-        />
-      ))}
-    </div>
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      {programs.length === 0 ? <EmptyState label="Programs" /> : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
+          {programs.map((p, i) => (
+            <UniversalCard
+              key={p.id}
+              id={p.id}
+              name={p.name}
+              organizer={p.organizer}
+              description={p.description}
+              prizeLabel="Stipend"
+              prizeValue={p.stipend}
+              deadline={p.deadline}
+              deadline_text={p.deadline_text}
+              apply_url={p.apply_url}
+              tags={buildProgramTags(p)}
+              index={i}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
 function JobsGrid({ jobs }: { jobs: Job[] }) {
-  if (jobs.length === 0) return <EmptyState label="Jobs" />;
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-      {jobs.map((j, i) => (
-        <UniversalCard
-          key={j.id}
-          id={j.id}
-          name={j.title}
-          organizer={j.company}
-          prizeLabel="Salary"
-          prizeValue={j.salary}
-          deadline={j.deadline}
-          deadline_text={j.deadline_text}
-          apply_url={j.apply_url}
-          tags={buildJobTags(j)}
-          index={i}
-        />
-      ))}
-    </div>
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      {jobs.length === 0 ? <EmptyState label="Jobs" /> : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
+          {jobs.map((j, i) => (
+            <UniversalCard
+              key={j.id}
+              id={j.id}
+              name={j.title}
+              organizer={j.company}
+              description={j.description}
+              prizeLabel="Salary"
+              prizeValue={j.salary}
+              deadline={j.deadline}
+              deadline_text={j.deadline_text}
+              apply_url={j.apply_url}
+              tags={buildJobTags(j)}
+              index={i}
+            />
+          ))}
+        </div>
+      )}
+    </section>
   );
 }
 
