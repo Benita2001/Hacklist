@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Hackathon } from '@/lib/types';
 import { HackathonBrowser } from '@/components/home/HackathonBrowser';
+import { HackathonCard } from '@/components/hackathon/HackathonCard';
 import { UniversalCard, type TagItem } from '@/components/hackathon/UniversalCard';
 
 /* ── Entity types ─────────────────────────────────────────── */
@@ -301,6 +302,9 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
   const [activeTab, setActiveTab]       = useState<TabKey>('hackathons');
   const [programType, setProgramType]   = useState<ProgramTypeFilter>('All');
 
+  const spotlightHackathon    = hackathons.find(h => h.spotlight);
+  const nonSpotlightHackathons = hackathons.filter(h => !h.spotlight);
+
   const tabs: Array<{ key: TabKey; label: string; count: number }> = [
     { key: 'hackathons', label: 'Hackathons', count: hackathons.length },
     { key: 'bounties',   label: 'Bounties',   count: bounties.length   },
@@ -318,6 +322,26 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
 
   return (
     <div>
+
+      {/* ── Spotlight — above tabs ── */}
+      {spotlightHackathon && (
+        <section style={{ paddingBottom: 'var(--space-10)' }}>
+          <div style={{ marginBottom: 'var(--space-4)' }}>
+            <p style={{
+              fontSize: 'var(--text-xs)',
+              fontWeight: 500,
+              letterSpacing: 'var(--tracking-caps)',
+              textTransform: 'uppercase',
+              color: 'var(--color-moss)',
+              marginBottom: 'var(--space-3)',
+            }}>
+              Spotlight
+            </p>
+            <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
+          </div>
+          <HackathonCard hackathon={spotlightHackathon} spotlight index={0} />
+        </section>
+      )}
 
       {/* ── Tab bar ── */}
       <div
@@ -384,7 +408,7 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
       )}
 
       {/* ── Tab content ── */}
-      {activeTab === 'hackathons' && <HackathonBrowser hackathons={hackathons} />}
+      {activeTab === 'hackathons' && <HackathonBrowser hackathons={nonSpotlightHackathons} />}
       {activeTab === 'bounties'   && <BountiesGrid bounties={bounties} />}
       {activeTab === 'grants'     && <GrantsGrid grants={grants} />}
       {activeTab === 'programs'   && <ProgramsGrid programs={filteredPrograms} />}
