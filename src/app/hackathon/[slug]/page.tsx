@@ -10,6 +10,7 @@ import { Tag } from '@/components/ui/Tag';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { Countdown } from '@/components/ui/Countdown';
 import type { Hackathon } from '@/lib/types';
+import { ApplyButton } from './ApplyButton';
 
 type TagVariant = 'ai' | 'web3' | 'both' | 'format';
 
@@ -157,32 +158,7 @@ export default async function HackathonDetailPage({ params }: Props) {
           {/* Apply CTA */}
           {hackathon.apply_url && (
             <div className="hidden md:block">
-              <a
-                href={hackathon.apply_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  maxWidth: '28rem',
-                  padding: '12px 24px',
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: 'var(--btn-primary-bg)',
-                  color: 'var(--btn-primary-text)',
-                  border: '1px solid transparent',
-                  fontSize: 'var(--text-base)',
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  transition: 'background-color var(--duration-base) var(--ease-default)',
-                  letterSpacing: '-0.01em',
-                }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--btn-primary-bg-hover)'; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'var(--btn-primary-bg)'; }}
-              >
-                Apply to {hackathon.name}
-              </a>
+              <ApplyButton href={hackathon.apply_url} label={`Apply to ${hackathon.name}`} />
             </div>
           )}
 
