@@ -1,4 +1,4 @@
-export const revalidate = 300; // rebuild from Supabase at most every 5 minutes
+export const revalidate = 300;
 
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -9,27 +9,35 @@ import { PageShell } from '@/components/layout/PageShell';
 import { Tag } from '@/components/ui/Tag';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { Countdown } from '@/components/ui/Countdown';
-import type { Hackathon } from '@/lib/types';
-import { ApplyButton } from './ApplyButton';
+import { ApplyButton } from '@/components/ui/ApplyButton';
 
 type TagVariant = 'ai' | 'web3' | 'both' | 'format';
 
-const categoryVariantMap: Record<Hackathon['category'], TagVariant> = {
-  AI:   'ai',
-  Web3: 'web3',
-  Both: 'both',
+const categoryVariantMap: Record<'AI' | 'Web3' | 'Both', TagVariant> = {
+  AI: 'ai', Web3: 'web3', Both: 'both',
 };
+
+interface Hackathon {
+  id: string;
+  name: string;
+  organizer: string;
+  description: string | null;
+  prize_pool: string | null;
+  deadline: string | null;
+  deadline_text: string | null;
+  category: 'AI' | 'Web3' | 'Both';
+  format: 'Online' | 'In-Person' | 'Hybrid';
+  free_to_enter: boolean;
+  apply_url: string | null;
+  verified: boolean;
+}
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
 async function getHackathon(id: string): Promise<Hackathon | null> {
-  const { data } = await supabase
-    .from('hackathons')
-    .select('*')
-    .eq('id', id)
-    .single();
+  const { data } = await supabase.from('hackathons').select('*').eq('id', id).single();
   return (data as Hackathon) ?? null;
 }
 
@@ -37,10 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const hackathon = await getHackathon(slug);
   if (!hackathon) return { title: 'Not Found' };
-  return {
-    title: hackathon.name,
-    description: hackathon.description ?? undefined,
-  };
+  return { title: hackathon.name, description: hackathon.description ?? undefined };
 }
 
 export default async function HackathonDetailPage({ params }: Props) {
@@ -55,7 +60,6 @@ export default async function HackathonDetailPage({ params }: Props) {
     { label: 'Category', value: hackathon.category },
     { label: 'Format',   value: hackathon.format },
     { label: 'Deadline', value: hackathon.deadline ? formatDate(hackathon.deadline) : (hackathon.deadline_text ?? 'TBD') },
-    { label: 'Entry',    value: hackathon.free_to_enter ? 'Free' : 'Paid' },
   ];
 
   return (
@@ -63,7 +67,6 @@ export default async function HackathonDetailPage({ params }: Props) {
       <PageShell>
         <div style={{ paddingTop: 'var(--space-10)', paddingBottom: 'var(--space-24)' }}>
 
-          {/* Back link */}
           <Link
             href="/"
             className={[
@@ -77,10 +80,8 @@ export default async function HackathonDetailPage({ params }: Props) {
             ← Back to all hackathons
           </Link>
 
-          {/* Header block */}
           <div style={{ maxWidth: '680px', marginBottom: 'var(--space-10)' }}>
 
-            {/* Organizer + verified */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
               <span style={{ fontSize: 'var(--text-xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)' }}>
                 {hackathon.organizer}
@@ -88,7 +89,6 @@ export default async function HackathonDetailPage({ params }: Props) {
               {hackathon.verified && <VerifiedBadge />}
             </div>
 
-            {/* Name */}
             <h1
               className="font-serif"
               style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-tight)', letterSpacing: '-0.02em', marginBottom: 'var(--space-4)' }}
@@ -96,18 +96,21 @@ export default async function HackathonDetailPage({ params }: Props) {
               {hackathon.name}
             </h1>
 
-            {/* Prize + countdown */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'wrap', marginBottom: 'var(--space-5)' }}>
-              <span
-                className="font-serif"
-                style={{ fontSize: 'var(--text-3xl)', fontWeight: 400, color: 'var(--color-moss)', letterSpacing: '-0.02em', lineHeight: 1 }}
-              >
-                {hackathon.prize_pool ?? 'Undisclosed'}
-              </span>
+              <div>
+                <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
+                  Prize Pool
+                </p>
+                <span
+                  className="font-serif"
+                  style={{ fontSize: 'var(--text-3xl)', fontWeight: 400, color: 'var(--color-moss)', letterSpacing: '-0.02em', lineHeight: 1 }}
+                >
+                  {hackathon.prize_pool ?? 'Undisclosed'}
+                </span>
+              </div>
               <Countdown deadline={hackathon.deadline} />
             </div>
 
-            {/* Tags */}
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
               <Tag label={hackathon.category} variant={categoryVariant} />
               <Tag label={hackathon.format} variant="format" />
@@ -115,9 +118,8 @@ export default async function HackathonDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Stats grid */}
           <div
-            className="grid grid-cols-2 sm:grid-cols-4"
+            className="grid grid-cols-3"
             style={{ gap: '16px', marginBottom: 'var(--space-10)', maxWidth: '680px' }}
           >
             {stats.map(stat => (
@@ -143,7 +145,6 @@ export default async function HackathonDetailPage({ params }: Props) {
             ))}
           </div>
 
-          {/* Description */}
           {hackathon.description && (
             <div style={{ maxWidth: '680px', marginBottom: 'var(--space-10)' }}>
               <p style={{ fontSize: 'var(--text-xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
@@ -155,7 +156,6 @@ export default async function HackathonDetailPage({ params }: Props) {
             </div>
           )}
 
-          {/* Apply CTA */}
           {hackathon.apply_url && (
             <div className="hidden md:block">
               <ApplyButton href={hackathon.apply_url} label={`Apply to ${hackathon.name}`} />
@@ -165,7 +165,6 @@ export default async function HackathonDetailPage({ params }: Props) {
         </div>
       </PageShell>
 
-      {/* Mobile sticky apply bar */}
       {hackathon.apply_url && (
         <div
           className="fixed bottom-0 left-0 right-0 md:hidden"

@@ -5,7 +5,6 @@ import { Hackathon, FilterState } from '@/lib/types';
 import { filterHackathons } from '@/lib/data';
 import { FilterBar } from '@/components/hackathon/FilterBar';
 import { HackathonCard } from '@/components/hackathon/HackathonCard';
-import { HackathonModal } from '@/components/hackathon/HackathonModal';
 
 interface HackathonBrowserProps {
   hackathons: Hackathon[];
@@ -36,20 +35,11 @@ function SectionHeader({ children, color }: { children: React.ReactNode; color: 
 }
 
 export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
-  const [filters, setFilters]               = useState<FilterState>(initialFilters);
-  const [selectedHackathon, setSelected]    = useState<Hackathon | null>(null);
+  const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   const filtered  = filterHackathons(hackathons, filters);
   const spotlight = filtered.find(h => h.spotlight);
   const regular   = filtered.filter(h => !h.spotlight);
-
-  function handleSelect(hackathon: Hackathon) {
-    setSelected(hackathon);
-  }
-
-  function handleClose() {
-    setSelected(null);
-  }
 
   if (hackathons.length === 0) {
     return (
@@ -72,7 +62,7 @@ export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
       {spotlight && (
         <section style={{ paddingBottom: 'var(--space-10)' }}>
           <SectionHeader color="var(--color-moss)">Hackathon Spotlight</SectionHeader>
-          <HackathonCard hackathon={spotlight} spotlight index={0} onSelect={handleSelect} />
+          <HackathonCard hackathon={spotlight} spotlight index={0} />
         </section>
       )}
 
@@ -109,17 +99,11 @@ export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
                 key={hackathon.id}
                 hackathon={hackathon}
                 index={index}
-                onSelect={handleSelect}
               />
             ))}
           </div>
         )}
       </section>
-
-      {/* Detail overlay */}
-      {selectedHackathon && (
-        <HackathonModal hackathon={selectedHackathon} onClose={handleClose} />
-      )}
     </>
   );
 }
