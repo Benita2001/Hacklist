@@ -46,9 +46,6 @@ export function HeroSection() {
           <span style={{ display: 'block', fontWeight: 600, fontStyle: 'normal', color: 'var(--color-moss)' }}>
             AI &amp; Web3 opportunities
           </span>
-          <em style={{ display: 'block', fontWeight: 500, fontStyle: 'italic', color: 'var(--color-moss)', letterSpacing: 0 }}>
-            worth your time
-          </em>
         </h1>
 
         {/* Category pills */}
