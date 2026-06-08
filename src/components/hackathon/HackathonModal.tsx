@@ -141,7 +141,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
               <span style={{
                 fontSize: 'var(--text-xs)',
-                fontWeight: 500,
+                fontWeight: 400,
                 textTransform: 'uppercase',
                 letterSpacing: 'var(--tracking-caps)',
                 color: 'var(--color-text-muted)',
@@ -155,7 +155,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
             <h2
               style={{
                 fontSize: 'clamp(22px, 4vw, 34px)',
-                fontWeight: 700,
+                fontWeight: 600,
                 color: 'var(--color-text-primary)',
                 lineHeight: 'var(--leading-snug)',
                 letterSpacing: '-0.5px',
@@ -169,7 +169,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
             <div style={{ marginBottom: 'var(--space-4)' }}>
               <p style={{
                 fontSize: '10px',
-                fontWeight: 500,
+                fontWeight: 400,
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
                 color: 'var(--color-text-muted)',
@@ -181,7 +181,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
               <span
                 style={{
                   fontSize: 'var(--text-3xl)',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: 'var(--color-moss)',
                   letterSpacing: '-0.3px',
                   lineHeight: 1,
@@ -231,7 +231,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
               >
                 <span style={{
                   fontSize: '10px',
-                  fontWeight: 500,
+                  fontWeight: 400,
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
                   color: 'var(--color-text-muted)',
@@ -244,7 +244,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
                 </span>
                 <span style={{
                   fontSize: 'var(--text-sm)',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   color: 'var(--color-text-primary)',
                   lineHeight: 'var(--leading-snug)',
                 }}>
@@ -259,7 +259,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
             <div style={{ marginBottom: 'var(--space-6)' }}>
               <p style={{
                 fontSize: '10px',
-                fontWeight: 500,
+                fontWeight: 400,
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
                 color: 'var(--color-text-muted)',
@@ -296,7 +296,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
                 color: 'var(--btn-primary-text)',
                 border: '1px solid transparent',
                 fontSize: 'var(--text-sm)',
-                fontWeight: 600,
+                fontWeight: 500,
                 textDecoration: 'none',
                 letterSpacing: '-0.01em',
                 transition: 'background-color var(--duration-base) var(--ease-default)',

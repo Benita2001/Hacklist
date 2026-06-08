@@ -24,7 +24,7 @@ export function BottomCTA() {
         <h2
           style={{
             fontSize: 'clamp(28px, 4vw, 42px)',
-            fontWeight: 700,
+            fontWeight: 600,
             color: '#F5F2EB',
             lineHeight: 'var(--leading-tight)',
             letterSpacing: '-0.5px',
@@ -46,7 +46,7 @@ export function BottomCTA() {
               backgroundColor: '#F2B84B',
               color: '#1A3A1A',
               fontSize: '13px',
-              fontWeight: 500,
+              fontWeight: 400,
               textDecoration: 'none',
               whiteSpace: 'nowrap',
               transition: 'background-color var(--duration-base)',
@@ -69,7 +69,7 @@ export function BottomCTA() {
               border: '1px solid #FFFFFF',
               color: '#FFFFFF',
               fontSize: '13px',
-              fontWeight: 500,
+              fontWeight: 400,
               textDecoration: 'none',
               whiteSpace: 'nowrap',
               transition: 'opacity var(--duration-base)',

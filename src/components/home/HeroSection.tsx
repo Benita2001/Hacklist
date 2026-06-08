@@ -37,16 +37,16 @@ export function HeroSection() {
             lineHeight: 'var(--leading-tight)',
             letterSpacing: '-0.5px',
             margin: '0 auto var(--space-6)',
-            fontWeight: 700,
+            fontWeight: 600,
           }}
         >
-          <span style={{ display: 'block', fontWeight: 700, fontStyle: 'normal', color: 'var(--color-moss)' }}>
+          <span style={{ display: 'block', fontWeight: 600, fontStyle: 'normal', color: 'var(--color-moss)' }}>
             The fastest way to find
           </span>
-          <span style={{ display: 'block', fontWeight: 700, fontStyle: 'normal', color: 'var(--color-moss)' }}>
+          <span style={{ display: 'block', fontWeight: 600, fontStyle: 'normal', color: 'var(--color-moss)' }}>
             AI &amp; Web3 opportunities
           </span>
-          <em style={{ display: 'block', fontFamily: 'var(--font-fraunces)', fontWeight: 600, fontStyle: 'italic', color: 'var(--color-moss)', letterSpacing: 0 }}>
+          <em style={{ display: 'block', fontWeight: 500, fontStyle: 'italic', color: 'var(--color-moss)', letterSpacing: 0 }}>
             worth your time
           </em>
         </h1>
@@ -74,7 +74,7 @@ export function HeroSection() {
                 color: '#3D4820',
                 fontFamily: 'var(--font-inter)',
                 fontSize: '12px',
-                fontWeight: 500,
+                fontWeight: 400,
                 transition: 'background-color 200ms ease, color 200ms ease',
                 cursor: 'default',
                 userSelect: 'none',
@@ -148,7 +148,7 @@ export function HeroSection() {
               </p>
             </div>
           ) : status === 'already_subscribed' ? (
-            <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-moss)', padding: 'var(--space-4) 0' }}>
+            <p style={{ textAlign: 'center', fontSize: 'var(--text-sm)', fontWeight: 400, color: 'var(--color-moss)', padding: 'var(--space-4) 0' }}>
               You&apos;re already on the list.
             </p>
           ) : (
@@ -195,7 +195,7 @@ export function HeroSection() {
                     backgroundColor: 'var(--color-moss)',
                     color: '#FFFFFF',
                     border: 'none',
-                    fontWeight: 500,
+                    fontWeight: 400,
                     fontSize: 'var(--text-sm)',
                     cursor: status === 'loading' ? 'not-allowed' : 'pointer',
                     whiteSpace: 'nowrap',
