@@ -70,7 +70,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
             The fastest way to find
           </span>
           <span style={{ display: 'block', fontWeight: 400, fontStyle: 'normal', color: 'var(--color-moss)' }}>
-            AI &amp; Web3 hackathons
+            AI &amp; Web3 opportunities
           </span>
           <em style={{ display: 'block', fontWeight: 400, fontStyle: 'italic', color: 'var(--color-moss)' }}>
             worth your time
@@ -178,7 +178,7 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
                   className="email-input"
-                  placeholder="Enter your email for hackathon opportunities"
+                  placeholder="Enter your email for opportunities"
                   required
                   style={{
                     flex: 1,

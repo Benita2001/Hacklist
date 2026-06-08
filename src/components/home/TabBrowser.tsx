@@ -389,7 +389,7 @@ function JobsTab({ jobs }: { jobs: Job[] }) {
 
 /* ── Tab bar pill style ───────────────────────────────────── */
 
-function tabPillStyle(isActive: boolean): React.CSSProperties {
+function tabPillStyle(): React.CSSProperties {
   return {
     display: 'inline-flex',
     alignItems: 'center',
@@ -397,8 +397,8 @@ function tabPillStyle(isActive: boolean): React.CSSProperties {
     padding: '7px 14px',
     borderRadius: '6px',
     border: '1px solid var(--color-moss)',
-    backgroundColor: isActive ? 'var(--color-moss)' : 'transparent',
-    color: isActive ? 'var(--btn-primary-text)' : 'var(--color-moss)',
+    backgroundColor: 'transparent',
+    color: 'var(--color-moss)',
     fontSize: '13px',
     fontWeight: 500,
     cursor: 'pointer',
@@ -462,7 +462,17 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
             type="button"
             onClick={() => setActiveTab(tab.key)}
             aria-pressed={activeTab === tab.key}
-            style={tabPillStyle(activeTab === tab.key)}
+            style={tabPillStyle()}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLButtonElement;
+              el.style.backgroundColor = '#3D4820';
+              el.style.color = '#ffffff';
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLButtonElement;
+              el.style.backgroundColor = 'transparent';
+              el.style.color = 'var(--color-moss)';
+            }}
           >
             {tab.label} ({tab.count})
           </button>
