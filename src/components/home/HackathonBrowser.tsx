@@ -18,7 +18,7 @@ const initialFilters: FilterState = {
 
 const sectionLabelStyle = {
   fontSize: 'var(--text-xs)',
-  fontWeight: 500,
+  fontWeight: 600,
   letterSpacing: 'var(--tracking-caps)',
   textTransform: 'uppercase' as const,
 } as const;

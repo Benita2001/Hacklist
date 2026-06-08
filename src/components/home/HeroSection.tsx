@@ -32,21 +32,21 @@ export function HeroSection() {
 
         {/* Headline */}
         <h1
-          className="font-serif"
           style={{
             fontSize: 'clamp(48px, 7vw, 72px)',
             lineHeight: 'var(--leading-tight)',
-            letterSpacing: '-0.02em',
+            letterSpacing: '-0.5px',
             margin: '0 auto var(--space-6)',
+            fontWeight: 700,
           }}
         >
-          <span style={{ display: 'block', fontWeight: 500, fontStyle: 'normal', color: 'var(--color-moss)' }}>
+          <span style={{ display: 'block', fontWeight: 700, fontStyle: 'normal', color: 'var(--color-moss)' }}>
             The fastest way to find
           </span>
-          <span style={{ display: 'block', fontWeight: 400, fontStyle: 'normal', color: 'var(--color-moss)' }}>
+          <span style={{ display: 'block', fontWeight: 700, fontStyle: 'normal', color: 'var(--color-moss)' }}>
             AI &amp; Web3 opportunities
           </span>
-          <em style={{ display: 'block', fontWeight: 400, fontStyle: 'italic', color: 'var(--color-moss)' }}>
+          <em style={{ display: 'block', fontFamily: 'var(--font-fraunces)', fontWeight: 600, fontStyle: 'italic', color: 'var(--color-moss)', letterSpacing: 0 }}>
             worth your time
           </em>
         </h1>

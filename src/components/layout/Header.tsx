@@ -67,11 +67,11 @@ export function Header() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/hacklist-logo.png" alt="HackList" style={{ height: '28px', width: 'auto' }} />
           <span
-            className="font-serif"
             style={{
               fontSize: 'var(--text-xl)',
+              fontWeight: 700,
               color: 'var(--color-text-primary)',
-              letterSpacing: '-0.01em',
+              letterSpacing: '-0.5px',
             }}
           >
             {siteConfig.name}
@@ -89,6 +89,7 @@ export function Header() {
             href="/about"
             style={{
               fontSize: 'var(--text-sm)',
+              fontWeight: 500,
               color: pathname === '/about'
                 ? 'var(--color-text-primary)'
                 : 'var(--color-text-secondary)',
@@ -110,6 +111,7 @@ export function Header() {
             rel="noopener noreferrer"
             style={{
               fontSize: 'var(--text-sm)',
+              fontWeight: 500,
               color: 'var(--color-text-secondary)',
               padding: '6px 10px',
               whiteSpace: 'nowrap',
@@ -132,6 +134,7 @@ export function Header() {
               borderRadius: 'var(--radius-pill)',
               border: '1px solid var(--color-border-default)',
               fontSize: 'var(--text-sm)',
+              fontWeight: 500,
               color: 'var(--color-text-secondary)',
               whiteSpace: 'nowrap',
               flexShrink: 0,

@@ -22,13 +22,12 @@ export function BottomCTA() {
         }}
       >
         <h2
-          className="font-serif"
           style={{
             fontSize: 'clamp(28px, 4vw, 42px)',
-            fontWeight: 400,
+            fontWeight: 700,
             color: '#F5F2EB',
             lineHeight: 'var(--leading-tight)',
-            letterSpacing: '-0.02em',
+            letterSpacing: '-0.5px',
           }}
         >
           Know a hackathon we&apos;re missing?

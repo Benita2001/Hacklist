@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from 'next';
-import { Instrument_Serif, Inter } from 'next/font/google';
+import { Inter, Fraunces } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Ticker } from '@/components/layout/Ticker';
@@ -8,21 +8,20 @@ import { Providers } from './providers';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 
-const instrumentSerif = Instrument_Serif({
-  variable: '--font-instrument-serif',
-  subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  display: 'swap',
-});
-
 const inter = Inter({
-  variable: '--font-inter',
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['600'],
+  style: ['italic'],
+  variable: '--font-fraunces',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -55,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${inter.variable}`}
+      className={`${inter.variable} ${fraunces.variable}`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
@@ -74,12 +73,3 @@ export default function RootLayout({
     </html>
   );
 }
-// deploy
-// deploy
-// deploy
-// deploy
-// deploy
-// deploy
-// deploy
-// deploy
-// deploy

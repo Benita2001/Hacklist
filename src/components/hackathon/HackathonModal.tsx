@@ -153,13 +153,12 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
 
             {/* Name */}
             <h2
-              className="font-serif"
               style={{
                 fontSize: 'clamp(22px, 4vw, 34px)',
-                fontWeight: 400,
+                fontWeight: 700,
                 color: 'var(--color-text-primary)',
                 lineHeight: 'var(--leading-snug)',
-                letterSpacing: '-0.02em',
+                letterSpacing: '-0.5px',
                 marginBottom: 'var(--space-3)',
               }}
             >
@@ -180,12 +179,11 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
                 Prize Pool
               </p>
               <span
-                className="font-serif"
                 style={{
                   fontSize: 'var(--text-3xl)',
-                  fontWeight: 400,
+                  fontWeight: 700,
                   color: 'var(--color-moss)',
-                  letterSpacing: '-0.02em',
+                  letterSpacing: '-0.3px',
                   lineHeight: 1,
                 }}
               >
