@@ -48,7 +48,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
     top: 'var(--space-3)',
     right: 'var(--space-3)',
     fontSize: 'var(--text-xs)',
-    fontWeight: 400,
+    fontWeight: 500,
     padding: '2px 8px',
     borderRadius: 'var(--radius-sm)',
     backgroundColor: 'rgba(239, 68, 68, 0.10)',
@@ -74,7 +74,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
     backgroundColor: 'var(--color-bg-elevated)',
     color: 'var(--color-text-secondary)',
     fontSize: 'var(--text-xs)',
-    fontWeight: 400,
+    fontWeight: 500,
     textDecoration: 'none',
     transition: 'border-color var(--duration-base) var(--ease-default)',
     whiteSpace: 'nowrap',
@@ -117,7 +117,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
             className="truncate"
             style={{
               fontSize: 'var(--text-xs)',
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: 'var(--tracking-caps)',
               textTransform: 'uppercase',
               color: 'var(--color-olive-light)',
@@ -128,7 +128,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
             {hackathon.organizer}
           </p>
           <h3
-            style={{ fontSize: '18px', fontWeight: 500, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.3px', marginTop: '8px' }}
+            style={{ fontSize: '18px', fontWeight: 600, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.3px', marginTop: '8px' }}
           >
             {hackathon.name}
           </h3>
@@ -157,11 +157,11 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
           className="md:w-44"
           style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: 'var(--space-2)' }}
         >
-          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 400, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-olive-light)' }}>
+          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-olive-light)' }}>
             Prize Pool
           </p>
           <span
-            style={{ fontSize: 'var(--text-3xl)', fontWeight: 500, color: '#FFFFFF', letterSpacing: '-0.3px', lineHeight: 1 }}
+            style={{ fontSize: 'var(--text-3xl)', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.3px', lineHeight: 1 }}
           >
             {hackathon.prize_pool ?? 'Undisclosed'}
           </span>
@@ -189,7 +189,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
                 color: 'var(--color-moss)',
                 border: '1px solid transparent',
                 fontSize: 'var(--text-xs)',
-                fontWeight: 500,
+                fontWeight: 600,
                 textDecoration: 'none',
                 transition: 'background-color var(--duration-base) var(--ease-default)',
                 whiteSpace: 'nowrap',
@@ -240,7 +240,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
         className="truncate"
         style={{
           fontSize: 'var(--text-xs)',
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: 'var(--tracking-caps)',
           textTransform: 'uppercase',
           color: 'var(--color-text-muted)',
@@ -254,7 +254,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
 
       {/* Name + category tag */}
       <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
-        <h3 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
           {hackathon.name}
         </h3>
         <div style={{ flexShrink: 0, marginTop: '2px' }}>
@@ -281,11 +281,11 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
         style={{ marginTop: 'auto', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--color-border-muted)' }}
       >
         <div>
-          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 400, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
+          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
             Prize Pool
           </p>
           <span
-            style={{ fontSize: 'var(--text-2xl)', fontWeight: 500, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
+            style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
           >
             {hackathon.prize_pool ?? 'Undisclosed'}
           </span>

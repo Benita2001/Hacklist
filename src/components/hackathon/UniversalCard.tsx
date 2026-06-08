@@ -39,7 +39,7 @@ function TagRenderer({ tag }: { tag: TagItem }) {
           letterSpacing: '0.3px',
           lineHeight: 1.4,
           whiteSpace: 'nowrap',
-          fontWeight: 400,
+          fontWeight: 500,
           ...tag.customStyle,
         }}
       >
@@ -77,7 +77,7 @@ export function UniversalCard({
     top: 'var(--space-3)',
     right: 'var(--space-3)',
     fontSize: 'var(--text-xs)',
-    fontWeight: 400,
+    fontWeight: 500,
     padding: '2px 8px',
     borderRadius: 'var(--radius-sm)',
     backgroundColor: 'rgba(239, 68, 68, 0.10)',
@@ -102,7 +102,7 @@ export function UniversalCard({
     backgroundColor: 'var(--color-bg-elevated)',
     color: 'var(--color-text-secondary)',
     fontSize: 'var(--text-xs)',
-    fontWeight: 400,
+    fontWeight: 500,
     textDecoration: 'none',
     transition: 'border-color var(--duration-base) var(--ease-default)',
     whiteSpace: 'nowrap',
@@ -149,7 +149,7 @@ export function UniversalCard({
         className="truncate"
         style={{
           fontSize: 'var(--text-xs)',
-          fontWeight: 500,
+          fontWeight: 600,
           letterSpacing: 'var(--tracking-caps)',
           textTransform: 'uppercase',
           color: 'var(--color-text-muted)',
@@ -163,7 +163,7 @@ export function UniversalCard({
 
       {/* Name + category tag */}
       <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
-        <h3 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
           {name}
         </h3>
         {primaryTag && (
@@ -194,11 +194,11 @@ export function UniversalCard({
       >
         {/* Prize — flex: 1 + minWidth: 0 so it never pushes right column out */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 400, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
+          <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, letterSpacing: 'var(--tracking-caps)', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
             {prizeLabel}
           </p>
           <span
-            style={{ fontSize: 'var(--text-2xl)', fontWeight: 500, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
+            style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
           >
             {prizeValue ?? 'Undisclosed'}
           </span>

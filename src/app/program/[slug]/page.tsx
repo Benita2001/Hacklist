@@ -93,7 +93,7 @@ export default async function ProgramDetailPage({ params }: Props) {
           <div style={{ maxWidth: '680px', marginBottom: 'var(--space-10)' }}>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
-              <span style={{ fontSize: 'var(--text-xs)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)' }}>
+              <span style={{ fontSize: 'var(--text-xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)' }}>
                 {program.organizer}
               </span>
               {program.verified && <VerifiedBadge />}
@@ -101,19 +101,19 @@ export default async function ProgramDetailPage({ params }: Props) {
 
             <h1
               
-              style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-tight)', letterSpacing: '-0.5px', marginBottom: 'var(--space-4)' }}
+              style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-tight)', letterSpacing: '-0.5px', marginBottom: 'var(--space-4)' }}
             >
               {program.name}
             </h1>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)', flexWrap: 'wrap', marginBottom: 'var(--space-5)' }}>
               <div>
-                <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
+                <p style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
                   Stipend
                 </p>
                 <span
                   
-                  style={{ fontSize: 'var(--text-3xl)', fontWeight: 500, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
+                  style={{ fontSize: 'var(--text-3xl)', fontWeight: 700, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
                 >
                   {program.stipend ?? 'Undisclosed'}
                 </span>
@@ -134,7 +134,7 @@ export default async function ProgramDetailPage({ params }: Props) {
                   letterSpacing: '0.3px',
                   lineHeight: 1.4,
                   whiteSpace: 'nowrap',
-                  fontWeight: 400,
+                  fontWeight: 500,
                   backgroundColor: typeStyle.bg,
                   color: typeStyle.color,
                   border: `1px solid ${typeStyle.border}`,
@@ -164,10 +164,10 @@ export default async function ProgramDetailPage({ params }: Props) {
                   gap: 'var(--space-2)',
                 }}
               >
-                <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ fontSize: 'var(--text-2xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', fontFamily: 'var(--font-mono)' }}>
                   {stat.label}
                 </span>
-                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)' }}>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)' }}>
                   {stat.value}
                 </span>
               </div>
@@ -176,7 +176,7 @@ export default async function ProgramDetailPage({ params }: Props) {
 
           {program.description && (
             <div style={{ maxWidth: '680px', marginBottom: 'var(--space-10)' }}>
-              <p style={{ fontSize: 'var(--text-xs)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
                 About
               </p>
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
@@ -214,7 +214,7 @@ export default async function ProgramDetailPage({ params }: Props) {
               color: 'var(--btn-primary-text)',
               border: '1px solid transparent',
               fontSize: 'var(--text-base)',
-              fontWeight: 500,
+              fontWeight: 600,
               textDecoration: 'none',
               transition: 'background-color var(--duration-base) var(--ease-default)',
             }}

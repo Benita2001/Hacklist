@@ -79,7 +79,7 @@ export function FilterBar({ filters, onChange, totalCount, filteredCount }: Filt
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid',
                   fontSize: 'var(--text-xs)',
-                  fontWeight: 400,
+                  fontWeight: 500,
                   cursor: 'pointer',
                   transition: 'all var(--duration-base) var(--ease-default)',
                   backgroundColor: isActive ? 'var(--pill-bg-active)' : 'transparent',

@@ -18,7 +18,7 @@ const initialFilters: FilterState = {
 
 const sectionLabelStyle = {
   fontSize: 'var(--text-xs)',
-  fontWeight: 500,
+  fontWeight: 600,
   letterSpacing: 'var(--tracking-caps)',
   textTransform: 'uppercase' as const,
 } as const;
@@ -82,7 +82,7 @@ export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
             className="flex flex-col items-center justify-center text-center"
             style={{ padding: 'var(--space-24) 0', gap: 'var(--space-4)' }}
           >
-            <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 500, color: 'var(--color-text-primary)' }}>
+            <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 600, color: 'var(--color-text-primary)' }}>
               No hackathons found
             </h3>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>

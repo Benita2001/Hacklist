@@ -190,7 +190,7 @@ function pillStyle(isActive: boolean): React.CSSProperties {
     borderRadius: 'var(--radius-md)',
     border: '1px solid',
     fontSize: 'var(--text-xs)',
-    fontWeight: 400,
+    fontWeight: 500,
     cursor: 'pointer',
     whiteSpace: 'nowrap',
     transition: 'all var(--duration-base) var(--ease-default)',
@@ -400,7 +400,7 @@ function tabPillStyle(): React.CSSProperties {
     backgroundColor: 'transparent',
     color: 'var(--color-moss)',
     fontSize: '13px',
-    fontWeight: 400,
+    fontWeight: 500,
     cursor: 'pointer',
     whiteSpace: 'nowrap',
     transition: `background-color var(--duration-base) var(--ease-default),
@@ -433,7 +433,7 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
           <div style={{ marginBottom: 'var(--space-4)' }}>
             <p style={{
               fontSize: 'var(--text-xs)',
-              fontWeight: 500,
+              fontWeight: 600,
               letterSpacing: 'var(--tracking-caps)',
               textTransform: 'uppercase',
               color: 'var(--color-moss)',

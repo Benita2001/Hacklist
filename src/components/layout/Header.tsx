@@ -69,7 +69,7 @@ export function Header() {
           <span
             style={{
               fontSize: 'var(--text-xl)',
-              fontWeight: 600,
+              fontWeight: 700,
               color: 'var(--color-text-primary)',
               letterSpacing: '-0.5px',
             }}
@@ -89,7 +89,7 @@ export function Header() {
             href="/about"
             style={{
               fontSize: 'var(--text-sm)',
-              fontWeight: 400,
+              fontWeight: 500,
               color: pathname === '/about'
                 ? 'var(--color-text-primary)'
                 : 'var(--color-text-secondary)',
@@ -111,7 +111,7 @@ export function Header() {
             rel="noopener noreferrer"
             style={{
               fontSize: 'var(--text-sm)',
-              fontWeight: 400,
+              fontWeight: 500,
               color: 'var(--color-text-secondary)',
               padding: '6px 10px',
               whiteSpace: 'nowrap',
@@ -134,7 +134,7 @@ export function Header() {
               borderRadius: 'var(--radius-pill)',
               border: '1px solid var(--color-border-default)',
               fontSize: 'var(--text-sm)',
-              fontWeight: 400,
+              fontWeight: 500,
               color: 'var(--color-text-secondary)',
               whiteSpace: 'nowrap',
               flexShrink: 0,
