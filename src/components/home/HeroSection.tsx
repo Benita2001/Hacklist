@@ -1,37 +1,11 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Hackathon } from '@/lib/types';
-import { parsePrizeToNumber } from '@/lib/utils';
+import { useState } from 'react';
 
-interface HeroSectionProps {
-  hackathons: Hackathon[];
-}
-
-export function HeroSection({ hackathons }: HeroSectionProps) {
+export function HeroSection() {
   const [email, setEmail]               = useState('');
   const [emailFocused, setEmailFocused] = useState(false);
   const [status, setStatus]             = useState<'idle' | 'loading' | 'success' | 'already_subscribed' | 'error'>('idle');
-  const prizeRef = useRef<HTMLSpanElement>(null);
-
-  const totalPrize = hackathons.reduce((sum, h) => sum + parsePrizeToNumber(h.prize_pool), 0);
-
-  useEffect(() => {
-    const el = prizeRef.current;
-    if (!el || !totalPrize) return;
-    const end      = totalPrize;
-    const duration = 2000;
-    const startTime = performance.now();
-    function update(currentTime: number) {
-      const elapsed  = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased    = 1 - Math.pow(1 - progress, 3);
-      const current  = Math.floor(eased * end);
-      el!.textContent = '$' + current.toLocaleString() + '+';
-      if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-  }, [totalPrize]);
 
   async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -77,26 +51,6 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
           </em>
         </h1>
 
-        {/* Prize number */}
-        <div style={{ margin: '0 auto var(--space-8)', paddingTop: 'var(--space-3)' }}>
-          <span
-            ref={prizeRef}
-            className="font-serif hero-prize-number"
-            style={{
-              fontWeight: 400,
-              lineHeight: 1,
-              letterSpacing: '-0.03em',
-              display: 'block',
-              marginBottom: 'var(--space-2)',
-            }}
-          >
-            $0+
-          </span>
-          <span style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', letterSpacing: 'var(--tracking-wide)' }}>
-            in active prizes waiting for you
-          </span>
-        </div>
-
         {/* Email capture */}
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           {status === 'success' ? (
@@ -110,7 +64,6 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
                 borderRadius:    'var(--radius-lg)',
               }}
             >
-              {/* Checkmark */}
               <div
                 style={{
                   width:           '44px',
@@ -128,8 +81,6 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
                   <path d="M4 10L8 14L16 6" stroke="var(--color-moss)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-
-              {/* Headline */}
               <p
                 className="font-serif"
                 style={{
@@ -142,8 +93,6 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
               >
                 You&apos;re in🎉
               </p>
-
-              {/* Body */}
               <p
                 style={{
                   fontSize:   'var(--text-sm)',
@@ -222,6 +171,48 @@ export function HeroSection({ hackathons }: HeroSectionProps) {
               )}
             </>
           )}
+        </div>
+
+        {/* Category pills — between email input and spotlight */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px',
+            marginTop: 'var(--space-6)',
+          }}
+        >
+          {['Hackathons', 'Bounties', 'Grants', 'Programs', 'Jobs'].map(label => (
+            <span
+              key={label}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '6px 16px',
+                borderRadius: '20px',
+                border: '1px solid #3D4820',
+                backgroundColor: 'transparent',
+                color: '#3D4820',
+                fontSize: '13px',
+                transition: 'background-color 200ms ease, color 200ms ease',
+                cursor: 'default',
+                userSelect: 'none',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLSpanElement;
+                el.style.backgroundColor = '#3D4820';
+                el.style.color = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLSpanElement;
+                el.style.backgroundColor = 'transparent';
+                el.style.color = '#3D4820';
+              }}
+            >
+              {label}
+            </span>
+          ))}
         </div>
 
       </div>

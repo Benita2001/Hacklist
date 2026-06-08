@@ -63,7 +63,7 @@ export default async function HomePage() {
   return (
     <>
       <PageShell>
-        <HeroSection hackathons={hackathons} />
+        <HeroSection />
         <TabBrowser
           hackathons={hackathons}
           bounties={bounties}
