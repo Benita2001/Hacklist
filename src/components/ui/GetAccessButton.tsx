@@ -48,7 +48,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
     }
   }
 
-  const buttonContent = 'Get Free Access →';
+  const buttonContent = 'Get Free Access';
 
   return (
     <>
@@ -264,7 +264,7 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                       onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)'; }}
                       onMouseLeave={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)'; }}
                     >
-                      {status === 'loading' ? 'Subscribing...' : 'Get Access →'}
+                      {status === 'loading' ? 'Subscribing...' : 'Get Access'}
                     </button>
                   </div>
                   {status === 'error' && (
