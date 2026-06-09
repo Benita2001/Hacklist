@@ -5,13 +5,13 @@ import { SubmitForm } from './SubmitForm';
 
 export const metadata: Metadata = {
   title: 'List My Opportunity',
-  description: 'List your hackathon on HackList and get in front of thousands of active builders.',
+  description: 'List your hackathon, bounty, grant, program or job on HackList and get in front of thousands of active builders.',
 };
 
 const whatHappensNext = [
   { step: '01', text: 'Submit the form below' },
   { step: '02', text: 'Reviewed within 12 hours' },
-  { step: '03', text: 'Your hackathon goes live on HackList' },
+  { step: '03', text: 'Your opportunity goes live on HackList' },
 ];
 
 export default function SubmitPage() {
@@ -64,7 +64,7 @@ export default function SubmitPage() {
             marginBottom:  'var(--space-8)',
           }}
         >
-          Get your hackathon in front of thousands of builders actively looking for their next challenge.
+          Get any hackathon, bounty, grant, program or job in front of thousands of AI and Web3 builders actively looking for their next opportunity.
         </p>
 
         {/* What Happens Next */}
