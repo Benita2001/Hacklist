@@ -6,15 +6,15 @@ import { PageShell } from '@/components/layout/PageShell';
 const values = [
   {
     label: 'Updated Daily',
-    description: 'New hackathons added every day.',
+    description: 'New opportunities added every day across all five categories.',
   },
   {
-    label: 'AI + Web3',
-    description: 'Curated focus on the two fastest-moving categories in tech.',
+    label: 'Never Miss a Deadline',
+    description: 'Everything sorted by deadline so the most urgent opportunities always surface first.',
   },
   {
-    label: 'Prize-First',
-    description: 'Deadline sorted so the most urgent opportunities always surface first.',
+    label: 'Trusted by 10,000+ Builders',
+    description: 'A growing community of AI and Web3 builders who find their next opportunity on HackList.',
   },
 ] as const;
 
@@ -58,11 +58,12 @@ export function AboutClient() {
             marginBottom: 'var(--space-12)',
           }}
         >
-          HackList exists because finding a good hackathon shouldn&apos;t be hard. Other sites
-          are built by hackathon organizers and builders are left hunting across five different
-          sites, missing deadlines and losing track of prize pools. HackList fixes that. One clean
-          list, every active AI and Web3 hackathon, sorted by deadline. Every Apply button takes
-          you directly to the original listing.
+          HackList exists because finding good opportunities shouldn&apos;t take hours. Builders
+          were hunting across five different sites, missing deadlines, losing track of prize pools
+          and scrolling through outdated listings. HackList fixes that. One clean place for every
+          AI and Web3 opportunity worth your time&nbsp;: hackathons, bounties, grants, programs and
+          jobs sorted by deadline, verified before publishing. Every Apply button takes you directly
+          to the original listing.
         </p>
 
         {/* Value boxes */}
