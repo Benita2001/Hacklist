@@ -270,3 +270,13 @@
     font-size: 11px;
   }
 }
+
+.hero-pill {
+  border: 1px solid #3D4820;
+  color: #3D4820;
+}
+
+[data-theme="dark"] .hero-pill {
+  border-color: #d4e88a;
+  color: #d4e88a;
+}

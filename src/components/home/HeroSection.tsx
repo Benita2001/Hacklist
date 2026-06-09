@@ -58,14 +58,13 @@ export function HeroSection() {
           {['Hackathons', 'Bounties', 'Grants', 'Programs', 'Jobs'].map(label => (
             <span
               key={label}
+              className="hero-pill"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 padding: '6px 16px',
                 borderRadius: '20px',
-                border: '1px solid #3D4820',
                 backgroundColor: 'transparent',
-                color: '#3D4820',
                 fontSize: '13px',
                 transition: 'background-color 200ms ease, color 200ms ease',
                 cursor: 'default',
