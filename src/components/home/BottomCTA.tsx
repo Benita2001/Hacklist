@@ -23,8 +23,9 @@ export function BottomCTA() {
       >
         <h2
           style={{
+            fontFamily: 'var(--font-serif)',
             fontSize: 'clamp(28px, 4vw, 42px)',
-            fontWeight: 700,
+            fontWeight: 400,
             color: '#F5F2EB',
             lineHeight: 'var(--leading-tight)',
             letterSpacing: '-0.5px',

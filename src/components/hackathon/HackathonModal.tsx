@@ -154,8 +154,9 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
             {/* Name */}
             <h2
               style={{
+                fontFamily: 'var(--font-serif)',
                 fontSize: 'clamp(22px, 4vw, 34px)',
-                fontWeight: 700,
+                fontWeight: 400,
                 color: 'var(--color-text-primary)',
                 lineHeight: 'var(--leading-snug)',
                 letterSpacing: '-0.5px',
@@ -180,8 +181,9 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
               </p>
               <span
                 style={{
+                  fontFamily: 'var(--font-serif)',
                   fontSize: 'var(--text-3xl)',
-                  fontWeight: 700,
+                  fontWeight: 400,
                   color: 'var(--color-moss)',
                   letterSpacing: '-0.3px',
                   lineHeight: 1,

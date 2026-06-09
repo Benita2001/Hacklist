@@ -90,8 +90,7 @@ export default async function HackathonDetailPage({ params }: Props) {
             </div>
 
             <h1
-              
-              style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-tight)', letterSpacing: '-0.5px', marginBottom: 'var(--space-4)' }}
+              style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-tight)', letterSpacing: '-0.5px', marginBottom: 'var(--space-4)' }}
             >
               {hackathon.name}
             </h1>
@@ -102,8 +101,7 @@ export default async function HackathonDetailPage({ params }: Props) {
                   Prize Pool
                 </p>
                 <span
-                  
-                  style={{ fontSize: 'var(--text-3xl)', fontWeight: 700, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
+                  style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-3xl)', fontWeight: 400, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
                 >
                   {hackathon.prize_pool ?? 'Undisclosed'}
                 </span>

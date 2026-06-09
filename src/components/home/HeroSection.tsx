@@ -40,12 +40,9 @@ export function HeroSection() {
             fontWeight: 400,
           }}
         >
-          <span style={{ display: 'block', fontStyle: 'normal', color: 'var(--color-moss)' }}>
-            The fastest way to find
-          </span>
-          <span style={{ display: 'block', fontStyle: 'normal', color: 'var(--color-moss)' }}>
-            AI &amp; Web3 opportunities
-          </span>
+          <span style={{ display: 'block', color: 'var(--color-moss)' }}>The fastest way to find</span>
+          <span style={{ display: 'block', color: 'var(--color-moss)' }}>AI &amp; Web3</span>
+          <span style={{ display: 'block', color: 'var(--color-moss)' }}>opportunities</span>
         </h1>
 
         {/* Category pills */}

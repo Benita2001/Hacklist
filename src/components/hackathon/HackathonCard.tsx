@@ -128,7 +128,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
             {hackathon.organizer}
           </p>
           <h3
-            style={{ fontSize: '18px', fontWeight: 600, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.3px', marginTop: '8px' }}
+            style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 400, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.3px', marginTop: '8px' }}
           >
             {hackathon.name}
           </h3>
@@ -161,7 +161,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
             Prize Pool
           </p>
           <span
-            style={{ fontSize: 'var(--text-3xl)', fontWeight: 700, color: '#FFFFFF', letterSpacing: '-0.3px', lineHeight: 1 }}
+            style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-3xl)', fontWeight: 400, color: '#FFFFFF', letterSpacing: '-0.3px', lineHeight: 1 }}
           >
             {hackathon.prize_pool ?? 'Undisclosed'}
           </span>
@@ -254,7 +254,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
 
       {/* Name + category tag */}
       <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
-        <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1rem', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
           {hackathon.name}
         </h3>
         <div style={{ flexShrink: 0, marginTop: '2px' }}>
@@ -285,7 +285,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
             Prize Pool
           </p>
           <span
-            style={{ fontSize: 'var(--text-2xl)', fontWeight: 700, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
+            style={{ fontFamily: 'var(--font-serif)', fontSize: 'var(--text-2xl)', fontWeight: 400, color: 'var(--color-moss)', letterSpacing: '-0.3px', lineHeight: 1 }}
           >
             {hackathon.prize_pool ?? 'Undisclosed'}
           </span>
