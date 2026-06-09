@@ -31,10 +31,10 @@ export function BottomCTA() {
             letterSpacing: '-0.5px',
           }}
         >
-          Know a hackathon we&apos;re missing?
+          Know an opportunity we&apos;re missing?
         </h2>
         <p style={{ fontSize: 'var(--text-base)', color: 'rgba(245, 242, 235, 0.7)', lineHeight: 'var(--leading-relaxed)' }}>
-          Get your hackathon in front of thousands of builders actively looking for their next challenge.
+          Get any hackathon, bounty, grant, program or job in front of thousands of AI and Web3 builders actively looking for their next opportunity.
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', flexWrap: 'wrap', justifyContent: 'center' }}>
           <a
