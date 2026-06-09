@@ -105,9 +105,9 @@
   /* ============================================================
      4. TYPOGRAPHY
      ============================================================ */
-  --font-sans:    var(--font-inter,    'Inter',    system-ui, sans-serif);
-  --font-serif:   var(--font-fraunces, 'Fraunces', Georgia,   serif);
-  --font-mono:    var(--font-inter,    'Inter',    system-ui, sans-serif);
+  --font-sans:    var(--font-inter,             'Inter',            system-ui, sans-serif);
+  --font-serif:   var(--font-instrument-serif, 'Instrument Serif', Georgia,   serif);
+  --font-mono:    var(--font-inter,             'Inter',            system-ui, sans-serif);
 
   --text-2xs:  11px;
   --text-xs:   12px;
