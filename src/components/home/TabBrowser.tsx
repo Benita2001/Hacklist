@@ -143,9 +143,11 @@ function buildJobTags(j: Job): TagItem[] {
 /* ── Filter logic ─────────────────────────────────────────── */
 
 function filterBounties(items: Bounty[], f: string): Bounty[] {
-  if (f === 'All')  return items;
-  if (f === 'AI')   return items.filter(b => b.category === 'AI');
-  if (f === 'Web3') return items.filter(b => b.category === 'Web3');
+  if (f === 'All')     return items;
+  if (f === 'AI')      return items.filter(b => b.category === 'AI');
+  if (f === 'Web3')    return items.filter(b => b.category === 'Web3');
+  if (f === 'Writing') return items.filter(b => b.platform === 'Writing' || b.type === 'Writing');
+  if (f === 'Video')   return items.filter(b => b.platform === 'Video'   || b.type === 'Video');
   return items.filter(b => b.type === f);
 }
 
@@ -250,7 +252,7 @@ function BountiesTab({ bounties }: { bounties: Bounty[] }) {
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
       <FilterPills
-        options={['All', 'AI', 'Web3', 'Technical', 'Content', 'Design']}
+        options={['All', 'AI', 'Web3', 'Technical', 'Writing', 'Video', 'Design']}
         value={filter}
         onChange={setFilter}
       />
