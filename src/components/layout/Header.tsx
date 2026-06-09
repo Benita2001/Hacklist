@@ -68,8 +68,9 @@ export function Header() {
           <img src="/hacklist-logo.png" alt="HackList" style={{ height: '28px', width: 'auto' }} />
           <span
             style={{
+              fontFamily: 'var(--font-serif)',
               fontSize: 'var(--text-xl)',
-              fontWeight: 700,
+              fontWeight: 400,
               color: 'var(--color-text-primary)',
               letterSpacing: '-0.5px',
             }}
