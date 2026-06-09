@@ -163,7 +163,7 @@ export function UniversalCard({
 
       {/* Name + category tag */}
       <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1rem', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
+        <h3 style={{ fontFamily: 'var(--font-inter)', fontSize: '1rem', fontWeight: 550, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
           {name}
         </h3>
         {primaryTag && (

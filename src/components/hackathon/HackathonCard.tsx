@@ -128,7 +128,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
             {hackathon.organizer}
           </p>
           <h3
-            style={{ fontFamily: 'var(--font-serif)', fontSize: '18px', fontWeight: 400, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.3px', marginTop: '8px' }}
+            style={{ fontFamily: 'var(--font-inter)', fontSize: '18px', fontWeight: 550, color: '#FFFFFF', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.3px', marginTop: '8px' }}
           >
             {hackathon.name}
           </h3>
@@ -254,7 +254,7 @@ export function HackathonCard({ hackathon, spotlight = false, index = 0, onSelec
 
       {/* Name + category tag */}
       <div className="flex items-start justify-between" style={{ gap: 'var(--space-3)', marginBottom: 'var(--space-2)' }}>
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1rem', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
+        <h3 style={{ fontFamily: 'var(--font-inter)', fontSize: '1rem', fontWeight: 550, color: 'var(--color-text-primary)', lineHeight: 'var(--leading-snug)', letterSpacing: '-0.2px', flex: 1 }}>
           {hackathon.name}
         </h3>
         <div style={{ flexShrink: 0, marginTop: '2px' }}>
