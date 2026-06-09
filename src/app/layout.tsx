@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from 'next';
-import { Inter, Fraunces } from 'next/font/google';
+import { Instrument_Serif, DM_Sans } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Ticker } from '@/components/layout/Ticker';
@@ -8,18 +8,18 @@ import { Providers } from './providers';
 import { siteConfig } from '@/config/site';
 import './globals.css';
 
-const inter = Inter({
+const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter',
+  weight: ['400'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
-const fraunces = Fraunces({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['600'],
-  style: ['italic'],
-  variable: '--font-fraunces',
+  weight: ['400', '500', '600'],
+  variable: '--font-sans',
   display: 'swap',
 });
 
@@ -54,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${fraunces.variable}`}
+      className={`${instrumentSerif.variable} ${dmSans.variable}`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >

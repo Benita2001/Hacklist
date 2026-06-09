@@ -46,10 +46,49 @@ export function HeroSection() {
           <span style={{ display: 'block', fontWeight: 700, fontStyle: 'normal', color: 'var(--color-moss)' }}>
             AI &amp; Web3 opportunities
           </span>
-          <em style={{ display: 'block', fontFamily: 'var(--font-fraunces)', fontWeight: 600, fontStyle: 'italic', color: 'var(--color-moss)', letterSpacing: 0 }}>
-            worth your time
-          </em>
         </h1>
+
+        {/* Category pills */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '8px',
+            marginBottom: 'var(--space-6)',
+          }}
+        >
+          {['Hackathons', 'Bounties', 'Grants', 'Programs', 'Jobs'].map(label => (
+            <span
+              key={label}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '6px 16px',
+                borderRadius: '20px',
+                border: '1px solid #3D4820',
+                backgroundColor: 'transparent',
+                color: '#3D4820',
+                fontSize: '13px',
+                transition: 'background-color 200ms ease, color 200ms ease',
+                cursor: 'default',
+                userSelect: 'none',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLSpanElement;
+                el.style.backgroundColor = '#3D4820';
+                el.style.color = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLSpanElement;
+                el.style.backgroundColor = 'transparent';
+                el.style.color = '#3D4820';
+              }}
+            >
+              {label}
+            </span>
+          ))}
+        </div>
 
         {/* Email capture */}
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
@@ -173,47 +212,6 @@ export function HeroSection() {
           )}
         </div>
 
-        {/* Category pills — between email input and spotlight */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-            gap: '8px',
-            marginTop: 'var(--space-6)',
-          }}
-        >
-          {['Hackathons', 'Bounties', 'Grants', 'Programs', 'Jobs'].map(label => (
-            <span
-              key={label}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                padding: '6px 16px',
-                borderRadius: '20px',
-                border: '1px solid #3D4820',
-                backgroundColor: 'transparent',
-                color: '#3D4820',
-                fontSize: '13px',
-                transition: 'background-color 200ms ease, color 200ms ease',
-                cursor: 'default',
-                userSelect: 'none',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLSpanElement;
-                el.style.backgroundColor = '#3D4820';
-                el.style.color = '#ffffff';
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLSpanElement;
-                el.style.backgroundColor = 'transparent';
-                el.style.color = '#3D4820';
-              }}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
 
       </div>
     </section>
