@@ -144,7 +144,7 @@ export function AboutClient() {
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.opacity = '0.75')}
             onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.opacity = '1')}
           >
-            Join HackList on Telegram →
+            Join HackList on Telegram
           </a>
         </div>
 

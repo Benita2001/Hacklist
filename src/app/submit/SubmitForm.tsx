@@ -591,7 +591,7 @@ export function SubmitForm() {
             onMouseEnter={e => { if (!submitting) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)'; }}
             onMouseLeave={e => { if (!submitting) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)'; }}
           >
-            {submitting ? 'Submitting...' : 'Submit Opportunity →'}
+            {submitting ? 'Submitting...' : 'Submit Opportunity'}
           </button>
 
           <p style={{ marginTop: 'var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', textAlign: 'center' }}>

@@ -22,7 +22,7 @@ export function NewsletterFallback() {
         showIcon={false}
       />
       <Button variant="primary" size="lg" className="w-full">
-        Subscribe →
+        Subscribe
       </Button>
     </form>
   );

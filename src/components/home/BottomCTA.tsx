@@ -55,7 +55,7 @@ export function BottomCTA() {
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#E0A83A')}
             onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#F2B84B')}
           >
-            List My Opportunity →
+            List My Opportunity
           </a>
           <a
             href="https://t.me/hacklistwithbeni"
@@ -78,7 +78,7 @@ export function BottomCTA() {
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.opacity = '0.75')}
             onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.opacity = '1')}
           >
-            Join on Telegram →
+            Join on Telegram
           </a>
         </div>
       </div>

@@ -196,7 +196,7 @@ export function HeroSection() {
                   onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss-light)'; }}
                   onMouseLeave={e => { if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--color-moss)'; }}
                 >
-                  {status === 'loading' ? 'Subscribing...' : 'Get Free Access →'}
+                  {status === 'loading' ? 'Subscribing...' : 'Get Free Access'}
                 </button>
               </form>
               {status === 'error' && (
