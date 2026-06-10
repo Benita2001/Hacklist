@@ -5,6 +5,7 @@ import type { Hackathon } from '@/lib/types';
 import { HackathonBrowser } from '@/components/home/HackathonBrowser';
 import { HackathonCard } from '@/components/hackathon/HackathonCard';
 import { UniversalCard, type TagItem } from '@/components/hackathon/UniversalCard';
+import { Input } from '@/components/ui/Input';
 
 /* ── Entity types ─────────────────────────────────────────── */
 
@@ -71,6 +72,7 @@ export interface Job {
   format: string | null;
   location: string | null;
   employment_type?: string | null;
+  job_type?: string | null;
   apply_url: string | null;
   spotlight: boolean;
   verified: boolean;
@@ -159,14 +161,16 @@ function filterGrants(items: Grant[], f: string): Grant[] {
 }
 
 function filterJobs(items: Job[], f: string): Job[] {
-  if (f === 'All')      return items;
-  if (f === 'AI')       return items.filter(j => j.category === 'AI');
-  if (f === 'Web3')     return items.filter(j => j.category === 'Web3');
-  if (f === 'Remote')   return items.filter(j =>
+  if (f === 'All')           return items;
+  if (f === 'AI')            return items.filter(j => j.category === 'AI');
+  if (f === 'Web3')          return items.filter(j => j.category === 'Web3');
+  if (f === 'Remote')        return items.filter(j =>
     j.format?.toLowerCase() === 'remote' ||
     j.location?.toLowerCase().includes('remote')
   );
-  return items.filter(j => j.employment_type === f);
+  if (f === 'Technical')     return items.filter(j => j.job_type === 'Technical');
+  if (f === 'Non-Technical') return items.filter(j => j.job_type === 'Non-Technical');
+  return items;
 }
 
 /* ── Empty state ──────────────────────────────────────────── */
@@ -177,6 +181,26 @@ function EmptyState({ label }: { label: string }) {
       <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>
         No {label} listed yet. Check back soon.
       </p>
+    </div>
+  );
+}
+
+/* ── Tab section header ───────────────────────────────────── */
+
+function TabSectionHeader({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 'var(--space-4)' }}>
+      <p style={{
+        fontSize: 'var(--text-xs)',
+        fontWeight: 600,
+        letterSpacing: 'var(--tracking-caps)',
+        textTransform: 'uppercase',
+        color: 'var(--color-text-muted)',
+        marginBottom: 'var(--space-3)',
+      }}>
+        {children}
+      </p>
+      <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
     </div>
   );
 }
@@ -247,10 +271,23 @@ function CardGrid({ children }: { children: React.ReactNode }) {
 
 function BountiesTab({ bounties }: { bounties: Bounty[] }) {
   const [filter, setFilter] = useState('All');
-  const filtered = filterBounties(bounties, filter);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const q = searchQuery.trim().toLowerCase();
+  const searchFiltered = q
+    ? bounties.filter(b =>
+        b.name.toLowerCase().includes(q) ||
+        b.organizer.toLowerCase().includes(q)
+      )
+    : bounties;
+  const filtered = filterBounties(searchFiltered, filter);
 
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <TabSectionHeader>All Bounties</TabSectionHeader>
+      <div className="w-full" style={{ marginBottom: 'var(--space-3)' }}>
+        <Input value={searchQuery} onChange={setSearchQuery} placeholder="Search bounties..." />
+      </div>
       <FilterPills
         options={['All', 'AI', 'Web3', 'Technical', 'Writing', 'Video', 'Design']}
         value={filter}
@@ -283,10 +320,23 @@ function BountiesTab({ bounties }: { bounties: Bounty[] }) {
 
 function GrantsTab({ grants }: { grants: Grant[] }) {
   const [filter, setFilter] = useState('All');
-  const filtered = filterGrants(grants, filter);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const q = searchQuery.trim().toLowerCase();
+  const searchFiltered = q
+    ? grants.filter(g =>
+        g.name.toLowerCase().includes(q) ||
+        g.organizer.toLowerCase().includes(q)
+      )
+    : grants;
+  const filtered = filterGrants(searchFiltered, filter);
 
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <TabSectionHeader>All Grants</TabSectionHeader>
+      <div className="w-full" style={{ marginBottom: 'var(--space-3)' }}>
+        <Input value={searchQuery} onChange={setSearchQuery} placeholder="Search grants..." />
+      </div>
       <FilterPills
         options={['All', 'AI', 'Web3', 'Open Source', 'Research', 'Education']}
         value={filter}
@@ -319,10 +369,23 @@ function GrantsTab({ grants }: { grants: Grant[] }) {
 
 function ProgramsTab({ programs }: { programs: Program[] }) {
   const [filter, setFilter] = useState('All');
-  const filtered = filter === 'All' ? programs : programs.filter(p => p.type === filter);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const q = searchQuery.trim().toLowerCase();
+  const searchFiltered = q
+    ? programs.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.organizer.toLowerCase().includes(q)
+      )
+    : programs;
+  const filtered = filter === 'All' ? searchFiltered : searchFiltered.filter(p => p.type === filter);
 
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <TabSectionHeader>All Programs</TabSectionHeader>
+      <div className="w-full" style={{ marginBottom: 'var(--space-3)' }}>
+        <Input value={searchQuery} onChange={setSearchQuery} placeholder="Search programs..." />
+      </div>
       <FilterPills
         options={['All', 'Fellowship', 'Accelerator', 'Incubator']}
         value={filter}
@@ -355,12 +418,25 @@ function ProgramsTab({ programs }: { programs: Program[] }) {
 
 function JobsTab({ jobs }: { jobs: Job[] }) {
   const [filter, setFilter] = useState('All');
-  const filtered = filterJobs(jobs, filter);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const q = searchQuery.trim().toLowerCase();
+  const searchFiltered = q
+    ? jobs.filter(j =>
+        j.title.toLowerCase().includes(q) ||
+        j.company.toLowerCase().includes(q)
+      )
+    : jobs;
+  const filtered = filterJobs(searchFiltered, filter);
 
   return (
     <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <TabSectionHeader>All Jobs</TabSectionHeader>
+      <div className="w-full" style={{ marginBottom: 'var(--space-3)' }}>
+        <Input value={searchQuery} onChange={setSearchQuery} placeholder="Search jobs..." />
+      </div>
       <FilterPills
-        options={['All', 'AI', 'Web3', 'Remote', 'Full-Time', 'Part-Time']}
+        options={['All', 'AI', 'Web3', 'Remote', 'Technical', 'Non-Technical']}
         value={filter}
         onChange={setFilter}
       />
