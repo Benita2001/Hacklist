@@ -73,6 +73,7 @@ export interface Job {
   location: string | null;
   employment_type?: string | null;
   job_type?: string | null;
+  created_at?: string | null;
   apply_url: string | null;
   spotlight: boolean;
   verified: boolean;

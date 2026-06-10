@@ -48,7 +48,32 @@ async function getJobs(): Promise<Job[]> {
     .or(`deadline.gte.${today},deadline.is.null`)
     .order('deadline', { ascending: true, nullsFirst: false });
   if (error) { console.error('Supabase jobs error:', error); return []; }
-  return (data ?? []) as Job[];
+
+  // Fix 1: deduplicate by id (guards against duplicate DB rows)
+  const seen = new Set<string>();
+  const unique = (data ?? []).filter((j) => {
+    if (seen.has(j.id)) return false;
+    seen.add(j.id);
+    return true;
+  }) as Job[];
+
+  // Fix 3: hide no-deadline jobs older than 8 days
+  const eightDaysAgo = new Date();
+  eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
+  const active = unique.filter((job) => {
+    if (job.deadline) return true;
+    if (!job.created_at) return true; // no timestamp → keep
+    return new Date(job.created_at) > eightDaysAgo;
+  });
+
+  // Fix 2: salary-disclosed jobs first, deadline order preserved within each group
+  return [...active].sort((a, b) => {
+    const aHasSalary = !!(a.salary && a.salary.toLowerCase() !== 'undisclosed');
+    const bHasSalary = !!(b.salary && b.salary.toLowerCase() !== 'undisclosed');
+    if (aHasSalary && !bHasSalary) return -1;
+    if (!aHasSalary && bHasSalary) return 1;
+    return 0;
+  });
 }
 
 export default async function HomePage() {
