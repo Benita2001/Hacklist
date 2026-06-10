@@ -13,6 +13,10 @@ export async function Ticker() {
     `${aiCount} AI Hackathons`,
     `${web3Count} Web3 Hackathons`,
     `Prize-first. Deadline-sorted.`,
+    `Bounties`,
+    `Grants`,
+    `Programs`,
+    `Jobs`,
     `Find yours on HackList`,
   ];
 
