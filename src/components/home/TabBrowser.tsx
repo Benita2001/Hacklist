@@ -656,7 +656,22 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
   const item = items[current];
 
   return (
-    <section style={{ paddingBottom: 'var(--space-10)' }}>
+    <section style={{ paddingBottom: 'var(--space-10)', position: 'relative', overflow: 'hidden' }}>
+      {/* Video background */}
+      <video
+        src="/ScreenRecording_06-11-2026 16.mov"
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+      />
+      {/* Dark overlay */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', zIndex: 1 }} />
+
+      {/* Content sits above video + overlay */}
+      <div style={{ position: 'relative', zIndex: 2 }}>
+
       {/* Section header — same style as existing Spotlight label */}
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <p style={{
@@ -763,6 +778,8 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
           ))}
         </div>
       )}
+
+      </div>{/* end content zIndex wrapper */}
     </section>
   );
 }
