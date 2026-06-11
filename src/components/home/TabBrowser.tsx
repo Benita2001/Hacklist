@@ -1,13 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Hackathon } from '@/lib/types';
 import { HackathonBrowser } from '@/components/home/HackathonBrowser';
-import { HackathonCard } from '@/components/hackathon/HackathonCard';
 import { UniversalCard, type TagItem } from '@/components/hackathon/UniversalCard';
 import { Input } from '@/components/ui/Input';
+import { Tag } from '@/components/ui/Tag';
 
 /* ── Entity types ─────────────────────────────────────────── */
+
+export interface WorldCupItem {
+  id: string;
+  name: string;
+  organizer: string;
+  description?: string | null;
+  prize_pool: string | null;
+  deadline: string | null;
+  deadline_text: string | null;
+  platform_type: string | null;
+  apply_url: string | null;
+}
 
 export interface Bounty {
   id: string;
@@ -87,11 +99,12 @@ interface TabBrowserProps {
   grants: Grant[];
   programs: Program[];
   jobs: Job[];
+  worldCupItems: WorldCupItem[];
 }
 
 /* ── Types ────────────────────────────────────────────────── */
 
-type TabKey = 'hackathons' | 'bounties' | 'grants' | 'programs' | 'jobs';
+type TabKey = 'campaigns' | 'hackathons' | 'bounties' | 'grants' | 'programs' | 'jobs';
 
 /* ── Tag helpers ──────────────────────────────────────────── */
 
@@ -487,15 +500,308 @@ function tabPillStyle(): React.CSSProperties {
   };
 }
 
+/* ── World Cup Specials — carousel card ───────────────────── */
+
+function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
+  return (
+    <article
+      className="flex flex-col md:flex-row"
+      style={{
+        backgroundColor: 'var(--card-bg-featured)',
+        borderRadius: 'var(--card-radius)',
+        padding: 'var(--card-padding)',
+        border: '1px solid transparent',
+        gap: 'var(--space-6)',
+        position: 'relative',
+        transition: 'border-color var(--duration-base) var(--ease-default)',
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'transparent'; }}
+    >
+      {/* Left: organizer + name + tags */}
+      <div
+        className="md:w-72"
+        style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}
+      >
+        <p
+          className="truncate"
+          style={{
+            fontSize: 'var(--text-xs)',
+            fontWeight: 500,
+            letterSpacing: 'var(--tracking-caps)',
+            textTransform: 'uppercase',
+            color: 'var(--color-olive-light)',
+            maxWidth: '70%',
+            display: 'block',
+          }}
+        >
+          {item.organizer}
+        </p>
+        <h3
+          style={{
+            fontFamily: 'var(--font-inter)',
+            fontSize: '18px',
+            fontWeight: 550,
+            color: '#FFFFFF',
+            lineHeight: 'var(--leading-snug)',
+            letterSpacing: '-0.3px',
+            marginTop: '8px',
+          }}
+        >
+          {item.name}
+        </h3>
+        <div className="flex flex-wrap" style={{ gap: '6px' }}>
+          {item.platform_type && <Tag label={item.platform_type} variant="format" />}
+        </div>
+      </div>
+
+      {/* Vertical separator */}
+      <div
+        className="hidden md:block"
+        style={{ width: '1px', backgroundColor: 'rgba(255,255,255,0.12)', flexShrink: 0, alignSelf: 'stretch' }}
+        aria-hidden="true"
+      />
+
+      {/* Middle: description */}
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' }}>
+        <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(240, 238, 224, 0.70)', lineHeight: 'var(--leading-relaxed)' }}>
+          {item.description}
+        </p>
+      </div>
+
+      {/* Vertical separator */}
+      <div
+        className="hidden md:block"
+        style={{ width: '1px', backgroundColor: 'rgba(255,255,255,0.12)', flexShrink: 0, alignSelf: 'stretch' }}
+        aria-hidden="true"
+      />
+
+      {/* Right: prize + deadline + apply */}
+      <div
+        className="md:w-44"
+        style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: 'var(--space-2)' }}
+      >
+        <p style={{
+          fontSize: 'var(--text-2xs)',
+          fontWeight: 500,
+          letterSpacing: 'var(--tracking-caps)',
+          textTransform: 'uppercase',
+          color: 'var(--color-olive-light)',
+        }}>
+          Prize Pool
+        </p>
+        <span style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: 'var(--text-3xl)',
+          fontWeight: 400,
+          color: '#FFFFFF',
+          letterSpacing: '-0.3px',
+          lineHeight: 1,
+        }}>
+          {item.prize_pool ?? 'Undisclosed'}
+        </span>
+        {item.deadline_text && (
+          <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(240,238,224,0.5)' }}>
+            {item.deadline_text}
+          </span>
+        )}
+        {item.apply_url && (
+          <a
+            href={item.apply_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '6px 16px',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: '#FFFFFF',
+              color: 'var(--color-moss)',
+              border: '1px solid transparent',
+              fontSize: 'var(--text-xs)',
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'background-color var(--duration-base) var(--ease-default)',
+              whiteSpace: 'nowrap',
+              alignSelf: 'flex-start',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.88)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#FFFFFF'; }}
+          >
+            Apply Now
+          </a>
+        )}
+      </div>
+    </article>
+  );
+}
+
+/* ── World Cup Specials — auto-sliding carousel ───────────── */
+
+function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
+  const [current, setCurrent] = useState(0);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    if (items.length <= 1) return;
+    const id = setInterval(() => setCurrent(c => (c + 1) % items.length), 4000);
+    return () => clearInterval(id);
+  }, [items.length, tick]);
+
+  function goTo(idx: number) {
+    setCurrent((idx + items.length) % items.length);
+    setTick(t => t + 1);
+  }
+
+  const item = items[current];
+
+  return (
+    <section style={{ paddingBottom: 'var(--space-10)' }}>
+      {/* Section header — same style as existing Spotlight label */}
+      <div style={{ marginBottom: 'var(--space-4)' }}>
+        <p style={{
+          fontSize: 'var(--text-xs)',
+          fontWeight: 600,
+          letterSpacing: 'var(--tracking-caps)',
+          textTransform: 'uppercase',
+          color: 'var(--color-moss)',
+          marginBottom: 'var(--space-3)',
+        }}>
+          World Cup Specials ⚽
+        </p>
+        <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
+      </div>
+
+      {/* Card + arrow overlay */}
+      <div style={{ position: 'relative' }}>
+        <WorldCupSpotlightCard item={item} />
+
+        {items.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => goTo(current - 1)}
+              aria-label="Previous slide"
+              style={{
+                position: 'absolute',
+                left: 'var(--space-3)',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 2,
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: 'none',
+                backgroundColor: 'rgba(255,255,255,0.15)',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'background-color var(--duration-base) var(--ease-default)',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => goTo(current + 1)}
+              aria-label="Next slide"
+              style={{
+                position: 'absolute',
+                right: 'var(--space-3)',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                zIndex: 2,
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                border: 'none',
+                backgroundColor: 'rgba(255,255,255,0.15)',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'background-color var(--duration-base) var(--ease-default)',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Dot indicators */}
+      {items.length > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: 'var(--space-4)' }}>
+          {items.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              style={{
+                width: i === current ? '20px' : '6px',
+                height: '6px',
+                borderRadius: '3px',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                backgroundColor: i === current ? 'var(--color-moss)' : 'var(--color-border-strong)',
+                transition: 'all var(--duration-base) var(--ease-default)',
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ── Campaigns tab ────────────────────────────────────────── */
+
+function CampaignsTab({ items }: { items: WorldCupItem[] }) {
+  return (
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <TabSectionHeader>All Campaigns</TabSectionHeader>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
+        {items.map((item, i) => (
+          <UniversalCard
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            organizer={item.organizer}
+            description={item.description}
+            prizeLabel="Prize Pool"
+            prizeValue={item.prize_pool}
+            deadline={item.deadline}
+            deadline_text={item.deadline_text}
+            apply_url={item.apply_url}
+            tags={item.platform_type ? [{ label: item.platform_type, variant: 'format' as const }] : []}
+            index={i}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* ── Main component ───────────────────────────────────────── */
 
-export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: TabBrowserProps) {
+export function TabBrowser({ hackathons, bounties, grants, programs, jobs, worldCupItems }: TabBrowserProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('hackathons');
 
-  const spotlightHackathon     = hackathons.find(h => h.spotlight);
-  const nonSpotlightHackathons = hackathons.filter(h => !h.spotlight);
-
   const tabs: Array<{ key: TabKey; label: string; count: number }> = [
+    ...(worldCupItems.length > 0 ? [{ key: 'campaigns' as TabKey, label: 'Campaigns ⚽', count: worldCupItems.length }] : []),
     { key: 'hackathons', label: 'Hackathons', count: hackathons.length },
     { key: 'bounties',   label: 'Bounties',   count: bounties.length   },
     { key: 'grants',     label: 'Grants',     count: grants.length     },
@@ -506,25 +812,8 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
   return (
     <div>
 
-      {/* ── Spotlight — above tabs ── */}
-      {spotlightHackathon && (
-        <section style={{ paddingBottom: 'var(--space-10)' }}>
-          <div style={{ marginBottom: 'var(--space-4)' }}>
-            <p style={{
-              fontSize: 'var(--text-xs)',
-              fontWeight: 600,
-              letterSpacing: 'var(--tracking-caps)',
-              textTransform: 'uppercase',
-              color: 'var(--color-moss)',
-              marginBottom: 'var(--space-3)',
-            }}>
-              Spotlight
-            </p>
-            <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
-          </div>
-          <HackathonCard hackathon={spotlightHackathon} spotlight index={0} />
-        </section>
-      )}
+      {/* ── World Cup Specials carousel — hidden when no items ── */}
+      {worldCupItems.length > 0 && <WorldCupCarousel items={worldCupItems} />}
 
       {/* ── Tab bar ── */}
       <div
@@ -559,7 +848,8 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
       </div>
 
       {/* ── Tab content ── */}
-      {activeTab === 'hackathons' && <HackathonBrowser hackathons={nonSpotlightHackathons} />}
+      {activeTab === 'campaigns'  && <CampaignsTab items={worldCupItems} />}
+      {activeTab === 'hackathons' && <HackathonBrowser hackathons={hackathons} />}
       {activeTab === 'bounties'   && <BountiesTab bounties={bounties} />}
       {activeTab === 'grants'     && <GrantsTab grants={grants} />}
       {activeTab === 'programs'   && <ProgramsTab programs={programs} />}
