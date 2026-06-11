@@ -507,16 +507,15 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
     <article
       className="flex flex-col md:flex-row"
       style={{
-        backgroundColor: 'var(--card-bg-featured)',
-        borderRadius: 'var(--card-radius)',
+        background: 'rgba(255, 255, 255, 0.07)',
+        border: '0.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '10px',
         padding: 'var(--card-padding)',
-        border: '1px solid transparent',
         gap: 'var(--space-6)',
-        position: 'relative',
-        transition: 'border-color var(--duration-base) var(--ease-default)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.15)'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'transparent'; }}
     >
       {/* Left: organizer + name + tags */}
       <div
@@ -530,8 +529,7 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
             fontWeight: 500,
             letterSpacing: 'var(--tracking-caps)',
             textTransform: 'uppercase',
-            color: 'var(--color-olive-light)',
-            maxWidth: '70%',
+            color: 'rgba(255,255,255,0.6)',
             display: 'block',
           }}
         >
@@ -541,8 +539,8 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
           style={{
             fontFamily: 'var(--font-inter)',
             fontSize: '18px',
-            fontWeight: 550,
-            color: '#FFFFFF',
+            fontWeight: 600,
+            color: '#ffffff',
             lineHeight: 'var(--leading-snug)',
             letterSpacing: '-0.3px',
             marginTop: '8px',
@@ -564,7 +562,7 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
 
       {/* Middle: description */}
       <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' }}>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(240, 238, 224, 0.70)', lineHeight: 'var(--leading-relaxed)' }}>
+        <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.6)', lineHeight: 'var(--leading-relaxed)' }}>
           {item.description}
         </p>
       </div>
@@ -579,14 +577,14 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
       {/* Right: prize + deadline + apply */}
       <div
         className="md:w-44"
-        style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: 'var(--space-2)' }}
+        style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 'var(--space-2)' }}
       >
         <p style={{
           fontSize: 'var(--text-2xs)',
           fontWeight: 500,
           letterSpacing: 'var(--tracking-caps)',
           textTransform: 'uppercase',
-          color: 'var(--color-olive-light)',
+          color: 'rgba(255,255,255,0.6)',
         }}>
           Prize Pool
         </p>
@@ -594,14 +592,14 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
           fontFamily: 'var(--font-serif)',
           fontSize: 'var(--text-3xl)',
           fontWeight: 400,
-          color: '#FFFFFF',
+          color: '#d4e88a',
           letterSpacing: '-0.3px',
           lineHeight: 1,
         }}>
           {item.prize_pool ?? 'Undisclosed'}
         </span>
         {item.deadline_text && (
-          <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(240,238,224,0.5)' }}>
+          <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.5)' }}>
             {item.deadline_text}
           </span>
         )}
@@ -615,18 +613,18 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
               alignItems: 'center',
               padding: '6px 16px',
               borderRadius: 'var(--radius-sm)',
-              backgroundColor: '#FFFFFF',
-              color: 'var(--color-moss)',
+              backgroundColor: '#d4e88a',
+              color: '#1a2d0a',
               border: '1px solid transparent',
               fontSize: 'var(--text-xs)',
               fontWeight: 600,
               textDecoration: 'none',
-              transition: 'background-color var(--duration-base) var(--ease-default)',
+              transition: 'opacity var(--duration-base) var(--ease-default)',
               whiteSpace: 'nowrap',
               alignSelf: 'flex-start',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = 'rgba(255,255,255,0.88)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.backgroundColor = '#FFFFFF'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.85'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; }}
           >
             Apply Now
           </a>
@@ -656,23 +654,9 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
   const item = items[current];
 
   return (
-    <section style={{ paddingBottom: 'var(--space-10)', position: 'relative', overflow: 'hidden' }}>
-      {/* Video background */}
-      <video
-        src="/ScreenRecording_06-11-2026 16.mov"
-        autoPlay
-        muted
-        loop
-        playsInline
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
-      />
-      {/* Dark overlay */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', zIndex: 1 }} />
+    <section style={{ paddingBottom: 'var(--space-10)' }}>
 
-      {/* Content sits above video + overlay */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
-
-      {/* Section header — same style as existing Spotlight label */}
+      {/* FIX 2 — Label OUTSIDE the video container */}
       <div style={{ marginBottom: 'var(--space-4)' }}>
         <p style={{
           fontSize: 'var(--text-xs)',
@@ -687,99 +671,153 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
         <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
       </div>
 
-      {/* Card + arrow overlay */}
-      <div style={{ position: 'relative' }}>
-        <WorldCupSpotlightCard item={item} />
+      {/* FIX 1 — Fixed-height video container */}
+      <div style={{
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: '12px',
+        height: '320px',
+        margin: '0 24px 20px',
+      }}>
+        {/* Video background */}
+        <video
+          src="/ScreenRecording_06-11-2026 16.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
+        />
+        {/* Dark overlay */}
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.65)', zIndex: 1 }} />
 
+        {/* FIX 6 — LIVE NOW badge + arrows at top right */}
+        <div style={{
+          position: 'absolute',
+          top: '16px',
+          right: '16px',
+          zIndex: 3,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        }}>
+          {/* FIX 5 — LIVE NOW badge */}
+          <span style={{
+            background: 'rgba(212, 232, 138, 0.15)',
+            border: '1px solid rgba(212, 232, 138, 0.4)',
+            color: '#d4e88a',
+            fontSize: '9px',
+            fontWeight: 700,
+            padding: '2px 8px',
+            borderRadius: '4px',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}>
+            LIVE NOW
+          </span>
+
+          {/* Arrows */}
+          {items.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() => goTo(current - 1)}
+                aria-label="Previous slide"
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  backgroundColor: 'rgba(255,255,255,0.15)',
+                  color: '#FFFFFF',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background-color var(--duration-base) var(--ease-default)',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
+              >
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                  <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={() => goTo(current + 1)}
+                aria-label="Next slide"
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  backgroundColor: 'rgba(255,255,255,0.15)',
+                  color: '#FFFFFF',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'background-color var(--duration-base) var(--ease-default)',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
+              >
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                  <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Card content — centred in the container */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 32px',
+        }}>
+          <div style={{ width: '100%' }}>
+            <WorldCupSpotlightCard item={item} />
+          </div>
+        </div>
+
+        {/* FIX 7 — Dots at bottom centre of video container */}
         {items.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={() => goTo(current - 1)}
-              aria-label="Previous slide"
-              style={{
-                position: 'absolute',
-                left: 'var(--space-3)',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 2,
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                border: 'none',
-                backgroundColor: 'rgba(255,255,255,0.15)',
-                color: '#FFFFFF',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'background-color var(--duration-base) var(--ease-default)',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
-            >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => goTo(current + 1)}
-              aria-label="Next slide"
-              style={{
-                position: 'absolute',
-                right: 'var(--space-3)',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                zIndex: 2,
-                width: '32px',
-                height: '32px',
-                borderRadius: '50%',
-                border: 'none',
-                backgroundColor: 'rgba(255,255,255,0.15)',
-                color: '#FFFFFF',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'background-color var(--duration-base) var(--ease-default)',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
-            >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </>
+          <div style={{
+            position: 'absolute',
+            bottom: '14px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 3,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px',
+          }}>
+            {items.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`Go to slide ${i + 1}`}
+                style={{
+                  width: i === current ? '12px' : '4px',
+                  height: i === current ? '4px' : '4px',
+                  borderRadius: '3px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  backgroundColor: i === current ? '#d4e88a' : 'rgba(255,255,255,0.2)',
+                  transition: 'all var(--duration-base) var(--ease-default)',
+                }}
+              />
+            ))}
+          </div>
         )}
       </div>
-
-      {/* Dot indicators */}
-      {items.length > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: 'var(--space-4)' }}>
-          {items.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              style={{
-                width: i === current ? '20px' : '6px',
-                height: '6px',
-                borderRadius: '3px',
-                border: 'none',
-                cursor: 'pointer',
-                padding: 0,
-                backgroundColor: i === current ? 'var(--color-moss)' : 'var(--color-border-strong)',
-                transition: 'all var(--duration-base) var(--ease-default)',
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      </div>{/* end content zIndex wrapper */}
     </section>
   );
 }

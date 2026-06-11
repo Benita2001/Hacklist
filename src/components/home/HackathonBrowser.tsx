@@ -37,9 +37,7 @@ function SectionHeader({ children, color }: { children: React.ReactNode; color: 
 export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
-  const filtered  = filterHackathons(hackathons, filters);
-  const spotlight = filtered.find(h => h.spotlight);
-  const regular   = filtered.filter(h => !h.spotlight);
+  const filtered = filterHackathons(hackathons, filters);
 
   if (hackathons.length === 0) {
     return (
@@ -57,53 +55,42 @@ export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
   }
 
   return (
-    <>
-      {/* Spotlight */}
-      {spotlight && (
-        <section style={{ paddingBottom: 'var(--space-10)' }}>
-          <SectionHeader color="var(--color-moss)">Hackathon Spotlight</SectionHeader>
-          <HackathonCard hackathon={spotlight} spotlight index={0} />
-        </section>
+    <section style={{ paddingBottom: 'var(--space-20)' }}>
+      <SectionHeader color="var(--color-text-muted)">All Hackathons</SectionHeader>
+
+      <FilterBar
+        filters={filters}
+        onChange={setFilters}
+        totalCount={hackathons.length}
+        filteredCount={filtered.length}
+      />
+
+      {filtered.length === 0 ? (
+        <div
+          className="flex flex-col items-center justify-center text-center"
+          style={{ padding: 'var(--space-24) 0', gap: 'var(--space-4)' }}
+        >
+          <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 600, color: 'var(--color-text-primary)' }}>
+            No hackathons found
+          </h3>
+          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
+            Try adjusting your filters or search.
+          </p>
+        </div>
+      ) : (
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          style={{ gap: 'var(--space-5)', alignItems: 'stretch', marginTop: 'var(--space-5)' }}
+        >
+          {filtered.map((hackathon, index) => (
+            <HackathonCard
+              key={hackathon.id}
+              hackathon={hackathon}
+              index={index}
+            />
+          ))}
+        </div>
       )}
-
-      {/* All Hackathons */}
-      <section style={{ paddingBottom: 'var(--space-20)' }}>
-        <SectionHeader color="var(--color-text-muted)">All Hackathons</SectionHeader>
-
-        <FilterBar
-          filters={filters}
-          onChange={setFilters}
-          totalCount={hackathons.length}
-          filteredCount={filtered.length}
-        />
-
-        {regular.length === 0 ? (
-          <div
-            className="flex flex-col items-center justify-center text-center"
-            style={{ padding: 'var(--space-24) 0', gap: 'var(--space-4)' }}
-          >
-            <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 600, color: 'var(--color-text-primary)' }}>
-              No hackathons found
-            </h3>
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
-              Try adjusting your filters or search.
-            </p>
-          </div>
-        ) : (
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-            style={{ gap: 'var(--space-5)', alignItems: 'stretch', marginTop: 'var(--space-5)' }}
-          >
-            {regular.map((hackathon, index) => (
-              <HackathonCard
-                key={hackathon.id}
-                hackathon={hackathon}
-                index={index}
-              />
-            ))}
-          </div>
-        )}
-      </section>
-    </>
+    </section>
   );
 }
