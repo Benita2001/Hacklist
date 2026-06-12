@@ -507,8 +507,9 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
     <article
       className="flex flex-col md:flex-row"
       style={{
-        background: 'rgba(255, 255, 255, 0.07)',
-        border: '0.5px solid rgba(255, 255, 255, 0.12)',
+        background: 'rgba(20, 25, 10, 0.75)',
+        backdropFilter: 'blur(12px)',
+        border: '0.5px solid rgba(255, 255, 255, 0.15)',
         borderRadius: '10px',
         padding: 'var(--card-padding)',
         gap: 'var(--space-6)',
@@ -677,6 +678,7 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
         overflow: 'hidden',
         borderRadius: '12px',
         height: '320px',
+        maxHeight: '320px',
         margin: '0 24px 20px',
       }}>
         {/* Video background */}
@@ -689,7 +691,7 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
         />
         {/* Dark overlay */}
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.65)', zIndex: 1 }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.55)', zIndex: 1 }} />
 
         {/* FIX 6 — LIVE NOW badge + arrows at top right */}
         <div style={{
@@ -785,11 +787,11 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
           </div>
         </div>
 
-        {/* FIX 7 — Dots at bottom centre of video container */}
+        {/* FIX 4 — Dots at very bottom centre, 16px from bottom edge */}
         {items.length > 1 && (
           <div style={{
             position: 'absolute',
-            bottom: '14px',
+            bottom: '16px',
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 3,
