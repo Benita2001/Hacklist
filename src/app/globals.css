@@ -280,3 +280,78 @@
   border-color: #d4e88a;
   color: #d4e88a;
 }
+
+/* ============================================================
+   WORLD CUP SPECIALS — mobile responsive
+   ============================================================ */
+
+@media (max-width: 768px) {
+  /* FIX 1 — height auto, min-height 380px, tighter margin */
+  .wc-video-container {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 380px;
+    margin: 0 16px 16px !important;
+  }
+
+  /* Card content wrapper: clear top for LIVE NOW badge, bottom for dots */
+  .wc-card-content-wrapper {
+    height: auto !important;
+    padding: 52px 16px 48px !important;
+    align-items: flex-start !important;
+  }
+
+  /* FIX 2 — card stacks with tighter padding/gap */
+  .wc-card {
+    padding: 16px !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* FIX 4 — description: 13px, 3-line clamp */
+  .wc-card-description {
+    font-size: 13px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* FIX 4 — prize value: 22px */
+  .wc-card-prize {
+    font-size: 22px !important;
+  }
+
+  /* FIX 4 — apply button: full width, 12px font, 10px v-padding */
+  .wc-card-apply {
+    width: 100% !important;
+    font-size: 12px !important;
+    padding: 10px 16px !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+  }
+
+  /* FIX 3 — LIVE NOW badge shrinks */
+  .wc-live-badge {
+    font-size: 8px !important;
+    padding: 2px 6px !important;
+  }
+}
+
+/* FIX 5 — Tab bar: horizontal scroll on mobile, no scrollbar */
+.wc-tab-bar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.wc-tab-bar::-webkit-scrollbar { display: none; }
+
+@media (max-width: 768px) {
+  .wc-tab-bar {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .wc-tab-bar > button { flex-shrink: 0 !important; }
+}

@@ -505,7 +505,7 @@ function tabPillStyle(): React.CSSProperties {
 function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
   return (
     <article
-      className="flex flex-col md:flex-row"
+      className="flex flex-col md:flex-row wc-card"
       style={{
         background: 'rgba(20, 25, 10, 0.75)',
         backdropFilter: 'blur(12px)',
@@ -563,7 +563,7 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
 
       {/* Middle: description */}
       <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' }}>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.6)', lineHeight: 'var(--leading-relaxed)' }}>
+        <p className="wc-card-description" style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.6)', lineHeight: 'var(--leading-relaxed)' }}>
           {item.description}
         </p>
       </div>
@@ -589,7 +589,7 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
         }}>
           Prize Pool
         </p>
-        <span style={{
+        <span className="wc-card-prize" style={{
           fontFamily: 'var(--font-serif)',
           fontSize: 'var(--text-3xl)',
           fontWeight: 400,
@@ -609,6 +609,7 @@ function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
             href={item.apply_url}
             target="_blank"
             rel="noopener noreferrer"
+            className="wc-card-apply"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -673,7 +674,7 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
       </div>
 
       {/* FIX 1 — Fixed-height video container */}
-      <div style={{
+      <div className="wc-video-container" style={{
         position: 'relative',
         overflow: 'hidden',
         borderRadius: '12px',
@@ -704,7 +705,7 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
           gap: '8px',
         }}>
           {/* FIX 5 — LIVE NOW badge */}
-          <span style={{
+          <span className="wc-live-badge" style={{
             background: 'rgba(212, 232, 138, 0.15)',
             border: '1px solid rgba(212, 232, 138, 0.4)',
             color: '#d4e88a',
@@ -774,7 +775,7 @@ function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
         </div>
 
         {/* Card content — centred in the container */}
-        <div style={{
+        <div className="wc-card-content-wrapper" style={{
           position: 'relative',
           zIndex: 2,
           height: '100%',
@@ -874,6 +875,7 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs, world
 
       {/* ── Tab bar ── */}
       <div
+        className="wc-tab-bar"
         style={{
           display: 'flex',
           flexWrap: 'wrap',
