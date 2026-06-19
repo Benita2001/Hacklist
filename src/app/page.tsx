@@ -4,7 +4,7 @@ import { getHackathons } from '@/lib/data';
 import { supabase } from '@/lib/supabase';
 import { PageShell } from '@/components/layout/PageShell';
 import { HeroSection } from '@/components/home/HeroSection';
-import { TabBrowser, type Bounty, type Grant, type Program, type Job, type WorldCupItem } from '@/components/home/TabBrowser';
+import { TabBrowser, type Bounty, type Grant, type Program, type Job } from '@/components/home/TabBrowser';
 import { BottomCTA } from '@/components/home/BottomCTA';
 
 async function getBounties(): Promise<Bounty[]> {
@@ -38,15 +38,6 @@ async function getPrograms(): Promise<Program[]> {
     .order('deadline', { ascending: true, nullsFirst: false });
   if (error) { console.error('Supabase programs error:', error); return []; }
   return (data ?? []) as Program[];
-}
-
-async function getWorldCupItems(): Promise<WorldCupItem[]> {
-  const { data, error } = await supabase
-    .from('worldcup')
-    .select('*')
-    .order('created_at', { ascending: false });
-  if (error) { console.error('Supabase worldcup error:', error); return []; }
-  return (data ?? []) as WorldCupItem[];
 }
 
 async function getJobs(): Promise<Job[]> {
@@ -86,13 +77,12 @@ async function getJobs(): Promise<Job[]> {
 }
 
 export default async function HomePage() {
-  const [hackathons, bounties, grants, programs, jobs, worldCupItems] = await Promise.all([
+  const [hackathons, bounties, grants, programs, jobs] = await Promise.all([
     getHackathons(),
     getBounties(),
     getGrants(),
     getPrograms(),
     getJobs(),
-    getWorldCupItems(),
   ]);
 
   return (
@@ -105,7 +95,6 @@ export default async function HomePage() {
           grants={grants}
           programs={programs}
           jobs={jobs}
-          worldCupItems={worldCupItems}
         />
       </PageShell>
       <BottomCTA />

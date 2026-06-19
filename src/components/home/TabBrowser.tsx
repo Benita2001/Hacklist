@@ -1,25 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { Hackathon } from '@/lib/types';
 import { HackathonBrowser } from '@/components/home/HackathonBrowser';
+import { HackathonCard } from '@/components/hackathon/HackathonCard';
 import { UniversalCard, type TagItem } from '@/components/hackathon/UniversalCard';
 import { Input } from '@/components/ui/Input';
-import { Tag } from '@/components/ui/Tag';
 
 /* ── Entity types ─────────────────────────────────────────── */
-
-export interface WorldCupItem {
-  id: string;
-  name: string;
-  organizer: string;
-  description?: string | null;
-  prize_pool: string | null;
-  deadline: string | null;
-  deadline_text: string | null;
-  platform_type: string | null;
-  apply_url: string | null;
-}
 
 export interface Bounty {
   id: string;
@@ -99,12 +87,11 @@ interface TabBrowserProps {
   grants: Grant[];
   programs: Program[];
   jobs: Job[];
-  worldCupItems: WorldCupItem[];
 }
 
 /* ── Types ────────────────────────────────────────────────── */
 
-type TabKey = 'campaigns' | 'hackathons' | 'bounties' | 'grants' | 'programs' | 'jobs';
+type TabKey = 'hackathons' | 'bounties' | 'grants' | 'programs' | 'jobs';
 
 /* ── Tag helpers ──────────────────────────────────────────── */
 
@@ -500,366 +487,15 @@ function tabPillStyle(): React.CSSProperties {
   };
 }
 
-/* ── World Cup Specials — carousel card ───────────────────── */
-
-function WorldCupSpotlightCard({ item }: { item: WorldCupItem }) {
-  return (
-    <article
-      className="flex flex-col md:flex-row wc-card"
-      style={{
-        background: 'rgba(20, 25, 10, 0.75)',
-        backdropFilter: 'blur(12px)',
-        border: '0.5px solid rgba(255, 255, 255, 0.15)',
-        borderRadius: '10px',
-        padding: 'var(--card-padding)',
-        gap: 'var(--space-6)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      {/* Left: organizer + name + tags */}
-      <div
-        className="md:w-72"
-        style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}
-      >
-        <p
-          className="truncate"
-          style={{
-            fontSize: 'var(--text-xs)',
-            fontWeight: 500,
-            letterSpacing: 'var(--tracking-caps)',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.6)',
-            display: 'block',
-          }}
-        >
-          {item.organizer}
-        </p>
-        <h3
-          style={{
-            fontFamily: 'var(--font-inter)',
-            fontSize: '18px',
-            fontWeight: 600,
-            color: '#ffffff',
-            lineHeight: 'var(--leading-snug)',
-            letterSpacing: '-0.3px',
-            marginTop: '8px',
-          }}
-        >
-          {item.name}
-        </h3>
-        <div className="flex flex-wrap" style={{ gap: '6px' }}>
-          {item.platform_type && <Tag label={item.platform_type} variant="format" />}
-        </div>
-      </div>
-
-      {/* Vertical separator */}
-      <div
-        className="hidden md:block"
-        style={{ width: '1px', backgroundColor: 'rgba(255,255,255,0.12)', flexShrink: 0, alignSelf: 'stretch' }}
-        aria-hidden="true"
-      />
-
-      {/* Middle: description */}
-      <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center' }}>
-        <p className="wc-card-description" style={{ fontSize: 'var(--text-sm)', color: 'rgba(255,255,255,0.6)', lineHeight: 'var(--leading-relaxed)' }}>
-          {item.description}
-        </p>
-      </div>
-
-      {/* Vertical separator */}
-      <div
-        className="hidden md:block"
-        style={{ width: '1px', backgroundColor: 'rgba(255,255,255,0.12)', flexShrink: 0, alignSelf: 'stretch' }}
-        aria-hidden="true"
-      />
-
-      {/* Right: prize + deadline + apply */}
-      <div
-        className="md:w-44"
-        style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 'var(--space-2)' }}
-      >
-        <p style={{
-          fontSize: 'var(--text-2xs)',
-          fontWeight: 500,
-          letterSpacing: 'var(--tracking-caps)',
-          textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.6)',
-        }}>
-          Prize Pool
-        </p>
-        <span className="wc-card-prize" style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: 'var(--text-3xl)',
-          fontWeight: 400,
-          color: '#d4e88a',
-          letterSpacing: '-0.3px',
-          lineHeight: 1,
-        }}>
-          {item.prize_pool ?? 'Undisclosed'}
-        </span>
-        {item.deadline_text && (
-          <span style={{ fontSize: 'var(--text-xs)', color: 'rgba(255,255,255,0.5)' }}>
-            {item.deadline_text}
-          </span>
-        )}
-        {item.apply_url && (
-          <a
-            href={item.apply_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="wc-card-apply"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '6px 16px',
-              borderRadius: 'var(--radius-sm)',
-              backgroundColor: '#d4e88a',
-              color: '#1a2d0a',
-              border: '1px solid transparent',
-              fontSize: 'var(--text-xs)',
-              fontWeight: 600,
-              textDecoration: 'none',
-              transition: 'opacity var(--duration-base) var(--ease-default)',
-              whiteSpace: 'nowrap',
-              alignSelf: 'flex-start',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '0.85'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; }}
-          >
-            Apply Now
-          </a>
-        )}
-      </div>
-    </article>
-  );
-}
-
-/* ── World Cup Specials — auto-sliding carousel ───────────── */
-
-function WorldCupCarousel({ items }: { items: WorldCupItem[] }) {
-  const [current, setCurrent] = useState(0);
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    if (items.length <= 1) return;
-    const id = setInterval(() => setCurrent(c => (c + 1) % items.length), 4000);
-    return () => clearInterval(id);
-  }, [items.length, tick]);
-
-  function goTo(idx: number) {
-    setCurrent((idx + items.length) % items.length);
-    setTick(t => t + 1);
-  }
-
-  const item = items[current];
-
-  return (
-    <section style={{ paddingBottom: 'var(--space-10)' }}>
-
-      {/* FIX 2 — Label OUTSIDE the video container */}
-      <div style={{ marginBottom: 'var(--space-4)' }}>
-        <p style={{
-          fontSize: 'var(--text-xs)',
-          fontWeight: 600,
-          letterSpacing: 'var(--tracking-caps)',
-          textTransform: 'uppercase',
-          color: 'var(--color-moss)',
-          marginBottom: 'var(--space-3)',
-        }}>
-          World Cup Specials ⚽
-        </p>
-        <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
-      </div>
-
-      {/* FIX 1 — Fixed-height video container */}
-      <div className="wc-video-container" style={{
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: '12px',
-        height: '320px',
-        maxHeight: '320px',
-        margin: '0 24px 20px',
-      }}>
-        {/* Video background */}
-        <video
-          src="/ScreenRecording_06-11-2026 16.mov"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}
-        />
-        {/* Dark overlay */}
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.55)', zIndex: 1 }} />
-
-        {/* FIX 6 — LIVE NOW badge + arrows at top right */}
-        <div style={{
-          position: 'absolute',
-          top: '16px',
-          right: '16px',
-          zIndex: 3,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-        }}>
-          {/* FIX 5 — LIVE NOW badge */}
-          <span className="wc-live-badge" style={{
-            background: 'rgba(212, 232, 138, 0.15)',
-            border: '1px solid rgba(212, 232, 138, 0.4)',
-            color: '#d4e88a',
-            fontSize: '9px',
-            fontWeight: 700,
-            padding: '2px 8px',
-            borderRadius: '4px',
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-          }}>
-            LIVE NOW
-          </span>
-
-          {/* Arrows */}
-          {items.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={() => goTo(current - 1)}
-                aria-label="Previous slide"
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  backgroundColor: 'rgba(255,255,255,0.15)',
-                  color: '#FFFFFF',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'background-color var(--duration-base) var(--ease-default)',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
-              >
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                  <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => goTo(current + 1)}
-                aria-label="Next slide"
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  backgroundColor: 'rgba(255,255,255,0.15)',
-                  color: '#FFFFFF',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'background-color var(--duration-base) var(--ease-default)',
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.28)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.15)'; }}
-              >
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                  <path d="M4.5 2L8.5 6L4.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Card content — centred in the container */}
-        <div className="wc-card-content-wrapper" style={{
-          position: 'relative',
-          zIndex: 2,
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0 32px',
-        }}>
-          <div style={{ width: '100%' }}>
-            <WorldCupSpotlightCard item={item} />
-          </div>
-        </div>
-
-        {/* FIX 4 — Dots at very bottom centre, 16px from bottom edge */}
-        {items.length > 1 && (
-          <div style={{
-            position: 'absolute',
-            bottom: '16px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 3,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-          }}>
-            {items.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => goTo(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                style={{
-                  width: i === current ? '12px' : '4px',
-                  height: i === current ? '4px' : '4px',
-                  borderRadius: '3px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  backgroundColor: i === current ? '#d4e88a' : 'rgba(255,255,255,0.2)',
-                  transition: 'all var(--duration-base) var(--ease-default)',
-                }}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-/* ── Campaigns tab ────────────────────────────────────────── */
-
-function CampaignsTab({ items }: { items: WorldCupItem[] }) {
-  return (
-    <section style={{ paddingBottom: 'var(--space-20)' }}>
-      <TabSectionHeader>All Campaigns</TabSectionHeader>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-        {items.map((item, i) => (
-          <UniversalCard
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            organizer={item.organizer}
-            description={item.description}
-            prizeLabel="Prize Pool"
-            prizeValue={item.prize_pool}
-            deadline={item.deadline}
-            deadline_text={item.deadline_text}
-            apply_url={item.apply_url}
-            tags={item.platform_type ? [{ label: item.platform_type, variant: 'format' as const }] : []}
-            index={i}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
-
 /* ── Main component ───────────────────────────────────────── */
 
-export function TabBrowser({ hackathons, bounties, grants, programs, jobs, worldCupItems }: TabBrowserProps) {
+export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: TabBrowserProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('hackathons');
 
+  const spotlightHackathon     = hackathons.find(h => h.spotlight);
+  const nonSpotlightHackathons = hackathons.filter(h => !h.spotlight);
+
   const tabs: Array<{ key: TabKey; label: string; count: number }> = [
-    ...(worldCupItems.length > 0 ? [{ key: 'campaigns' as TabKey, label: 'Campaigns ⚽', count: worldCupItems.length }] : []),
     { key: 'hackathons', label: 'Hackathons', count: hackathons.length },
     { key: 'bounties',   label: 'Bounties',   count: bounties.length   },
     { key: 'grants',     label: 'Grants',     count: grants.length     },
@@ -870,12 +506,28 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs, world
   return (
     <div>
 
-      {/* ── World Cup Specials carousel — hidden when no items ── */}
-      {worldCupItems.length > 0 && <WorldCupCarousel items={worldCupItems} />}
+      {/* ── Spotlight — above tabs ── */}
+      {spotlightHackathon && (
+        <section style={{ paddingBottom: 'var(--space-10)' }}>
+          <div style={{ marginBottom: 'var(--space-4)' }}>
+            <p style={{
+              fontSize: 'var(--text-xs)',
+              fontWeight: 600,
+              letterSpacing: 'var(--tracking-caps)',
+              textTransform: 'uppercase',
+              color: 'var(--color-moss)',
+              marginBottom: 'var(--space-3)',
+            }}>
+              Spotlight
+            </p>
+            <div style={{ height: '1px', backgroundColor: 'var(--color-border-default)' }} />
+          </div>
+          <HackathonCard hackathon={spotlightHackathon} spotlight index={0} />
+        </section>
+      )}
 
       {/* ── Tab bar ── */}
       <div
-        className="wc-tab-bar"
         style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -907,8 +559,7 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs, world
       </div>
 
       {/* ── Tab content ── */}
-      {activeTab === 'campaigns'  && <CampaignsTab items={worldCupItems} />}
-      {activeTab === 'hackathons' && <HackathonBrowser hackathons={hackathons} />}
+      {activeTab === 'hackathons' && <HackathonBrowser hackathons={nonSpotlightHackathons} />}
       {activeTab === 'bounties'   && <BountiesTab bounties={bounties} />}
       {activeTab === 'grants'     && <GrantsTab grants={grants} />}
       {activeTab === 'programs'   && <ProgramsTab programs={programs} />}
