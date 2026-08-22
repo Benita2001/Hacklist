@@ -1,3 +1,5 @@
+import { getServerConfig } from '@/config/env';
+
 export interface AnnounceBody {
   name:           string;
   organizer:      string;
@@ -17,7 +19,6 @@ interface QueueItem {
 }
 
 const COOLDOWN_MS  = 60 * 60 * 1000; // 60 minutes
-const INTERVAL_MS  =  5 * 60 * 1000; //  5 minutes
 
 let lastSentAt: number | null = null;
 const queue: QueueItem[] = [];
@@ -30,8 +31,10 @@ function he(s: string): string {
 }
 
 async function sendToTelegram(body: AnnounceBody): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) throw new Error('TELEGRAM_BOT_TOKEN not set');
+  const config = getServerConfig();
+  const token = config.telegramBotToken;
+  const chatId = config.telegramChatId;
+  if (!token || !chatId) throw new Error('telegram_not_configured');
 
   const deadlineDisplay = body.deadline_text || body.deadline || 'TBD';
 
@@ -57,11 +60,12 @@ Join the HackList community <a href="https://t.me/hacklistchat">here</a>`;
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id:                  '@hacklistwithbeni',
+        chat_id:                  chatId,
         text:                     message,
         parse_mode:               'HTML',
         disable_web_page_preview: false,
       }),
+      signal: AbortSignal.timeout(8_000),
     },
   );
 
@@ -75,6 +79,7 @@ Join the HackList community <a href="https://t.me/hacklistchat">here</a>`;
 export async function enqueueOrSend(
   hackathon: AnnounceBody,
 ): Promise<{ queued: boolean; scheduledAt?: string }> {
+  if (!getServerConfig().announceEnabled) throw new Error('announcements_disabled');
   const now = Date.now();
   const canSend = lastSentAt === null || now - lastSentAt >= COOLDOWN_MS;
 
@@ -92,6 +97,7 @@ export async function enqueueOrSend(
 }
 
 export async function processQueue(): Promise<{ sent: number; remaining: number }> {
+  if (!getServerConfig().announceEnabled) throw new Error('announcements_disabled');
   const now = Date.now();
   let sent = 0;
 
@@ -121,11 +127,5 @@ export function getQueueStatus() {
   };
 }
 
-// Auto-process every 5 minutes for the lifetime of this process instance.
-setInterval(async () => {
-  if (queue.length === 0) return;
-  console.log('[announce-queue] Interval tick — processing queue...');
-  await processQueue();
-}, INTERVAL_MS);
-// enable analytics
-// enable analytics
+// The queue is intentionally not auto-processed. In-process scheduling is not
+// durable on serverless hosts; the approved worker must call processQueue.

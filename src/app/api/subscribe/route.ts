@@ -1,131 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerConfig } from '@/config/env';
+import { requestId } from '@/lib/server-request';
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-/* Diagnostic GET — curl http://localhost:3000/api/subscribe */
-export async function GET() {
-  const apiKey = process.env.BREVO_API_KEY;
-  const listId = process.env.BREVO_LIST_ID;
-  return NextResponse.json({
-    BREVO_API_KEY_present: !!apiKey,
-    BREVO_API_KEY_length:  apiKey?.length ?? 0,
-    BREVO_LIST_ID:         listId ?? null,
-  });
-}
-
-export async function POST(req: NextRequest) {
-  /* Top-level catch — prints full stack trace to terminal */
+export async function POST(request: NextRequest) {
+  const id = requestId(request);
+  let body: unknown;
   try {
-    return await handleSubscribe(req);
-  } catch (err) {
-    console.error('[subscribe] UNHANDLED ERROR:', err);
-    return NextResponse.json({ success: false, error: 'internal_error' }, { status: 500 });
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ success: false, error: 'invalid_body', request_id: id }, { status: 400 });
   }
-}
 
-async function handleSubscribe(req: NextRequest): Promise<NextResponse> {
-  /* 1. Parse body */
-  let body: { email?: unknown };
+  const email = body && typeof body === 'object' && typeof (body as { email?: unknown }).email === 'string'
+    ? (body as { email: string }).email.trim().toLowerCase()
+    : '';
+  if (!email || email.length > 254 || !isValidEmail(email)) {
+    return NextResponse.json({ success: false, error: 'invalid_email', request_id: id }, { status: 400 });
+  }
+
+  const config = getServerConfig();
+  if (!config.brevoApiKey || !config.brevoListId) {
+    console.error('[subscribe]', { requestId: id, error: 'brevo_not_configured' });
+    return NextResponse.json({ success: false, error: 'server_misconfigured', request_id: id }, { status: 503 });
+  }
+
   try {
-    body = await req.json() as { email?: unknown };
-  } catch (err) {
-    console.error('[subscribe] Failed to parse request body:', err);
-    return NextResponse.json({ success: false, error: 'invalid_body' }, { status: 400 });
-  }
-
-  /* 2. Validate email */
-  const email = typeof body.email === 'string' ? body.email.trim() : '';
-  console.log('[subscribe] Email received:', email || '(empty)');
-
-  if (!email || !isValidEmail(email)) {
-    console.log('[subscribe] Email validation failed');
-    return NextResponse.json({ success: false, error: 'invalid_email' }, { status: 400 });
-  }
-
-  /* 3. Check env vars */
-  const apiKey = process.env.BREVO_API_KEY;
-  const listId = process.env.BREVO_LIST_ID;
-
-  console.log('[subscribe] BREVO_API_KEY present:', !!apiKey, '| length:', apiKey?.length ?? 0);
-  console.log('[subscribe] BREVO_LIST_ID:', listId ?? '(undefined)');
-
-  if (!apiKey) {
-    console.error('[subscribe] BREVO_API_KEY is not set — restart the dev server after editing .env.local');
-    return NextResponse.json({ success: false, error: 'server_misconfigured' }, { status: 500 });
-  }
-  if (!listId) {
-    console.error('[subscribe] BREVO_LIST_ID is not set');
-    return NextResponse.json({ success: false, error: 'server_misconfigured' }, { status: 500 });
-  }
-
-  /* 4. Call Brevo */
-  const requestBody = {
-    email,
-    listIds:       [parseInt(listId, 10)],
-    updateEnabled: true,
-  };
-  console.log('[subscribe] Calling Brevo with:', JSON.stringify(requestBody));
-
-  let brevoRes: Response;
-  try {
-    brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+    const response = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'accept':       'application/json',
+        accept: 'application/json',
         'content-type': 'application/json',
-        'api-key':      apiKey,
+        'api-key': config.brevoApiKey,
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify({ email, listIds: [config.brevoListId], updateEnabled: true }),
+      signal: AbortSignal.timeout(8_000),
     });
-  } catch (err) {
-    console.error('[subscribe] Network error calling Brevo:', err);
-    return NextResponse.json({ success: false, error: 'network_error' }, { status: 500 });
-  }
 
-  const rawText = await brevoRes.text();
-  console.log('[subscribe] Brevo status:', brevoRes.status, '| body:', rawText);
-
-  if (brevoRes.status === 201) {
-    console.log('[welcome email] attempting to send to:', email);
-    try {
-      const welcomeRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-          'accept':       'application/json',
-          'content-type': 'application/json',
-          'api-key':      process.env.BREVO_API_KEY!,
-        },
-        body: JSON.stringify({
-          to:         [{ email: email }],
-          templateId: 3,
-          sender:     { name: 'Beni from HackList', email: '0xbeni123@gmail.com' },
-        }),
-      });
-      const welcomeData = await welcomeRes.json();
-      console.log('[welcome email] status:', welcomeRes.status);
-      console.log('[welcome email] response:', JSON.stringify(welcomeData));
-    } catch (err) {
-      console.error('[welcome email] error:', err);
+    if (response.status === 201) {
+      void sendWelcomeEmail(config.brevoApiKey, email, id);
+      return NextResponse.json({ success: true, message: 'subscribed', request_id: id });
+    }
+    if (response.status === 204) {
+      return NextResponse.json({ success: true, message: 'already_subscribed', request_id: id });
     }
 
-    return NextResponse.json({ success: true, message: 'subscribed' });
-  }
-  if (brevoRes.status === 204) {
-    return NextResponse.json({ success: true, message: 'already_subscribed' });
-  }
+    const providerBody = await response.json().catch(() => null) as { code?: string } | null;
+    if (response.status === 400 && providerBody?.code === 'duplicate_parameter') {
+      return NextResponse.json({ success: true, message: 'already_subscribed', request_id: id });
+    }
 
-  let data: { code?: string; message?: string } = {};
-  try { data = JSON.parse(rawText) as typeof data; } catch { /* non-JSON */ }
-
-  if (brevoRes.status === 400 && data.code === 'duplicate_parameter') {
-    return NextResponse.json({ success: true, message: 'already_subscribed' });
+    console.error('[subscribe]', { requestId: id, status: response.status, code: providerBody?.code });
+    return NextResponse.json({ success: false, error: 'provider_error', request_id: id }, { status: 502 });
+  } catch (error) {
+    console.error('[subscribe]', { requestId: id, error: error instanceof Error ? error.message : 'network_error' });
+    return NextResponse.json({ success: false, error: 'provider_unavailable', request_id: id }, { status: 502 });
   }
-
-  console.error('[subscribe] Unexpected Brevo response:', brevoRes.status, data);
-  return NextResponse.json({ success: false, error: 'brevo_error', detail: data }, { status: 500 });
 }
-// redeploy
-// redeploy
-// redeploy
+
+async function sendWelcomeEmail(apiKey: string, email: string, id: string): Promise<void> {
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { accept: 'application/json', 'content-type': 'application/json', 'api-key': apiKey },
+      body: JSON.stringify({
+        to: [{ email }],
+        templateId: 3,
+        sender: { name: 'Beni from HackList', email: '0xbeni123@gmail.com' },
+      }),
+      signal: AbortSignal.timeout(8_000),
+    });
+    if (!response.ok) console.error('[subscribe/welcome]', { requestId: id, status: response.status });
+  } catch (error) {
+    console.error('[subscribe/welcome]', { requestId: id, error: error instanceof Error ? error.message : 'network_error' });
+  }
+}

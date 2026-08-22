@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Hackathon } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
@@ -319,12 +319,7 @@ function ModalInner({ hackathon, onClose }: HackathonModalProps) {
 
 /* ── Portal wrapper ── */
 export function HackathonModal({ hackathon, onClose }: HackathonModalProps) {
-  const [mounted, setMounted] = useState(false);
-
-  // SSR safety
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
 
   // Scroll lock + ESC key
   useEffect(() => {

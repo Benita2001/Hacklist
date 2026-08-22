@@ -1,20 +1,32 @@
 import Fuse from 'fuse.js';
-import { supabase } from './supabase';
+import { getSupabase } from './supabase';
 import { Hackathon, FilterKey, FilterState, SortKey } from './types';
 import { parsePrizeToNumber } from './utils';
 
-export async function getHackathons(): Promise<Hackathon[]> {
+export type CatalogueRead<T> = {
+  data: T[];
+  status: 'ready' | 'unavailable' | 'error';
+};
+
+export async function getHackathonsResult(): Promise<CatalogueRead<Hackathon>> {
+  const supabase = getSupabase();
+  if (!supabase) return { data: [], status: 'unavailable' };
   const today = new Date().toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('hackathons')
     .select('*')
+    .eq('verified', true)
     .or(`deadline.gte.${today},deadline.is.null`)
     .order('deadline', { ascending: true, nullsFirst: false });
   if (error) {
-    console.error('Supabase error:', error);
-    return [];
+    console.error('[catalogue/hackathons]', { code: error.code, message: error.message });
+    return { data: [], status: 'error' };
   }
-  return (data ?? []) as Hackathon[];
+  return { data: (data ?? []) as Hackathon[], status: 'ready' };
+}
+
+export async function getHackathons(): Promise<Hackathon[]> {
+  return (await getHackathonsResult()).data;
 }
 
 export function filterHackathons(hackathons: Hackathon[], state: FilterState): Hackathon[] {

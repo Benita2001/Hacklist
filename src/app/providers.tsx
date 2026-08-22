@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
+import { createContext, useCallback, useContext, useEffect, useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
 type ResolvedTheme = 'light' | 'dark';
@@ -25,10 +25,35 @@ export function useTheme() {
 }
 
 const STORAGE_KEY = 'theme';
+const THEME_EVENT = 'hacklist-theme-change';
+
+function readStoredTheme(): Theme {
+  if (typeof window === 'undefined') return 'system';
+  try {
+    const value = window.localStorage.getItem(STORAGE_KEY);
+    return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
+  } catch {
+    return 'system';
+  }
+}
+
+function subscribeTheme(onChange: () => void): () => void {
+  window.addEventListener('storage', onChange);
+  window.addEventListener(THEME_EVENT, onChange);
+  return () => {
+    window.removeEventListener('storage', onChange);
+    window.removeEventListener(THEME_EVENT, onChange);
+  };
+}
 
 function getSystemTheme(): ResolvedTheme {
-  if (typeof window === 'undefined') return 'light';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function subscribeSystemTheme(onChange: () => void): () => void {
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  media.addEventListener('change', onChange);
+  return () => media.removeEventListener('change', onChange);
 }
 
 function applyTheme(resolved: ResolvedTheme) {
@@ -36,46 +61,22 @@ function applyTheme(resolved: ResolvedTheme) {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('system');
-  const [systemTheme, setSystemTheme] = useState<ResolvedTheme>('light');
-  const themeRef = useRef(theme);
+  const theme = useSyncExternalStore<Theme>(subscribeTheme, readStoredTheme, () => 'system');
+  const systemTheme = useSyncExternalStore<ResolvedTheme>(subscribeSystemTheme, getSystemTheme, () => 'light');
+  const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme;
 
   useEffect(() => {
-    themeRef.current = theme;
-  }, [theme]);
-
-  // Read stored preference and apply immediately on mount
-  useEffect(() => {
-    const sys = getSystemTheme();
-    setSystemTheme(sys);
-    const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? 'system';
-    setThemeState(stored);
-    applyTheme(stored === 'system' ? sys : stored);
-  }, []);
-
-  // Re-apply whenever theme changes after mount
-  useEffect(() => {
-    applyTheme(theme === 'system' ? systemTheme : theme);
-  }, [theme, systemTheme]);
-
-  // Track system preference changes
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handle = (e: MediaQueryListEvent) => {
-      const sys: ResolvedTheme = e.matches ? 'dark' : 'light';
-      setSystemTheme(sys);
-      if (themeRef.current === 'system') applyTheme(sys);
-    };
-    mq.addEventListener('change', handle);
-    return () => mq.removeEventListener('change', handle);
-  }, []);
+    applyTheme(resolvedTheme);
+  }, [resolvedTheme]);
 
   const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
-    try { localStorage.setItem(STORAGE_KEY, next); } catch { /* ignore */ }
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+      // Private browsing can deny localStorage. The current tab still updates.
+    }
+    window.dispatchEvent(new Event(THEME_EVENT));
   }, []);
-
-  const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme;
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme, themes: ['light', 'dark', 'system'], systemTheme }}>
