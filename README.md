@@ -30,6 +30,8 @@ npm run lint
 npm test
 npm run test:integration
 npm run test:e2e
+npm run test:stage2
+npm run backfill:dry-run
 npm run build
 npm audit --omit=dev
 git diff --check
@@ -54,6 +56,28 @@ must be applied through the owner-approved Supabase workflow before enabling
 canonical five-type submissions in a shared environment. It preserves the
 legacy `hackathon_name` column and stores the normalized opportunity type and
 type-specific fields in `details`.
+
+## Stage 2 data and authentication preview
+
+The migration at
+`supabase/migrations/202608220002_canonical_opportunity_schema.sql` adds the
+canonical opportunity, organizer, evidence, review, job, subscription, audit,
+save, and follow records beside the legacy catalogue tables. It enables RLS:
+public users can only read publishable opportunities and evidence, while
+verified users can read and mutate only their own saves, follows, and email
+alerts. Reviewer and service access is controlled through the JWT
+`app_metadata.role` claim.
+
+Do not apply this migration to a shared or production project yet. The owner
+must first provide a read-only schema snapshot, review the foreign keys and
+RLS matrix, and approve the migration workflow. The adapter and
+`npm run backfill:dry-run` command are read-only and do not write legacy data.
+
+Email OTP authentication is exposed through `/api/auth/request-code`,
+`/api/auth/callback`, `/api/auth/session`, and `/api/auth/signout`. Saves,
+follows, and email alerts are protected under `/api/me/*`. Configure Supabase
+Auth redirect URLs for local and approved preview origins before testing the
+real email provider. No email is sent by local tests.
 
 ## Project documents
 

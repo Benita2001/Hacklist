@@ -11,9 +11,12 @@
     "test": "node --experimental-strip-types --test tests/submission-contract.test.ts tests/integration/submission-route-contract.test.ts tests/e2e/route-inventory.test.ts",
     "test:integration": "node --experimental-strip-types --test tests/integration/submission-route-contract.test.ts",
     "test:e2e": "node --experimental-strip-types --test tests/e2e/route-inventory.test.ts",
+    "test:stage2": "node --experimental-strip-types --test tests/stage2-schema.test.ts",
+    "backfill:dry-run": "node --experimental-strip-types scripts/backfill-dry-run.ts",
     "check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
+    "@supabase/ssr": "0.10.0",
     "@supabase/supabase-js": "^2.105.4",
     "@vercel/analytics": "^2.0.1",
     "date-fns": "^4.1.0",
