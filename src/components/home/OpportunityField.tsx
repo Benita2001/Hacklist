@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Hackathon } from '@/lib/types';
 import type { Bounty, Grant, Job, Program } from '@/components/home/TabBrowser';
+import type { CatalogueStatus } from '@/components/home/CatalogueReadState';
 
 type OpportunitySignal = {
   id: string;
@@ -19,6 +20,7 @@ type OpportunityFieldProps = {
   grants: Grant[];
   programs: Program[];
   jobs: Job[];
+  catalogueStatus: CatalogueStatus;
 };
 
 function deadlineLabel(item: Pick<OpportunitySignal, 'deadline' | 'deadlineText'>): string {
@@ -109,7 +111,9 @@ export function OpportunityField(props: OpportunityFieldProps) {
             Explore hackathons, bounties, grants, programs, and jobs in one place.
           </p>
         </div>
-        <p className="opportunity-field__freshness">Verified listings · live catalogue</p>
+        <p className="opportunity-field__freshness">
+          {props.catalogueStatus === 'ready' ? 'Verified listings · live catalogue' : 'Catalogue temporarily unavailable'}
+        </p>
       </div>
 
       <div className="opportunity-field__panel">

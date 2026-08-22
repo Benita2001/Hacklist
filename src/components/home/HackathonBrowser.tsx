@@ -5,9 +5,11 @@ import { Hackathon, FilterState } from '@/lib/types';
 import { filterHackathons } from '@/lib/data';
 import { FilterBar } from '@/components/hackathon/FilterBar';
 import { HackathonCard } from '@/components/hackathon/HackathonCard';
+import { CatalogueReadState, type CatalogueStatus } from '@/components/home/CatalogueReadState';
 
 interface HackathonBrowserProps {
   hackathons: Hackathon[];
+  status?: CatalogueStatus;
 }
 
 const initialFilters: FilterState = {
@@ -34,7 +36,7 @@ function SectionHeader({ children, color }: { children: React.ReactNode; color: 
   );
 }
 
-export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
+export function HackathonBrowser({ hackathons, status = 'ready' }: HackathonBrowserProps) {
   const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   const filtered  = filterHackathons(hackathons, filters);
@@ -48,9 +50,7 @@ export function HackathonBrowser({ hackathons }: HackathonBrowserProps) {
           className="flex flex-col items-center justify-center text-center"
           style={{ padding: 'var(--space-24) 0' }}
         >
-          <p style={{ fontSize: 'var(--text-md)', color: 'var(--color-text-muted)', lineHeight: 'var(--leading-relaxed)' }}>
-            No active hackathons right now. Check back soon. We update weekly.
-          </p>
+          <CatalogueReadState label="Hackathons" status={status} />
         </div>
       </section>
     );

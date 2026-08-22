@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { inspectLegacyBackfill } from '../src/domain/opportunities/backfill.ts';
-import { fromLegacyOpportunity } from '../src/domain/opportunities/canonical-adapter.ts';
+import { canonicalOpportunityId, fromLegacyOpportunity } from '../src/domain/opportunities/canonical-adapter.ts';
 import { isEmail, isUuid, safeReturnTo } from '../src/lib/auth-request.ts';
 
 const migration = readFileSync('supabase/migrations/202608220002_canonical_opportunity_schema.sql', 'utf8');
@@ -38,6 +38,13 @@ test('legacy adapter can produce a public candidate only with organizer identity
   });
   assert.equal(row.publication_state, 'public');
   assert.equal((row.confidence as Record<string, unknown>).source_observation_id, '9f2aa8d0-2ff3-4cf4-93c4-7ccca1f4f0df');
+});
+
+test('legacy detail routes resolve the same canonical id used by backfill', () => {
+  assert.equal(
+    canonicalOpportunityId('hackathon', 'legacy-7'),
+    fromLegacyOpportunity({ id: 'legacy-7', name: 'Legacy Hackathon' }, { type: 'hackathon' }).id,
+  );
 });
 
 test('backfill dry run reports invalid rows, duplicates, and unmapped fields without writing', () => {

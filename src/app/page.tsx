@@ -130,6 +130,7 @@ export default async function HomePage() {
           grants={grants.data}
           programs={programs.data}
           jobs={jobs.data}
+          catalogueStatus={catalogueUnavailable ? 'unavailable' : 'ready'}
         />
         <TabBrowser
           hackathons={hackathons.data}
@@ -137,6 +138,13 @@ export default async function HomePage() {
           grants={grants.data}
           programs={programs.data}
           jobs={jobs.data}
+          statuses={{
+            hackathons: hackathons.status,
+            bounties: bounties.status,
+            grants: grants.status,
+            programs: programs.status,
+            jobs: jobs.status,
+          }}
         />
       </PageShell>
       <BottomCTA />

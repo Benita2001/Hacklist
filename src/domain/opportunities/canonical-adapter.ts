@@ -47,6 +47,10 @@ function stableUuid(value: string): string {
   return hex;
 }
 
+export function canonicalOpportunityId(type: OpportunityType, legacyId: string | number): string {
+  return stableUuid(`${type}:${String(legacyId)}`);
+}
+
 function dateOrNull(value: unknown): string | null {
   const text = stringOrNull(value);
   if (!text) return null;
@@ -71,7 +75,7 @@ export function fromLegacyOpportunity(
   const now = new Date().toISOString();
 
   return {
-    id: stableUuid(`${options.type}:${String(row.id ?? title)}`),
+    id: canonicalOpportunityId(options.type, row.id ?? title),
     type: options.type,
     slug: `${options.type}-${slugify(title) || `opportunity-${String(row.id ?? 'unknown')}`}`,
     title,
