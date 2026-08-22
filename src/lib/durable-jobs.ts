@@ -2,6 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from './database.types';
 import { classifyJobError, retryDelaySeconds } from '@/domain/jobs/policy';
 import type { ClaimedJob, DurableJobPayload, JobErrorCategory, JobQueue } from '@/domain/jobs/types';
+import type { NotificationProviderResult } from '@/domain/notifications/delivery';
 
 type Client = SupabaseClient<Database>;
 
@@ -110,6 +111,46 @@ export async function enqueueNotificationOutbox(client: Client, input: {
   const existing = await client.from('notification_outbox').select('*').eq('idempotency_key', input.idempotencyKey).single();
   if (existing.error) throw existing.error;
   return { created: false, outbox: existing.data };
+}
+
+export type ClaimedNotification = {
+  id: string;
+  delivery_id: string | null;
+  idempotency_key: string;
+  payload: DurableJobPayload;
+  attempt_count: number;
+  lease_token: string;
+  lease_expires_at: string;
+};
+
+export async function claimNextNotification(client: Client, workerId: string, leaseSeconds = 300): Promise<ClaimedNotification | null> {
+  const { data, error } = await client.rpc('claim_next_notification', {
+    p_worker_id: workerId,
+    p_lease_seconds: leaseSeconds,
+  });
+  if (error) throw error;
+  return data?.[0] ? data[0] as ClaimedNotification : null;
+}
+
+export async function finishNotification(client: Client, input: {
+  notification: ClaimedNotification;
+  result: NotificationProviderResult;
+  nextAttemptAt?: string | null;
+}) {
+  const outcome = input.result.outcome === 'accepted' ? 'sent'
+    : input.result.outcome === 'temporary_failure' ? 'retry'
+      : input.result.outcome === 'permanent_failure' ? 'dead_letter'
+        : 'manual_reconciliation';
+  const { data, error } = await client.rpc('finish_notification', {
+    p_outbox_id: input.notification.id,
+    p_lease_token: input.notification.lease_token,
+    p_outcome: outcome,
+    p_provider_message_id: input.result.outcome === 'accepted' ? input.result.providerMessageId : null,
+    p_error_category: input.result.outcome === 'accepted' ? null : input.result.errorCategory,
+    p_next_attempt_at: outcome === 'retry' ? input.nextAttemptAt ?? null : null,
+  });
+  if (error) throw error;
+  return data?.[0] ?? null;
 }
 
 export function jobErrorCategory(error: unknown): JobErrorCategory {

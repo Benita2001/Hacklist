@@ -116,6 +116,14 @@ export type Database = {
         Args: { p_job_id: string; p_lease_token: string; p_success: boolean; p_error_category?: string | null; p_error_message?: string | null; p_next_attempt_at?: string | null; p_retryable?: boolean };
         Returns: Array<{ job_id: string; final_status: string; dead_lettered: boolean }>;
       };
+      claim_next_notification: {
+        Args: { p_worker_id: string; p_lease_seconds?: number };
+        Returns: Array<{ id: string; delivery_id: string | null; idempotency_key: string; payload: Json; attempt_count: number; lease_token: string; lease_expires_at: string }>;
+      };
+      finish_notification: {
+        Args: { p_outbox_id: string; p_lease_token: string; p_outcome: string; p_provider_message_id?: string | null; p_error_category?: string | null; p_next_attempt_at?: string | null };
+        Returns: Array<{ outbox_id: string; final_status: string; delivery_status: string }>;
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
