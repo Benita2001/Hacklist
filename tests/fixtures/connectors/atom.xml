@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>urn:fixture:atom:1</id>
+    <title>Atom Builder Programme</title>
+    <link href="https://example.com/programmes/atom" />
+    <summary>Support for open builders.</summary>
+    <updated>2026-08-22T09:00:00Z</updated>
+  </entry>
+</feed>

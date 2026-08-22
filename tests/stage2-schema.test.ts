@@ -19,6 +19,8 @@ test('canonical migration defines publication, evidence, review, job, and privat
   assert.match(migration, /publication_state in \('provisional', 'public'\)/);
   assert.match(migration, /auth\.uid\(\) = user_id/);
   assert.match(migration, /create policy staff_audit_all/);
+  assert.match(migration, /grant usage on schema public to anon, authenticated, service_role/);
+  assert.match(migration, /grant all on public\.sources, public\.organizers/);
 });
 
 test('legacy adapter never auto-publishes without a resolved organizer', () => {

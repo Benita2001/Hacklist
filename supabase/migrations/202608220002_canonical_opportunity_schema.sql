@@ -288,6 +288,23 @@ alter table public.opportunity_saves enable row level security;
 alter table public.opportunity_follows enable row level security;
 alter table public.audit_entries enable row level security;
 
+-- RLS policies decide which rows a role may use. Explicit grants decide which
+-- operations the role may attempt. Keep both layers present for local and
+-- hosted projects where new tables are not auto-exposed.
+grant usage on schema public to anon, authenticated, service_role;
+grant select on public.opportunities, public.organizers, public.opportunity_versions, public.field_evidence
+  to anon, authenticated;
+grant select, insert, delete on public.opportunity_saves, public.opportunity_follows to authenticated;
+grant select, insert, update, delete on public.subscriptions to authenticated;
+grant select, insert, update, delete on public.sources, public.source_observations,
+  public.opportunity_versions, public.opportunities, public.organizers, public.field_evidence,
+  public.review_cases, public.jobs, public.job_attempts, public.notification_deliveries,
+  public.audit_entries to authenticated;
+grant all on public.sources, public.organizers, public.opportunities, public.source_observations,
+  public.opportunity_versions, public.field_evidence, public.review_cases, public.jobs,
+  public.job_attempts, public.subscriptions, public.notification_deliveries,
+  public.opportunity_saves, public.opportunity_follows, public.audit_entries to service_role;
+
 create or replace function public.is_staff()
 returns boolean
 language sql

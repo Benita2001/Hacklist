@@ -79,6 +79,45 @@ follows, and email alerts are protected under `/api/me/*`. Configure Supabase
 Auth redirect URLs for local and approved preview origins before testing the
 real email provider. No email is sent by local tests.
 
+## Stage 3 durable job fallback
+
+The migration at
+`supabase/migrations/202608220003_durable_job_evidence_plane.sql` adds the
+Postgres-backed fallback job plane: queue names, leases, visibility timeouts,
+bounded retries, dead letters, immutable snapshot metadata, and a
+notification outbox. Claim and finish functions are restricted to
+`service_role`; reviewer and administrator roles control replay through the
+application contract. `src/lib/durable-jobs.ts` is the server-side adapter.
+
+This is intentionally a local and migration-only foundation. AWS
+EventBridge, SQS, Lambda, S3, alarms, and budgets require a separate owner
+approval with an account, region, resource names, and monthly ceiling. No AWS
+resource is created by the repository or its tests.
+
+## Stage 4 connector foundation
+
+The P0 connector foundation lives under `src/domain/connectors/`. Direct
+submissions, RSS/Atom, sitemaps, focused JSON-LD pages, Grants.gov, Greenhouse,
+and Lever emit normalized observations only. They do not write public
+opportunities. Requests use HTTPS-only source checks, conditional headers,
+response-size limits, redirect rejection, content hashes, and deterministic
+fixture replay. Run `npm run test:stage4` to exercise the offline connector
+contract. Live source access remains disabled until each source passes its
+owner-approved Gate G4 review.
+
+## Stage 5 evaluation and shadow review
+
+The deterministic evaluation foundation lives under `src/domain/evaluation/`.
+It classifies observations, resolves organizer domains, checks field evidence,
+flags freshness and duplicate risk, and proposes provisional or review states
+without writing public records. Review cases and shadow metrics are explicit
+contracts so a later worker can persist them safely.
+
+Run `npm run test:stage5` for the offline evaluation, deduplication, review,
+and shadow-gate tests. Automatic public transitions remain disabled until the
+PLAN.md detection, precision, duplicate, evidence, review-queue, and cost gates
+are met during the approved shadow period.
+
 ## Project documents
 
 The workspace-root `PLAN.md` is the canonical implementation plan. UI concepts

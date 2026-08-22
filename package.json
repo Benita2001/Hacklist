@@ -12,8 +12,11 @@
     "test:integration": "node --experimental-strip-types --test tests/integration/submission-route-contract.test.ts",
     "test:e2e": "node --experimental-strip-types --test tests/e2e/route-inventory.test.ts",
     "test:stage2": "node --experimental-strip-types --test tests/stage2-schema.test.ts",
+    "test:stage3": "node --experimental-strip-types --test tests/stage3-jobs.test.ts",
+    "test:stage4": "node --experimental-strip-types --test tests/stage4-connectors.test.ts",
+    "test:stage5": "node --experimental-strip-types --test tests/stage5-evaluation.test.ts",
     "backfill:dry-run": "node --experimental-strip-types scripts/backfill-dry-run.ts",
-    "check": "npm run typecheck && npm run lint && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm test && npm run test:stage2 && npm run test:stage3 && npm run test:stage4 && npm run test:stage5 && npm run backfill:dry-run && npm run build"
   },
   "dependencies": {
     "@supabase/ssr": "0.10.0",

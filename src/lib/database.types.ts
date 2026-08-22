@@ -64,7 +64,8 @@ export type Database = {
         id: string; job_type: string; source_id: string | null; schedule_key: string | null; idempotency_key: string;
         status: string; attempt_count: number; lease_owner: string | null; lease_expires_at: string | null;
         next_attempt_at: string | null; last_error_category: string | null; cost_units: number; dead_letter_reason: string | null;
-        created_at: string; updated_at: string;
+        created_at: string; updated_at: string; queue_name: string; payload: Json; max_attempts: number;
+        visibility_timeout_seconds: number; lease_token: string | null; dead_lettered_at: string | null; last_error_message: string | null;
       }>;
       job_attempts: Table<{
         id: string; job_id: string; attempt_number: number; status: string; worker_id: string | null; started_at: string;
@@ -82,13 +83,40 @@ export type Database = {
       }>;
       opportunity_saves: Table<{ user_id: string; opportunity_id: string; created_at: string }>;
       opportunity_follows: Table<{ user_id: string; opportunity_id: string; created_at: string }>;
+      job_dead_letters: Table<{
+        id: string; job_id: string; queue_name: string; idempotency_key: string; payload: Json; attempt_count: number;
+        reason: string; dead_lettered_at: string; replayed_at: string | null; replayed_by: string | null;
+      }>;
+      observation_snapshots: Table<{
+        id: string; observation_id: string; storage_provider: string; storage_key: string; content_hash: string;
+        byte_size: number; content_type: string; captured_at: string; retention_until: string | null;
+        encryption_key_ref: string | null; created_at: string;
+      }>;
+      notification_outbox: Table<{
+        id: string; delivery_id: string | null; idempotency_key: string; payload: Json; status: string;
+        attempt_count: number; lease_owner: string | null; lease_token: string | null; lease_expires_at: string | null;
+        next_attempt_at: string | null; last_error_category: string | null; created_at: string; updated_at: string;
+      }>;
       audit_entries: Table<{
         id: string; actor_id: string | null; actor_role: string; action: string; entity_type: string; entity_id: string | null;
         before_state: Json | null; after_state: Json | null; reason: string | null; created_at: string;
       }>;
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      claim_next_job: {
+        Args: { p_queue_name: string; p_worker_id: string; p_lease_seconds?: number };
+        Returns: Array<{ id: string; queue_name: string; idempotency_key: string; payload: Json; attempt_count: number; lease_token: string; lease_expires_at: string }>;
+      };
+      requeue_expired_jobs: {
+        Args: { p_queue_name?: string | null };
+        Returns: Array<{ id: string; queue_name: string }>;
+      };
+      finish_job: {
+        Args: { p_job_id: string; p_lease_token: string; p_success: boolean; p_error_category?: string | null; p_error_message?: string | null; p_next_attempt_at?: string | null; p_retryable?: boolean };
+        Returns: Array<{ job_id: string; final_status: string; dead_lettered: boolean }>;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };
