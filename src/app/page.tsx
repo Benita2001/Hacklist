@@ -6,6 +6,7 @@ import { PageShell } from '@/components/layout/PageShell';
 import { HeroSection } from '@/components/home/HeroSection';
 import { TabBrowser, type Bounty, type Grant, type Program, type Job } from '@/components/home/TabBrowser';
 import { BottomCTA } from '@/components/home/BottomCTA';
+import { OpportunityField } from '@/components/home/OpportunityField';
 
 type ReadStatus = 'ready' | 'unavailable' | 'error';
 
@@ -123,6 +124,13 @@ export default async function HomePage() {
           </div>
         )}
         <HeroSection />
+        <OpportunityField
+          hackathons={hackathons.data}
+          bounties={bounties.data}
+          grants={grants.data}
+          programs={programs.data}
+          jobs={jobs.data}
+        />
         <TabBrowser
           hackathons={hackathons.data}
           bounties={bounties.data}

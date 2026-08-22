@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@/app/providers';
@@ -34,16 +34,47 @@ function MoonIcon() {
   );
 }
 
+function MenuIcon({ open }: { open: boolean }) {
+  return open ? (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M4 4L16 16M16 4L4 16" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  ) : (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M3 5.5H17M3 10H17M3 14.5H17" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
   const { setTheme, resolvedTheme } = useTheme();
   const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isDark = mounted ? resolvedTheme === 'dark' : false;
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape);
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <header
+      className="site-header"
       style={{
+        position: 'relative',
+        zIndex: 'var(--z-dropdown)',
         height: 'var(--header-height)',
         backgroundColor: 'var(--color-bg-base)',
         borderBottom: '1px solid var(--color-border-default)',
@@ -79,7 +110,7 @@ export function Header() {
 
         {/* Right side — scrollable on mobile so all links stay visible */}
         <div
-          className="header-nav-right flex items-center"
+          className="site-nav header-nav-right flex items-center"
           style={{ gap: '2px', overflowX: 'auto', flex: '1', minWidth: 0, justifyContent: 'flex-end', paddingLeft: '8px' }}
         >
 
@@ -179,7 +210,31 @@ export function Header() {
             {mounted ? (isDark ? <SunIcon /> : <MoonIcon />) : <span style={{ width: 16, height: 16 }} />}
           </button>
         </div>
+
+        <button
+          type="button"
+          className="site-menu-button"
+          aria-controls="mobile-site-menu"
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          onClick={() => setMenuOpen(open => !open)}
+        >
+          <MenuIcon open={menuOpen} />
+        </button>
       </div>
+
+      {menuOpen && (
+        <div id="mobile-site-menu" className="site-mobile-menu">
+          <Link href="/about" onClick={closeMenu} aria-current={pathname === '/about' ? 'page' : undefined}>About</Link>
+          <a href="https://t.me/hacklistwithbeni" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>Telegram</a>
+          <Link href="/submit" onClick={closeMenu}>List My Opportunity</Link>
+          <span onClick={closeMenu}><GetAccessButton variant="pill" /></span>
+          <button type="button" onClick={() => { setTheme(isDark ? 'light' : 'dark'); closeMenu(); }}>
+            {isDark ? <SunIcon /> : <MoonIcon />}
+            {isDark ? 'Light mode' : 'Dark mode'}
+          </button>
+        </div>
+      )}
     </header>
   );
 }
