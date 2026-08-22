@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { boundedBody, safeReturnTo } from '@/lib/auth-request';
 import { getAuthenticatedRequest } from '@/lib/private-auth';
+import { parseAlertPreferences } from '@/domain/notifications/alert-policy';
 
 function authError(configured: boolean, returnTo = '/') {
   return NextResponse.json(
@@ -8,9 +9,6 @@ function authError(configured: boolean, returnTo = '/') {
     { status: configured ? 401 : 503 },
   );
 }
-
-const types = new Set(['hackathon', 'bounty', 'grant', 'program', 'job']);
-const cadences = new Set(['immediate', 'daily', 'weekly']);
 
 export async function GET() {
   const { client, user, configured } = await getAuthenticatedRequest();
@@ -28,22 +26,22 @@ export async function PUT(request: NextRequest) {
   const { client, user, configured } = await getAuthenticatedRequest();
   if (!user || !client) return authError(configured, safeReturnTo(input.return_to));
 
-  const selectedTypes = Array.isArray(input.opportunity_types) ? input.opportunity_types.filter((value): value is string => typeof value === 'string' && types.has(value)) : [];
-  const cadence = typeof input.cadence === 'string' && cadences.has(input.cadence) ? input.cadence : 'immediate';
-  const normalAlerts = input.normal_alerts !== false;
-  const provisionalAlerts = input.provisional_alerts === true;
+  const preferences = parseAlertPreferences(input);
+  if (!preferences.ok) {
+    return NextResponse.json({ ok: false, error: 'invalid_alert_preferences', fields: preferences.errors }, { status: 400 });
+  }
   const { data, error } = await client.from('subscriptions').upsert({
     user_id: user.id,
     channel: 'email',
     verified_destination: user.email ?? null,
-    opportunity_types: selectedTypes,
+    opportunity_types: preferences.value.opportunityTypes,
     topics: [],
     geography: [],
     remote_preference: 'any',
-    normal_alerts: normalAlerts,
-    provisional_alerts: provisionalAlerts,
-    cadence,
-    quiet_hours: {},
+    normal_alerts: preferences.value.normalAlerts,
+    provisional_alerts: preferences.value.provisionalAlerts,
+    cadence: preferences.value.cadence,
+    quiet_hours: preferences.value.quietHours ?? {},
     verified_at: user.email_confirmed_at ?? new Date().toISOString(),
   }, { onConflict: 'user_id,channel' }).select('*').single();
   if (error) return NextResponse.json({ ok: false, error: 'alerts_unavailable' }, { status: 503 });
