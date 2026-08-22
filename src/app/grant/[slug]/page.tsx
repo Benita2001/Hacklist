@@ -3,7 +3,7 @@ export const revalidate = 300;
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 import { formatDate } from '@/lib/utils';
 import { PageShell } from '@/components/layout/PageShell';
 import { Tag } from '@/components/ui/Tag';
@@ -38,7 +38,9 @@ interface Props {
 }
 
 async function getGrant(id: string): Promise<Grant | null> {
-  const { data } = await supabase.from('grants').select('*').eq('id', id).single();
+  const supabase = getSupabase();
+  if (!supabase) return null;
+  const { data } = await supabase.from('grants').select('*').eq('id', id).eq('verified', true).single();
   return (data as Grant) ?? null;
 }
 
