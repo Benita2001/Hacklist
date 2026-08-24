@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   icons: {
     icon: '/hacklist-logo.png',
   },
+  other: {
+    'ory-verify': 'orynth-ad38c33f511b49e5880a3fcb4304201a',
+  },
   openGraph: {
     title: siteConfig.name,
     description: siteConfig.description,
