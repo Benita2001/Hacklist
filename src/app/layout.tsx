@@ -42,12 +42,21 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: 'website',
+    images: [
+      {
+        url: 'https://hacklist.io/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'HackList — Find AI & Web3 hackathons, bounties, grants, and jobs',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: siteConfig.name,
     description: siteConfig.description,
     creator: '@0xbeni',
+    images: ['https://hacklist.io/og-image.png'],
   },
 };
 
