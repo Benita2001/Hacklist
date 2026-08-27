@@ -30,4 +30,4 @@ export function VerifiedBadge() {
   );
 }
 
-/* okay */
+/* ok */
