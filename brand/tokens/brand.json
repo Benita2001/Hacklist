@@ -1,0 +1,36 @@
+{
+  "status": "provisional-digital-study",
+  "source": "ui-artifacts/BRAND_KIT_PLAN.md",
+  "colors": {
+    "ink": "#12180B",
+    "forest": "#26350F",
+    "forest2": "#344816",
+    "cream": "#F5F1E7",
+    "paper": "#FFFDF8",
+    "olive": "#9BAD46",
+    "signal": "#C9DD68",
+    "gold": "#8B6A27",
+    "danger": "#B83020"
+  },
+  "typography": {
+    "display": "Newsreader, Instrument Serif, Georgia, serif",
+    "interface": "Manrope, Inter, system-ui, sans-serif",
+    "evidence": "IBM Plex Mono, ui-monospace, SFMono-Regular, monospace"
+  },
+  "motion": {
+    "fast": "180ms",
+    "base": "320ms",
+    "reveal": "760ms",
+    "radar": "8s",
+    "ticker": "28s",
+    "easing": "cubic-bezier(.16, 1, .3, 1)"
+  },
+  "deferred": [
+    "vector-master",
+    "lockups",
+    "favicon-family",
+    "print-values",
+    "font-licenses",
+    "templates"
+  ]
+}

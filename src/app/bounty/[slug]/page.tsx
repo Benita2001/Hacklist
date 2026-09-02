@@ -3,13 +3,15 @@ export const revalidate = 300;
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
+import { canonicalOpportunityId } from '@/domain/opportunities/canonical-adapter';
 import { formatDate } from '@/lib/utils';
 import { PageShell } from '@/components/layout/PageShell';
 import { Tag } from '@/components/ui/Tag';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { Countdown } from '@/components/ui/Countdown';
 import { ApplyButton } from '@/components/ui/ApplyButton';
+import { OpportunityTrustPanel } from '@/components/opportunity/OpportunityTrustPanel';
 
 type TagVariant = 'ai' | 'web3' | 'both' | 'format';
 
@@ -36,7 +38,9 @@ interface Props {
 }
 
 async function getBounty(id: string): Promise<Bounty | null> {
-  const { data } = await supabase.from('bounties').select('*').eq('id', id).single();
+  const supabase = getSupabase();
+  if (!supabase) return null;
+  const { data } = await supabase.from('bounties').select('*').eq('id', id).eq('verified', true).single();
   return (data as Bounty) ?? null;
 }
 
@@ -140,6 +144,16 @@ export default async function BountyDetailPage({ params }: Props) {
               </div>
             ))}
           </div>
+
+          <OpportunityTrustPanel
+            organizer={bounty.organizer}
+            verified={bounty.verified}
+            applicationUrl={bounty.apply_url}
+            deadline={bounty.deadline}
+            deadlineText={bounty.deadline_text}
+            opportunityId={canonicalOpportunityId('bounty', bounty.id)}
+            returnTo={`/bounty/${bounty.id}`}
+          />
 
           {bounty.description && (
             <div style={{ maxWidth: '680px', marginBottom: 'var(--space-10)' }}>

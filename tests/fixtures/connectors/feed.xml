@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>HackList fixture feed</title>
+    <item>
+      <guid>fixture-feed-1</guid>
+      <title>Open Builder Hackathon</title>
+      <link>https://example.com/opportunities/builder</link>
+      <description><![CDATA[Build with an open community.]]></description>
+      <pubDate>Sat, 22 Aug 2026 10:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

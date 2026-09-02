@@ -6,6 +6,7 @@ import { HackathonBrowser } from '@/components/home/HackathonBrowser';
 import { HackathonCard } from '@/components/hackathon/HackathonCard';
 import { UniversalCard, type TagItem } from '@/components/hackathon/UniversalCard';
 import { Input } from '@/components/ui/Input';
+import { CatalogueReadState, type CatalogueStatus } from '@/components/home/CatalogueReadState';
 
 /* ── Entity types ─────────────────────────────────────────── */
 
@@ -87,6 +88,13 @@ interface TabBrowserProps {
   grants: Grant[];
   programs: Program[];
   jobs: Job[];
+  statuses?: {
+    hackathons: CatalogueStatus;
+    bounties: CatalogueStatus;
+    grants: CatalogueStatus;
+    programs: CatalogueStatus;
+    jobs: CatalogueStatus;
+  };
 }
 
 /* ── Types ────────────────────────────────────────────────── */
@@ -176,12 +184,10 @@ function filterJobs(items: Job[], f: string): Job[] {
 
 /* ── Empty state ──────────────────────────────────────────── */
 
-function EmptyState({ label }: { label: string }) {
+function EmptyState({ label, status = 'ready' }: { label: string; status?: CatalogueStatus }) {
   return (
     <div style={{ padding: 'var(--space-24) 0', textAlign: 'center' }}>
-      <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)' }}>
-        No {label} listed yet. Check back soon.
-      </p>
+      <CatalogueReadState label={label} status={status} />
     </div>
   );
 }
@@ -258,19 +264,9 @@ function FilterPills({
 
 /* ── Card grid wrapper ────────────────────────────────────── */
 
-function CardGrid({ children }: { children: React.ReactNode }) {
-  return (
-    <section style={{ paddingBottom: 'var(--space-20)' }}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-        {children}
-      </div>
-    </section>
-  );
-}
-
 /* ── Tab content grids ────────────────────────────────────── */
 
-function BountiesTab({ bounties }: { bounties: Bounty[] }) {
+function BountiesTab({ bounties, status }: { bounties: Bounty[]; status: CatalogueStatus }) {
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -294,7 +290,7 @@ function BountiesTab({ bounties }: { bounties: Bounty[] }) {
         value={filter}
         onChange={setFilter}
       />
-      {filtered.length === 0 ? <EmptyState label="Bounties" /> : (
+      {filtered.length === 0 ? <EmptyState label="Bounties" status={status} /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
           {filtered.map((b, i) => (
             <UniversalCard
@@ -319,7 +315,7 @@ function BountiesTab({ bounties }: { bounties: Bounty[] }) {
   );
 }
 
-function GrantsTab({ grants }: { grants: Grant[] }) {
+function GrantsTab({ grants, status }: { grants: Grant[]; status: CatalogueStatus }) {
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -343,7 +339,7 @@ function GrantsTab({ grants }: { grants: Grant[] }) {
         value={filter}
         onChange={setFilter}
       />
-      {filtered.length === 0 ? <EmptyState label="Grants" /> : (
+      {filtered.length === 0 ? <EmptyState label="Grants" status={status} /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
           {filtered.map((g, i) => (
             <UniversalCard
@@ -368,7 +364,7 @@ function GrantsTab({ grants }: { grants: Grant[] }) {
   );
 }
 
-function ProgramsTab({ programs }: { programs: Program[] }) {
+function ProgramsTab({ programs, status }: { programs: Program[]; status: CatalogueStatus }) {
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -392,7 +388,7 @@ function ProgramsTab({ programs }: { programs: Program[] }) {
         value={filter}
         onChange={setFilter}
       />
-      {filtered.length === 0 ? <EmptyState label="Programs" /> : (
+      {filtered.length === 0 ? <EmptyState label="Programs" status={status} /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
           {filtered.map((p, i) => (
             <UniversalCard
@@ -417,7 +413,7 @@ function ProgramsTab({ programs }: { programs: Program[] }) {
   );
 }
 
-function JobsTab({ jobs }: { jobs: Job[] }) {
+function JobsTab({ jobs, status }: { jobs: Job[]; status: CatalogueStatus }) {
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -441,7 +437,7 @@ function JobsTab({ jobs }: { jobs: Job[] }) {
         value={filter}
         onChange={setFilter}
       />
-      {filtered.length === 0 ? <EmptyState label="Jobs" /> : (
+      {filtered.length === 0 ? <EmptyState label="Jobs" status={status} /> : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
           {filtered.map((j, i) => (
             <UniversalCard
@@ -489,8 +485,16 @@ function tabPillStyle(): React.CSSProperties {
 
 /* ── Main component ───────────────────────────────────────── */
 
-export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: TabBrowserProps) {
+export function TabBrowser({ hackathons, bounties, grants, programs, jobs, statuses }: TabBrowserProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('hackathons');
+
+  const readStatuses = statuses ?? {
+    hackathons: 'ready' as const,
+    bounties: 'ready' as const,
+    grants: 'ready' as const,
+    programs: 'ready' as const,
+    jobs: 'ready' as const,
+  };
 
   const spotlightHackathon     = hackathons.find(h => h.spotlight);
   const nonSpotlightHackathons = hackathons.filter(h => !h.spotlight);
@@ -559,11 +563,11 @@ export function TabBrowser({ hackathons, bounties, grants, programs, jobs }: Tab
       </div>
 
       {/* ── Tab content ── */}
-      {activeTab === 'hackathons' && <HackathonBrowser hackathons={nonSpotlightHackathons} />}
-      {activeTab === 'bounties'   && <BountiesTab bounties={bounties} />}
-      {activeTab === 'grants'     && <GrantsTab grants={grants} />}
-      {activeTab === 'programs'   && <ProgramsTab programs={programs} />}
-      {activeTab === 'jobs'       && <JobsTab jobs={jobs} />}
+      {activeTab === 'hackathons' && <HackathonBrowser hackathons={nonSpotlightHackathons} status={readStatuses.hackathons} />}
+      {activeTab === 'bounties'   && <BountiesTab bounties={bounties} status={readStatuses.bounties} />}
+      {activeTab === 'grants'     && <GrantsTab grants={grants} status={readStatuses.grants} />}
+      {activeTab === 'programs'   && <ProgramsTab programs={programs} status={readStatuses.programs} />}
+      {activeTab === 'jobs'       && <JobsTab jobs={jobs} status={readStatuses.jobs} />}
 
     </div>
   );

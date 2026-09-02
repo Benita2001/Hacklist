@@ -3,13 +3,15 @@ export const revalidate = 300;
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
+import { canonicalOpportunityId } from '@/domain/opportunities/canonical-adapter';
 import { formatDate } from '@/lib/utils';
 import { PageShell } from '@/components/layout/PageShell';
 import { Tag } from '@/components/ui/Tag';
 import { VerifiedBadge } from '@/components/ui/VerifiedBadge';
 import { Countdown } from '@/components/ui/Countdown';
 import { ApplyButton } from '@/components/ui/ApplyButton';
+import { OpportunityTrustPanel } from '@/components/opportunity/OpportunityTrustPanel';
 
 type TagVariant = 'ai' | 'web3' | 'both' | 'format';
 
@@ -38,7 +40,9 @@ interface Props {
 }
 
 async function getGrant(id: string): Promise<Grant | null> {
-  const { data } = await supabase.from('grants').select('*').eq('id', id).single();
+  const supabase = getSupabase();
+  if (!supabase) return null;
+  const { data } = await supabase.from('grants').select('*').eq('id', id).eq('verified', true).single();
   return (data as Grant) ?? null;
 }
 
@@ -146,6 +150,16 @@ export default async function GrantDetailPage({ params }: Props) {
               </div>
             ))}
           </div>
+
+          <OpportunityTrustPanel
+            organizer={grant.organizer}
+            verified={grant.verified}
+            applicationUrl={grant.apply_url}
+            deadline={grant.deadline}
+            deadlineText={grant.deadline_text}
+            opportunityId={canonicalOpportunityId('grant', grant.id)}
+            returnTo={`/grant/${grant.id}`}
+          />
 
           {grant.description && (
             <div style={{ maxWidth: '680px', marginBottom: 'var(--space-10)' }}>

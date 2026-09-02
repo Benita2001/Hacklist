@@ -1,0 +1,26 @@
+/*
+ * HackList provisional digital-study tokens.
+ * These values are not final print or logo-color approvals.
+ */
+:root {
+  --hl-ink: #12180B;
+  --hl-forest: #26350F;
+  --hl-forest-2: #344816;
+  --hl-cream: #F5F1E7;
+  --hl-paper: #FFFDF8;
+  --hl-olive: #9BAD46;
+  --hl-signal: #C9DD68;
+  --hl-gold: #8B6A27;
+  --hl-danger: #B83020;
+
+  --hl-font-display: 'Newsreader', 'Instrument Serif', Georgia, serif;
+  --hl-font-interface: 'Manrope', Inter, system-ui, sans-serif;
+  --hl-font-evidence: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --hl-motion-fast: 180ms;
+  --hl-motion-base: 320ms;
+  --hl-motion-reveal: 760ms;
+  --hl-motion-radar: 8s;
+  --hl-motion-ticker: 28s;
+  --hl-ease-product: cubic-bezier(.16, 1, .3, 1);
+}

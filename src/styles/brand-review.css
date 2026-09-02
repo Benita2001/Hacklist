@@ -1,0 +1,184 @@
+@import "../../brand/tokens/brand.css";
+
+.brand-review {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px) 96px;
+  color: var(--hl-ink);
+  background: var(--hl-cream);
+  font-family: var(--hl-font-interface);
+}
+
+.brand-review__header,
+.brand-review__section-heading,
+.brand-review__footer {
+  display: grid;
+  gap: 12px;
+}
+
+.brand-review__header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 28px;
+  padding-bottom: 72px;
+}
+
+.brand-review__eyebrow,
+.brand-review__status,
+.brand-review__type-role {
+  margin: 0;
+  color: var(--hl-gold);
+  font-family: var(--hl-font-evidence);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.brand-review h1,
+.brand-review h2,
+.brand-review h3,
+.brand-review p {
+  margin-top: 0;
+}
+
+.brand-review h1,
+.brand-review h2 {
+  font-family: var(--hl-font-display);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.brand-review h1 {
+  max-width: 760px;
+  margin-bottom: 16px;
+  font-size: clamp(52px, 8vw, 108px);
+  letter-spacing: -.045em;
+}
+
+.brand-review h2 {
+  max-width: 720px;
+  margin-bottom: 0;
+  font-size: clamp(32px, 5vw, 62px);
+  letter-spacing: -.035em;
+}
+
+.brand-review__lede {
+  max-width: 620px;
+  margin-bottom: 0;
+  color: #4E5A38;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.brand-review__status {
+  align-self: start;
+  padding: 10px 12px;
+  border: 1px solid rgba(139, 106, 39, .35);
+  background: rgba(255, 253, 248, .58);
+}
+
+.brand-review__section {
+  display: grid;
+  gap: 28px;
+  padding: 64px 0;
+  border-top: 1px solid rgba(38, 53, 15, .22);
+}
+
+.brand-review__mark-grid,
+.brand-review__type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.brand-review__mark {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(20px, 5vw, 56px);
+}
+
+.brand-review__mark--light { background: var(--hl-paper); }
+.brand-review__mark--dark { background: var(--hl-forest); }
+.brand-review__mark img { width: 100%; height: auto; mix-blend-mode: multiply; }
+.brand-review__mark figcaption { color: var(--hl-gold); font: 11px/1.5 var(--hl-font-evidence); }
+
+.brand-review__swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.brand-review__swatch-card,
+.brand-review__type-card {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(38, 53, 15, .18);
+  background: rgba(255, 253, 248, .6);
+}
+
+.brand-review__swatch-card p,
+.brand-review__swatch-card small,
+.brand-review__type-card p { margin: 0; }
+.brand-review__swatch-card p { font-weight: 600; }
+.brand-review__swatch-card code { overflow-wrap: anywhere; color: #4E5A38; font: 11px/1.4 var(--hl-font-evidence); }
+.brand-review__swatch-card small { color: #5D674B; font: 11px/1.4 var(--hl-font-evidence); }
+.brand-review__swatch { aspect-ratio: 1.5; border: 1px solid rgba(18, 24, 11, .16); }
+.brand-review__swatch--ink { background: var(--hl-ink); }
+.brand-review__swatch--forest { background: var(--hl-forest); }
+.brand-review__swatch--forest-2 { background: var(--hl-forest-2); }
+.brand-review__swatch--cream { background: var(--hl-cream); }
+.brand-review__swatch--paper { background: var(--hl-paper); }
+.brand-review__swatch--olive { background: var(--hl-olive); }
+.brand-review__swatch--signal { background: var(--hl-signal); }
+.brand-review__swatch--gold { background: var(--hl-gold); }
+
+.brand-review__note,
+.brand-review__footer {
+  color: #5D674B;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.brand-review__type-card { min-height: 190px; align-content: end; }
+.brand-review__type-card h3 { margin-bottom: 6px; font-size: clamp(24px, 3vw, 40px); font-weight: 400; }
+.brand-review__type-card p:last-child { color: #5D674B; font-size: 13px; line-height: 1.5; }
+
+.brand-review__motion-card {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  color: var(--hl-paper);
+  background: var(--hl-forest);
+}
+
+.brand-review__motion-card p:last-child { max-width: 520px; margin-bottom: 0; color: #DCE7B1; line-height: 1.6; }
+.brand-review__motion-rings { position: relative; width: 160px; aspect-ratio: 1; border: 1px solid rgba(201, 221, 104, .55); border-radius: 50%; }
+.brand-review__motion-rings span { position: absolute; inset: 18%; border: 1px solid rgba(201, 221, 104, .42); border-radius: 50%; }
+.brand-review__motion-rings span + span { inset: 35%; }
+.brand-review__motion-rings i { position: absolute; top: 50%; left: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--hl-signal); transform: translate(-50%, -50%); box-shadow: 0 0 0 0 rgba(201, 221, 104, .6); animation: brand-signal 2.3s ease-out infinite; }
+
+.brand-review__footer { padding-top: 28px; border-top: 1px solid rgba(38, 53, 15, .22); }
+
+@keyframes brand-signal {
+  70%, 100% { box-shadow: 0 0 0 18px rgba(201, 221, 104, 0); }
+}
+
+@media (max-width: 767px) {
+  .brand-review__header,
+  .brand-review__mark-grid,
+  .brand-review__type-grid,
+  .brand-review__motion-card { grid-template-columns: 1fr; }
+  .brand-review__header { align-items: start; }
+  .brand-review__swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .brand-review__motion-rings { width: 140px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-review__motion-rings i { animation: none; }
+}
