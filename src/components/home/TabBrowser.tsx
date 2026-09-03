@@ -256,18 +256,6 @@ function FilterPills({
   );
 }
 
-/* ── Card grid wrapper ────────────────────────────────────── */
-
-function CardGrid({ children }: { children: React.ReactNode }) {
-  return (
-    <section style={{ paddingBottom: 'var(--space-20)' }}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: 'var(--space-5)', alignItems: 'stretch' }}>
-        {children}
-      </div>
-    </section>
-  );
-}
-
 /* ── Tab content grids ────────────────────────────────────── */
 
 function BountiesTab({ bounties }: { bounties: Bounty[] }) {

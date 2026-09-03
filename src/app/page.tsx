@@ -6,6 +6,8 @@ import { PageShell } from '@/components/layout/PageShell';
 import { HeroSection } from '@/components/home/HeroSection';
 import { TabBrowser, type Bounty, type Grant, type Program, type Job } from '@/components/home/TabBrowser';
 import { BottomCTA } from '@/components/home/BottomCTA';
+import { WebMcpAgentState } from '@/components/webmcp/WebMcpAgentState';
+import { WebMcpRegistrar } from '@/components/webmcp/WebMcpRegistrar';
 
 async function getBounties(): Promise<Bounty[]> {
   const today = new Date().toISOString().split('T')[0];
@@ -87,8 +89,10 @@ export default async function HomePage() {
 
   return (
     <>
+      <WebMcpRegistrar />
       <PageShell>
         <HeroSection />
+        <WebMcpAgentState />
         <TabBrowser
           hackathons={hackathons}
           bounties={bounties}

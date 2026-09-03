@@ -323,7 +323,8 @@ export function HackathonModal({ hackathon, onClose }: HackathonModalProps) {
 
   // SSR safety
   useEffect(() => {
-    setMounted(true);
+    const timer = window.setTimeout(() => setMounted(true), 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Scroll lock + ESC key

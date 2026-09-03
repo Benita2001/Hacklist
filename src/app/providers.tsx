@@ -46,11 +46,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   // Read stored preference and apply immediately on mount
   useEffect(() => {
-    const sys = getSystemTheme();
-    setSystemTheme(sys);
-    const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? 'system';
-    setThemeState(stored);
-    applyTheme(stored === 'system' ? sys : stored);
+    const timer = window.setTimeout(() => {
+      const sys = getSystemTheme();
+      setSystemTheme(sys);
+      const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? 'system';
+      setThemeState(stored);
+      applyTheme(stored === 'system' ? sys : stored);
+    }, 0);
+
+    return () => window.clearTimeout(timer);
   }, []);
 
   // Re-apply whenever theme changes after mount

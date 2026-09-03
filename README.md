@@ -20,6 +20,29 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## WebMCP Implementation
+
+HackList registers semantic opportunity tools through `document.modelContext.registerTool` in `src/components/webmcp/WebMcpRegistrar.tsx`.
+
+Abbreviated real example:
+
+```ts
+document.modelContext.registerTool({
+  name: 'search_opportunities',
+  description: 'Search active HackList opportunities across hackathons, jobs, grants, bounties, and programs using real Supabase data.',
+  inputSchema: { /* ... */ },
+  execute: async (input) => { /* calls /api/webmcp/opportunities/search */ },
+});
+```
+
+Registered read-only tools:
+
+- `search_opportunities`
+- `get_opportunity`
+- `match_opportunities`
+- `compare_opportunities`
+- `get_opportunity_readiness`
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
