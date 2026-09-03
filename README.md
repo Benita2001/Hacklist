@@ -54,6 +54,7 @@ document.modelContext.registerTool({
     // calls the real HackList opportunity API
   },
 });
+```
 
 The real registrations live in:
 
@@ -65,27 +66,27 @@ All current tools are **read-only**.
 
 ## WebMCP tools
 
-| Tool                        | What it lets an agent do                                                                                    |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `search_opportunities`      | Search live HackList opportunities across hackathons, jobs, grants, bounties, and programs                  |
-| `get_opportunity`           | Retrieve structured details for a specific opportunity                                                      |
-| `match_opportunities`       | Find opportunities that fit a builder's supplied skills, location, interests, availability, and constraints |
-| `compare_opportunities`     | Compare opportunities using category-aware decision criteria                                                |
-| `get_opportunity_readiness` | Explain known requirements, constraints, and next steps for pursuing an opportunity                         |
+| Tool | What it lets an agent do |
+|---|---|
+| `search_opportunities` | Search live HackList opportunities across hackathons, jobs, grants, bounties, and programs |
+| `get_opportunity` | Retrieve structured details for a specific opportunity |
+| `match_opportunities` | Find opportunities that fit a builder's supplied skills, location, interests, availability, and constraints |
+| `compare_opportunities` | Compare opportunities using category-aware decision criteria |
+| `get_opportunity_readiness` | Explain known requirements, constraints, and next steps for pursuing an opportunity |
 
 The tools operate on **real HackList / Supabase data**, not mocked demo responses.
 
 ---
 
-# What makes this different
+## What makes this different
 
 Most websites force agents to infer meaning from:
 
-* cards
-* buttons
-* filters
-* text
-* DOM structure
+- cards
+- buttons
+- filters
+- text
+- DOM structure
 
 HackList exposes the meaning of the product directly.
 
