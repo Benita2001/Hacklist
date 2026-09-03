@@ -5,6 +5,7 @@
 <img width="2496" height="1834" alt="image" src="https://github.com/user-attachments/assets/e483486c-19d9-46fc-a4e5-26faf4a45e23" />
 
 
+
 HackList helps developers discover AI & Web3 hackathons, jobs, grants, bounties, and programs.
 
 With WebMCP, HackList goes beyond discovery.
@@ -22,6 +23,9 @@ builders can now ask:
 **Repository:** https://github.com/Benita2001/Hacklist
 
 **Demo:** https://youtu.be/Fssv-sNEcYQ
+
+**Raw Demo:** https://youtu.be/WHLGg_rRrqg?si=G84g-nEiOfywIxQ-
+
 ---
 
 ## Why HackList
