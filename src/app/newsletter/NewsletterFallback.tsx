@@ -15,10 +15,13 @@ export function NewsletterFallback() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-[var(--space-3)]">
       <Input
+        id="newsletter-email"
+        name="email"
         value={email}
         onChange={setEmail}
         placeholder="you@example.com"
         type="email"
+        autoComplete="email"
         showIcon={false}
       />
       <Button variant="primary" size="lg" className="w-full">

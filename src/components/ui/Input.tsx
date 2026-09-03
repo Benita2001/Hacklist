@@ -3,19 +3,25 @@
 interface InputProps {
   value: string;
   onChange: (value: string) => void;
+  id?: string;
+  name?: string;
   placeholder?: string;
   type?: 'search' | 'email' | 'text';
   showIcon?: boolean;
   className?: string;
+  autoComplete?: string;
 }
 
 export function Input({
   value,
   onChange,
+  id,
+  name,
   placeholder = 'Search hackathons…',
   type = 'search',
   showIcon = true,
   className = '',
+  autoComplete,
 }: InputProps) {
   const hasIcon = showIcon && type === 'search';
 
@@ -67,10 +73,13 @@ export function Input({
       )}
 
       <input
+        id={id}
+        name={name}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        autoComplete={autoComplete}
         className={[
           'flex-1 h-full',
           hasIcon ? 'pl-2' : 'pl-[var(--input-px)]',

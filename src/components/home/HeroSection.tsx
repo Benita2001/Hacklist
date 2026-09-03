@@ -156,6 +156,8 @@ export function HeroSection() {
                 }}
               >
                 <input
+                  id="hero-email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -163,6 +165,7 @@ export function HeroSection() {
                   onBlur={() => setEmailFocused(false)}
                   className="email-input"
                   placeholder="Enter your email for opportunities"
+                  autoComplete="email"
                   required
                   style={{
                     flex: 1,

@@ -219,11 +219,14 @@ export function GetAccessButton({ variant = 'pill' }: GetAccessButtonProps) {
                 <form onSubmit={handleSubmit}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                     <input
+                      id="access-email"
+                      name="email"
                       ref={inputRef}
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
                       placeholder="Enter your email for hackathon opportunities"
+                      autoComplete="email"
                       required
                       style={{
                         width: '100%',

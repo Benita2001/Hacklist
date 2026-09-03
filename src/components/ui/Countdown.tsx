@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { getDaysRemaining, getCountdownUrgency } from '@/lib/utils';
 
 interface CountdownProps {
@@ -7,9 +8,20 @@ interface CountdownProps {
 }
 
 export function Countdown({ deadline }: CountdownProps) {
+  const [days, setDays] = useState<number | null>(null);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDays(deadline ? getDaysRemaining(deadline) : null);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [deadline]);
+
   if (!deadline) return null;
 
-  const days    = getDaysRemaining(deadline);
+  if (days === null) return null;
+
   const urgency = getCountdownUrgency(days);
 
   if (urgency === 'hidden') return null;
