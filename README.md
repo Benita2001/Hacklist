@@ -1,5 +1,8 @@
 # HackList
 
+<img width="2496" height="1834" alt="image" src="https://github.com/user-attachments/assets/e483486c-19d9-46fc-a4e5-26faf4a45e23" />
+
+
 **The opportunity intelligence layer for builders and their AI agents.**
 
 HackList helps developers discover AI & Web3 hackathons, jobs, grants, bounties, and programs.
