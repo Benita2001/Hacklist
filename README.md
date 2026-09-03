@@ -1,9 +1,9 @@
 # HackList
 
+**The opportunity intelligence layer for builders and their AI agents.**
+
 <img width="2496" height="1834" alt="image" src="https://github.com/user-attachments/assets/e483486c-19d9-46fc-a4e5-26faf4a45e23" />
 
-
-**The opportunity intelligence layer for builders and their AI agents.**
 
 HackList helps developers discover AI & Web3 hackathons, jobs, grants, bounties, and programs.
 
@@ -17,9 +17,9 @@ builders can now ask:
 
 > **“Which opportunities actually fit me, why, and what do I need to do next?”**
 
-🌐 **Live:** https://hacklist.io  
-💻 **Repository:** https://github.com/Benita2001/Hacklist
-
+**Live:** https://hacklist.io  
+**Repository:** https://github.com/Benita2001/Hacklist
+**Demo:** https://youtu.be/Fssv-sNEcYQ
 ---
 
 ## Why HackList
@@ -458,15 +458,13 @@ The semantic tools can then be inspected through Chrome's WebMCP tooling.
 
 ## Example test prompts
 
-Try:
+Try these while HackList is open in the ChatGPT desktop app's in-app browser:
 
-> “Show me active AI opportunities on HackList.”
-
-> “I'm a React and Python developer in Ghana with a few days free. Which hackathons here fit me?”
+> “Hey ChatGPT, HackList is open on the right. I’m a Nigerian developer skilled in frontend, backend, and AI integration, and I have five days available. What hackathons on HackList can I realistically enter?”
 
 > “Tell me more about the first result.”
 
-> “Compare the first two.”
+> “Compare the first two and tell me which one is more realistic for me.”
 
 > “What would I need to submit or do for the one you recommend?”
 
