@@ -1,4 +1,3 @@
-````markdown
 # HackList
 
 **The opportunity intelligence layer for builders and their AI agents.**
@@ -55,7 +54,6 @@ document.modelContext.registerTool({
     // calls the real HackList opportunity API
   },
 });
-````
 
 The real registrations live in:
 
