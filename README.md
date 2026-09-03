@@ -18,7 +18,9 @@ builders can now ask:
 > **“Which opportunities actually fit me, why, and what do I need to do next?”**
 
 **Live:** https://hacklist.io  
+
 **Repository:** https://github.com/Benita2001/Hacklist
+
 **Demo:** https://youtu.be/Fssv-sNEcYQ
 ---
 
