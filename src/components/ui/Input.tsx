@@ -74,7 +74,7 @@ export function Input({
 
       <input
         id={id}
-        name={name}
+        name={name ?? type}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
